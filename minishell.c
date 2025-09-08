@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:31:35 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/09/08 16:02:24 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/09/08 16:10:13 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ int main(int argc, char *argv[], char **envp)
 		line = readline("minishell$ ");
 		if (line == NULL)
 			break;
-		add_history(line);
+		if (*line)
+			add_history(line);
 		printf("%s\n", line);
 		free(line);
 	}
