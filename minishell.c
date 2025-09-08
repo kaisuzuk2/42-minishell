@@ -1,0 +1,35 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/08 13:31:35 by kaisuzuk          #+#    #+#             */
+/*   Updated: 2025/09/08 15:46:12 by kaisuzuk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+/*
+1) getline loop
+2) parse 
+3) exec
+*/
+
+int main(int argc, char *argv[], char **envp)
+{
+	char *line;
+
+	while (1)
+	{
+		line = readline("minishell$ ");
+		if (line == NULL)
+			break;
+		add_history(line);
+		printf("%s\n", line);
+		free(line);
+	}
+	return (0);
+}
