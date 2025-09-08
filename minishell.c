@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:31:35 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/09/08 15:46:12 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/09/08 16:02:24 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,17 @@
 3) exec
 */
 
+static void initialize_readline(void)
+{
+	rl_instream = stdin;
+	rl_outstream = stderr;
+}
+
 int main(int argc, char *argv[], char **envp)
 {
 	char *line;
 
+	initialize_readline();
 	while (1)
 	{
 		line = readline("minishell$ ");
