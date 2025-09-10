@@ -1,26 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   execute_cmd.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/08 13:31:54 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/09/10 11:32:56 by kaisuzuk         ###   ########.fr       */
+/*   Created: 2025/09/10 10:45:10 by kaisuzuk          #+#    #+#             */
+/*   Updated: 2025/09/10 11:34:14 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#ifndef EXECUTE_CMD_H
+# define EXECUTE_CMD_H
 
-// minishell.c
-// readline
-# include <readline/history.h>
-# include <readline/readline.h>
-# include <stdlib.h>
-# include <unistd.h>
-
-// --
-# include "execute_cmd.h"
+# include <sys/types.h>
+# include <sys/wait.h>
+// execute_cmd.c
+int execute_command(char *readline, char **envp);
 
 #endif

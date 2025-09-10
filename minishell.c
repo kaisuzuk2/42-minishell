@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:31:35 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/09/08 16:10:13 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/09/10 11:34:27 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int main(int argc, char *argv[], char **envp)
 			break;
 		if (*line)
 			add_history(line);
-		printf("%s\n", line);
+		execute_command(line, envp);
 		free(line);
 	}
 	return (0);
