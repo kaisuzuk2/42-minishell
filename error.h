@@ -1,28 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   error.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/08 13:31:54 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/09/10 17:02:14 by kaisuzuk         ###   ########.fr       */
+/*   Created: 2025/09/10 13:19:36 by kaisuzuk          #+#    #+#             */
+/*   Updated: 2025/09/10 14:26:57 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#ifndef ERROR_H
+# define ERROR_H
 
-// minishell.c
-// readline
-# include <readline/history.h>
-# include <readline/readline.h>
-# include <stdlib.h>
-# include <unistd.h>
 
-// --
-# include "ft_printf.h"
-# include "execute_cmd.h"
-# include "findcmd.h"
 
 #endif
