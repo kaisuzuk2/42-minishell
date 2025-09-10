@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 10:39:14 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/09/10 11:36:11 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/09/10 17:24:33 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,19 @@ TODO:
 
 int execute_command(char *readline, char **envp)
 {
-	char *line[] = {readline, NULL};
+	char *line;
 	int status;
+	char **execve_arr;
 	
 	const pid_t pid = fork();
 	if (pid < 0)
 		return (-1);
 	if (pid == 0)
 	{
-		execve(line[0], line, envp);
+		line = search_for_command(readline);
+		execve_arr[0] = line;
+		execve_arr[1] = NULL;
+		execve(execve_arr[0], execve_arr, envp);
 		return (0);
 	}
 	else
