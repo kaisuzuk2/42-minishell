@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:21:48 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/09/11 11:00:20 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/09/11 14:45:02 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,13 @@ int reader_loop(void)
 {
 	while (1)
 	{
-		
+		line = readline("minishell $");
+		if (line == NULL)
+			break;
+		if (*line)
+			add_history(line);
+		execute_command(line, envp);
+		free(line);	
 	}
+	return (0)
 }
