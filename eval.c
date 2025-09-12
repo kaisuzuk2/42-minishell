@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:21:48 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/09/11 14:45:02 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/09/12 11:24:18 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,19 @@ Preparation function for reading the command line.
 parse_command 
 Trap handling and displaying the PROMPT_COMMAND environment variable
 */
+// ひとまずここで読み取った１行をトークン化して、リストにする
 
 
-static char *parse_command()
+/*
+
+lexer rule 
+https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_03
+
+*/
+
+static t_word_list parse_command(char *line)
 {
-
+	
 }
 
 static char *read_command(void)
