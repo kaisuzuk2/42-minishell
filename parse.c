@@ -1,34 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/08 13:31:35 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/09/11 14:49:27 by kaisuzuk         ###   ########.fr       */
+/*   Created: 2025/09/11 11:00:55 by kaisuzuk          #+#    #+#             */
+/*   Updated: 2025/09/11 11:00:57 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-/*
-1) getline loop
-2) parse 
-3) exec
-*/
-
-static void initialize_readline(void)
-{
-	rl_instream = stdin;
-	rl_outstream = stderr;
-}
-
-int main(int argc, char *argv[], char **envp)
-{
-	char *line;
-
-	initialize_readline();
-	reader_loop();
-	return (0);
-}

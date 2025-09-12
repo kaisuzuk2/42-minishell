@@ -1,34 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   lex_parse.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/08 13:31:35 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/09/11 14:49:27 by kaisuzuk         ###   ########.fr       */
+/*   Created: 2025/09/11 14:45:48 by kaisuzuk          #+#    #+#             */
+/*   Updated: 2025/09/11 16:48:29 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef LEX_PARSE_H
+# define LEX_PARSE_H
 
-/*
-1) getline loop
-2) parse 
-3) exec
-*/
+# include <readline/history.h>
+# include <readline/readline.h>
 
-static void initialize_readline(void)
-{
-	rl_instream = stdin;
-	rl_outstream = stderr;
-}
+int reader_loop(void);
 
-int main(int argc, char *argv[], char **envp)
-{
-	char *line;
-
-	initialize_readline();
-	reader_loop();
-	return (0);
-}
+#endif
