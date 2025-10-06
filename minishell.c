@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:13:31 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/06 13:49:34 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/06 13:58:57 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 
 #include <stdio.h>
 #include <sys/types.h>
+#include <limits.h>
+#include <bsd/string.h>
 
 void fatal_error(const char *msg)  __attribute__((noreturn));
 
@@ -25,10 +27,45 @@ void fatal_error(const char *msg)
 	exit(1);
 }
 
+
+char *search_path(const char *filename)
+{
+	char path[PATH_MAX];
+	char *value;
+	char *end;
+
+	value = getenv("PATH");
+	while (*value)
+	{
+		bzero(path, PATH_MAX);
+		end = strchr(value, ':');
+		if (end)
+			strncpy(path, value, end - value);
+		else
+			strlcpy(path, value, PATH_MAX);
+		strlcat(path, "/", PATH_MAX);
+		strlcat(path, filename, PATH_MAX);
+		if (access(path, X_OK) == 0)
+		{
+			char *dup;
+
+			dup = strdup(path);
+			if (dup == NULL)
+				fatal_error("strdup");
+			return (dup);
+		}
+		if (end == NULL)
+			return (NULL);
+		value = end + 1;
+	}
+	return (NULL);
+}
+
+
 int interpret(char *line)
 {
 	extern char **environ;
-	char *argv[] = {line, NULL};
+	char *argv[] = {search_path(line), NULL};
 	pid_t pid;
 	int wstatus;
 
@@ -37,7 +74,7 @@ int interpret(char *line)
 		fatal_error("fork");
 	else if (pid == 0)
 	{
-		execve(line, argv, environ);
+		execve(search_path(line), argv, environ);
 		fatal_error("execve");
 	}
 	else
@@ -46,7 +83,6 @@ int interpret(char *line)
 		return (WEXITSTATUS(wstatus));
 	}
 }
-
 // tmp code ↑
 
 int main(void)
