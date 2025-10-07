@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 10:53:00 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/07 11:46:03 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/07 15:24:31 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,11 @@
 typedef enum e_token_kind
 {
 	TK_WORD, 
+	TK_GREAT_GREAT,
+	TK_GREAT,
+	TK_LESS_LESS,
+	TK_LESS,
+	TK_PIPE,
 	TK_EOF,
 } t_token_kind;
 
@@ -31,6 +36,12 @@ typedef struct s_word_desc
 	char *word;
 	int flag;
 } t_word_desc;
+
+typedef struct s_token_list 
+{
+	t_word_desc *word;
+	struct s_token_list *next;
+} t_token_list;
 
 typedef struct s_word_list
 {

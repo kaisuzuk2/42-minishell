@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:13:31 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/06 13:58:57 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/07 12:24:52 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int main(void)
 	
 	while (1)
 	{
-		//TODO:  prompt is $PS1
+		//### TODO:  prompt is $PS1
 		line = readline("minishell$ ");
 
 		if (!line)

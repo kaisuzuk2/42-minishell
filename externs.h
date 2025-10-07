@@ -1,31 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   externs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/06 13:12:50 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/07 14:12:30 by kaisuzuk         ###   ########.fr       */
+/*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
+/*   Updated: 2025/10/07 12:15:20 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-
-#include <unistd.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+#ifndef EXTERNS_H
+# define EXTERNS_H
 
 #include "command.h"
-#include "ft_printf.h"
-#include "libft.h"
 
-typedef int t_bool;
-#define TRUE 1
-#define FALSE 0
+// tokenize.c
+t_token_list *tokenize(char *line);
 
 #endif
