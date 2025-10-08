@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/08 13:12:51 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/08 14:16:16 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,8 +150,6 @@ t_token_list	*tokenize(char *line)
 			printf("### Error\n");
 	}
 
-	
-	eof = (t_token_list *)malloc(sizeof(t_token_list));
 	eof->word = NULL;
 	eof->next = NULL;
 	cur->next = eof;
