@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/08 12:14:29 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/08 13:08:50 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static t_bool	is_operator(char *line)
 	i = 0;
 	while (i < sizeof(operators) / sizeof(operators[0]))
 	{
-		if (startswith(line, operators[i]))
+		if (!startswith(line, operators[i]))
 			return (TRUE);
 		i++;
 	}
@@ -66,7 +66,7 @@ static t_word_desc *make_operator_token(char **line)
 	i = 0;
 	while (i < sizeof(operators) / sizeof(operators[0]))
 	{
-		if (startswith(*line, operators[i]))
+		if (!startswith(*line, operators[i]))
 		{
 			desc->word = ft_strdup(operators[i]);
 			desc->kind = operators_table[i];
