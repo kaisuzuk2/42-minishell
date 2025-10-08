@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:13:31 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/07 12:24:52 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/08 12:12:25 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <sys/types.h>
 #include <limits.h>
 #include <bsd/string.h>
+#include "minishell.h"
 
 void fatal_error(const char *msg)  __attribute__((noreturn));
 
@@ -83,11 +84,21 @@ int interpret(char *line)
 		return (WEXITSTATUS(wstatus));
 	}
 }
+
+void show_token_list(t_token_list *list)
+{
+	while (list->word)
+	{
+		printf("### %s : %d\n", list->word->word, list->word->kind);
+		list = list->next;
+	}
+}
 // tmp code ↑
 
 int main(void)
 {
 	char *line;
+	t_token_list *token;
 	
 	while (1)
 	{
@@ -98,7 +109,9 @@ int main(void)
 			break;
 		if (*line)
 			add_history(line);
-		interpret(line);
+		token = tokenize(line);
+		show_token_list(token);
+		// interpret(line);
 		free(line);
 	}
 }
