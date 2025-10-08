@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 13:13:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/08 14:37:10 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/08 15:16:13 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,11 @@ static t_command	*append_command_words(t_command *command, t_word_desc *desc)
 	if (!command->words)
 	{
 		list->word = tokendup(desc); // ### TODO: エラー処理
+		command->words = list;
 		return (command);
 	}
 	cur = command->words;
-	while (!cur->next)
+	while (cur->next)
 		cur = cur->next;
 	list = (t_word_list *)ft_calloc(sizeof(t_word_list));
 	list->word = tokendup(desc); // ### TODO: エラー処理
