@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/08 13:08:50 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/08 13:12:51 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,8 +141,7 @@ t_token_list	*tokenize(char *line)
 	cur = &head;
 	while (*line)
 	{
-		if (is_shellbrank(*line))
-			skip_shellbrank(&line);
+		skip_shellbrank(&line);
 		else if (is_word(line))
 			cur = make_word_list(cur, make_word_token(&line));
 		else if (is_operator(line))

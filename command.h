@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 10:53:00 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/07 15:24:31 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/08 14:04:43 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,30 @@ typedef struct s_token_list
 	struct s_token_list *next;
 } t_token_list;
 
+
+/* **************************************************************** */
+/*								    */
+/*			Shell Command Structs			    */
+/*								    */
+/* **************************************************************** */
+
+typedef enum e_command_type
+{
+	CM_SIMPLE
+} t_command_type;
+
 typedef struct s_word_list
 {
 	struct s_word_list *next;
 	t_word_desc *word;
 } t_word_list; 
+
+typedef struct s_command 
+{
+	struct s_command *next;
+	t_command_type type;
+	t_word_list *words;
+	
+} t_command;
 
 #endif
