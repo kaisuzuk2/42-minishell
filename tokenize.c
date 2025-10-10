@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/08 14:16:16 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/10 12:13:29 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,15 +142,16 @@ t_token_list	*tokenize(char *line)
 	while (*line)
 	{
 		skip_shellbrank(&line);
-		else if (is_word(line))
+		if (is_word(line))
 			cur = make_word_list(cur, make_word_token(&line));
 		else if (is_operator(line))
 			cur = make_word_list(cur, make_operator_token(&line));
 		else 
 			printf("### Error\n");
 	}
-
-	eof->word = NULL;
+	eof = (t_token_list *)malloc(sizeof(t_token_list));
+	eof->word = (t_word_desc *)ft_calloc(sizeof(t_word_desc), 1);
+	eof->word->kind = TK_EOF;
 	eof->next = NULL;
 	cur->next = eof;
 	return (head.next);

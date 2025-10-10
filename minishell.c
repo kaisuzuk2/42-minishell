@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:13:31 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/08 12:12:25 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/10 12:39:01 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,12 +85,23 @@ int interpret(char *line)
 	}
 }
 
-void show_token_list(t_token_list *list)
+void show_token_list(t_word_list *list)
 {
 	while (list->word)
 	{
-		printf("### %s : %d\n", list->word->word, list->word->kind);
+		printf("### %s : %d / ", list->word->word, list->word->kind);
 		list = list->next;
+	}
+	printf("\n");
+	
+}
+
+void show_parse_list(t_command *command)
+{
+	while (command)
+	{
+		show_token_list(command->command->words);
+		command = command->next;
 	}
 }
 // tmp code ↑
@@ -98,8 +109,10 @@ void show_token_list(t_token_list *list)
 int main(void)
 {
 	char *line;
+
 	t_token_list *token;
-	
+	t_command *parse;
+
 	while (1)
 	{
 		//### TODO:  prompt is $PS1
@@ -110,7 +123,9 @@ int main(void)
 		if (*line)
 			add_history(line);
 		token = tokenize(line);
-		show_token_list(token);
+		// show_token_list(token);
+		parse = parser(token);
+		show_parse_list(parse);
 		// interpret(line);
 		free(line);
 	}

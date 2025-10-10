@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 10:53:00 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/09 11:12:01 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/10 11:35:52 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ typedef struct s_token_list
 
 typedef enum e_command_type
 {
-	CM_SIMPLE
+	CM_SIMPLE,
+	CM_CONNECTION,
 }							t_command_type;
 
 typedef struct s_word_list
@@ -60,26 +61,13 @@ typedef struct s_word_list
 	t_word_desc				*word;
 }							t_word_list;
 
-typedef struct s_command
+typedef struct s_command 
 {
-	t_command_type			type;
-	union
-	{
-		struct s_connection	*connection;
-		struct s_simple_com	*simple;
-	} value;
-	struct s_command		*next;
-}							t_command;
-
-typedef struct s_simple_com
-{
-	t_word_list				*words;
-}							t_simple_com;
-
-typedef struct s_connection
-{
-	t_word_list				*words;
-	struct t_connection		*next;
-}							t_connection;
+	t_command_type type;
+	// command args : <ls -l> <cat -e> 
+	struct s_command *command;
+	t_word_list *words;
+	struct s_command *next;
+} t_command;
 
 #endif
