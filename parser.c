@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 13:13:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/10 12:58:04 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/10 15:42:31 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,20 @@ static t_command *make_simple_command(t_token_list **token)
 	return (command);
 }
 
+static t_redirect *input_redirect(t_redirect *redirect, t_redirect **token)
+{
+	
+}
+
+static t_redirect *make_redirection(t_token_list **token)
+{
+	t_redirect *redirect;
+
+	redirect = (t_redirect *)ft_calloc(sizeof(t_redirect), 1);
+	if ((*token)->word->kind == TK_LESS)
+		input_redirection(redirect, token);
+}
+
 t_command *connection(t_token_list *token)
 {
 	t_command *command;
@@ -98,12 +112,16 @@ t_command *connection(t_token_list *token)
 	{
 		if (token->word->kind == TK_WORD)
 			cur->command = make_simple_command(&token); // ### TODO: エラー処理
-		else
+		else if (token->word->kind == TK_PIPE)
 		{
 			cur->next = new_command(CM_CONNECTION);
 			token = token->next;
 			cur = cur->next;
 		}
+		else if (token->word->kind == TK_GREAT_GREAT || token->word->kind == TK_GREAT || token->word->kind == TK_LESS_LESS || token->word->kind == TK_LESS)
+			cur->redirects = make_redirection(&token);
+		else
+			printf("syntax error"); // ### TODO: エラー処理
 	}
 	cur->next = ft_calloc(sizeof(t_command), 1);
 	return (head);
