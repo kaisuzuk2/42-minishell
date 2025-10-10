@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 10:53:00 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/10 11:35:52 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/10 14:51:53 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,32 @@ typedef struct s_command
 	t_word_list *words;
 	struct s_command *next;
 } t_command;
+
+typedef enum e_instruction
+{
+	r_output_direction,  // >
+	r_input_direction, // <
+	r_appending_to, // >>
+	r_reading_until, // << 
+} t_instruction;
+
+// ### TODO: ユニオンのnormitette確認する
+typedef union
+{
+	int dest; // 2 >& 1
+	t_word_desc *filename; 
+} t_redirectee;
+
+typedef struct s_redirect 
+{
+	struct s_redirect *next;
+	t_redirectee redirector;
+	int flags; // open flag O_CREAT
+	t_instruction instruction; // redirect kind
+	t_redirectee redirectee;
+	char *here_doc_eof;
+} t_redirect;
+
+
 
 #endif

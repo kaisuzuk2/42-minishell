@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 13:13:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/10 12:34:54 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/10 12:58:04 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ t_command *connection(t_token_list *token)
 			cur = cur->next;
 		}
 	}
+	cur->next = ft_calloc(sizeof(t_command), 1);
 	return (head);
 }
 
