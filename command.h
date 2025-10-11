@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 10:53:00 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/11 10:57:19 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/11 15:08:28 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,10 @@ typedef union
 typedef struct s_redirect 
 {
 	struct s_redirect *next;
-	t_redirectee redirector;
+	t_redirectee redirector; // fd
 	int flags; // open flag O_CREAT
 	t_instruction instruction; // redirect kind
-	t_redirectee redirectee;
+	t_redirectee redirectee; // filename
 	char *here_doc_eof;
 } t_redirect;
 

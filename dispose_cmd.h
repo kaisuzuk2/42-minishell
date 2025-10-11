@@ -1,35 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   dispose_cmd.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/06 13:12:50 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/11 15:20:48 by kaisuzuk         ###   ########.fr       */
+/*   Created: 2025/10/11 15:04:33 by kaisuzuk          #+#    #+#             */
+/*   Updated: 2025/10/11 15:20:38 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-
-#include <unistd.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <fcntl.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+#ifndef DISPOSE_CMD_H
+# define DISPOSE_CMD_H
 
 #include "command.h"
-#include "externs.h"
-#include "dispose.h"
 
-#include "ft_printf.h"
-#include "libft.h"
-
-typedef int t_bool;
-#define TRUE 1
-#define FALSE 0
+void	dispose_word(t_word_desc *w);
+void	dispose_token_words(t_token_list *list);
+void	dispose_desc_words(t_word_desc *list);
+void	dispose_redirects(t_redirect *list);
+void	dispose_command(t_command *command);
 
 #endif
