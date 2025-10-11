@@ -6,11 +6,23 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/10 12:13:29 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/11 15:57:12 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+
+1) オペレーターでも単語でも同じ関数からt_word_descを作成する
+make_word_desc(char *line, t_token_kind kind)
+
+2) スペースを飛ばす処理を考える [ls ]がエラーになる
+
+3) t_token_listを最後NULL止めする
+
+
+*/
 
 static t_bool	is_shellbrank(char c)
 {
@@ -141,7 +153,7 @@ t_token_list	*tokenize(char *line)
 	cur = &head;
 	while (*line)
 	{
-		skip_shellbrank(&line);
+		skip_shellbrank(&line); 
 		if (is_word(line))
 			cur = make_word_list(cur, make_word_token(&line));
 		else if (is_operator(line))
@@ -156,3 +168,4 @@ t_token_list	*tokenize(char *line)
 	cur->next = eof;
 	return (head.next);
 }
+

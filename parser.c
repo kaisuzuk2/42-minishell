@@ -6,11 +6,19 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 13:13:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/11 14:20:49 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/11 15:59:36 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+
+1) リダイレクトの判定はappend_command_word内で行うのが適切
+
+2) t_word_list, t_command, t_redirectをNULL止めする
+
+*/
 
 static t_word_desc	*tokendup(t_word_desc *desc)
 {
