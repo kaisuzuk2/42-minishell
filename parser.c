@@ -6,15 +6,15 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 13:13:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/10 15:42:31 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/11 14:20:49 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_word_desc *tokendup(t_word_desc *desc)
+static t_word_desc	*tokendup(t_word_desc *desc)
 {
-	t_word_desc *new;
+	t_word_desc	*new;
 
 	new = (t_word_desc *)malloc(sizeof(t_word_desc));
 	if (!new)
@@ -64,10 +64,10 @@ static t_command	*append_command_words(t_command *command, t_word_desc *desc)
 	return (command);
 }
 
-static t_command *make_simple_command(t_token_list **token)
+static t_command	*make_simple_command(t_token_list **token)
 {
-	t_command *command;
-	t_token_list *cur_token;
+	t_command		*command;
+	t_token_list	*cur_token;
 
 	cur_token = *token;
 	command = new_command(CM_SIMPLE);
@@ -83,31 +83,40 @@ static t_command *make_simple_command(t_token_list **token)
 	return (command);
 }
 
-static t_redirect *input_redirect(t_redirect *redirect, t_redirect **token)
+// <
+static void	input_redirect(t_redirect *redirect, t_token_list *token)
 {
-	
+	redirect->instruction = r_input_direction;
+	redirect->redirectee.filename = tokendup(token->word); // ### TODO: エラー処理
+	redirect->flags = O_RDONLY;
+	redirect->redirector.dest = STDIN_FILENO;
 }
 
-static t_redirect *make_redirection(t_token_list **token)
+static t_redirect	*make_redirection(t_token_list **token)
 {
-	t_redirect *redirect;
+	t_redirect		*redirect;
 
 	redirect = (t_redirect *)ft_calloc(sizeof(t_redirect), 1);
+	if (!redirect) // ### TODO: エラー処理
+		return (NULL);
 	if ((*token)->word->kind == TK_LESS)
-		input_redirection(redirect, token);
+		input_redirect(redirect, (*token)->next);
+	*token = (*token)->next->next;
+	return (redirect);
 }
 
-t_command *connection(t_token_list *token)
+t_command	*connection(t_token_list *token)
 {
-	t_command *command;
-	t_command *head;
-	t_command *cur;
+	t_command	*command;
+	t_command	*head;
+	t_command	*cur;
+	t_redirect	*cur_redir;
 
 	command = new_command(CM_CONNECTION);
-	head = command;
-	cur = command;
 	if (!command) // ### TODO: エラー処理考
 		return (NULL);
+	head = command;
+	cur = command;
 	while (token && token->word->kind != TK_EOF)
 	{
 		if (token->word->kind == TK_WORD)
@@ -118,12 +127,30 @@ t_command *connection(t_token_list *token)
 			token = token->next;
 			cur = cur->next;
 		}
-		else if (token->word->kind == TK_GREAT_GREAT || token->word->kind == TK_GREAT || token->word->kind == TK_LESS_LESS || token->word->kind == TK_LESS)
-			cur->redirects = make_redirection(&token);
+		else if ((token->word->kind == TK_GREAT_GREAT
+				|| token->word->kind == TK_GREAT
+				|| token->word->kind == TK_LESS_LESS
+				|| token->word->kind == TK_LESS)
+			&& token->next->word->kind == TK_WORD)
+		{
+			if (!cur->command->redirects)
+				cur->command->redirects = make_redirection(&token);
+			else
+			{
+				cur_redir = cur->command->redirects;
+				while (cur_redir->next)
+					cur_redir = cur_redir->next;
+				cur_redir->next = make_redirection(&token);
+			}
+		}
 		else
-			printf("syntax error"); // ### TODO: エラー処理
+		{
+			printf("syntax error\n"); // ### TODO: エラー処理
+			return (NULL);
+		}
 	}
 	cur->next = ft_calloc(sizeof(t_command), 1);
+	cur->words = ft_calloc(sizeof(t_word_list), 1);
 	return (head);
 }
 

@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:13:31 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/10 12:39:01 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/11 14:21:08 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,22 +85,34 @@ int interpret(char *line)
 	}
 }
 
-void show_token_list(t_word_list *list)
+void show_token_list_and_redir(t_command *command)
 {
+	t_word_list *list;
+	t_redirect *redir;
+
+	if (!command)
+		return ; 
+	list = command->words;
 	while (list->word)
 	{
-		printf("### %s : %d / ", list->word->word, list->word->kind);
+		printf("command - %s ", list->word->word);
 		list = list->next;
 	}
 	printf("\n");
-	
+	redir = command->redirects;
+	while (redir)
+	{
+		printf("redirect - %d - %s\n",  redir->redirector.dest, redir->redirectee.filename->word);
+		redir = redir->next;
+	}
+	printf("\n");
 }
 
 void show_parse_list(t_command *command)
 {
 	while (command)
 	{
-		show_token_list(command->command->words);
+		show_token_list_and_redir(command->command);
 		command = command->next;
 	}
 }
