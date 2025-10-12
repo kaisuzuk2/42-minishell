@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:12:50 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/11 15:20:48 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/12 10:05:40 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 
 #include "command.h"
 #include "externs.h"
-#include "dispose.h"
+#include "dispose_cmd.h"
 
 #include "ft_printf.h"
 #include "libft.h"

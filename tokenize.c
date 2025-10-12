@@ -6,23 +6,11 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/11 15:57:12 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/12 10:29:55 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/*
-
-1) オペレーターでも単語でも同じ関数からt_word_descを作成する
-make_word_desc(char *line, t_token_kind kind)
-
-2) スペースを飛ばす処理を考える [ls ]がエラーになる
-
-3) t_token_listを最後NULL止めする
-
-
-*/
 
 static t_bool	is_shellbrank(char c)
 {
@@ -50,7 +38,7 @@ static t_bool	startswith(const char *s, const char *op)
 
 static t_bool	is_operator(char *line)
 {
-	int		i;
+	int	i;
 
 	// ### TODO: オペレーターこれでいいか再検討
 	static char *const operators[] = {"<<", "<", ">>", ">", "|"};
@@ -64,32 +52,47 @@ static t_bool	is_operator(char *line)
 	return (FALSE);
 }
 
-static t_word_desc *make_operator_token(char **line)
+static t_word_desc	*make_token(char **line, size_t len, t_token_kind kind)
 {
-	// ### TODO: オペレーター追加する
-	static char *const operators[] = {"<<", "<", ">>", ">", "|"};
-	static int const operators_table[] = {TK_LESS_LESS, TK_LESS, TK_GREAT_GREAT, TK_GREAT, TK_PIPE};
-	int i;
-	t_word_desc *desc;
+	t_word_desc	*desc;
+	char		*word;
 
 	desc = (t_word_desc *)malloc(sizeof(t_word_desc));
-	if (!desc)
+	if (!desc) // ### TODO: エラー処理
 		return (NULL);
+	word = (char *)malloc(sizeof(char) * (len + 1));
+	if (!word) // ### TODO: エラー処理
+		return (free(desc), NULL);
+	if (line)
+	{
+		ft_memcpy(word, *line, len);
+		word[len] = '\0';
+		*line += len;
+	}
+	desc->word = word;
+	desc->kind = kind;
+	return (desc);
+}
+
+static t_word_desc	*make_operator_token(char **line)
+{
+	static int const	operators_table[] = {TK_LESS_LESS, TK_LESS,
+			TK_GREAT_GREAT, TK_GREAT, TK_PIPE};
+	int					i;
+	t_word_desc			*desc;
+
+	// ### TODO: オペレーター追加する
+	static char *const operators[] = {"<<", "<", ">>", ">", "|"};
 	i = 0;
 	while (i < sizeof(operators) / sizeof(operators[0]))
 	{
 		if (!startswith(*line, operators[i]))
-		{
-			desc->word = ft_strdup(operators[i]);
-			desc->kind = operators_table[i];
-			(*line) += ft_strlen(operators[i]);
-			return (desc);
-		}
+			return (make_token(line, ft_strlen(operators[i]),
+					operators_table[i]));
 		i++;
 	}
 	free(desc);
 	return (NULL);
-
 }
 
 static t_bool	is_word(char *line)
@@ -107,23 +110,12 @@ static t_word_desc	*make_word_token(char **line)
 	char		*line_p;
 
 	line_p = *line;
-	desc = (t_word_desc *)malloc(sizeof(t_word_desc));
-	if (!desc)
-		return (NULL);
 	len = 0;
-	while (**line && !is_shellbrank(**line) && !is_metacharacter(**line))
+	while ((*line)[len] && !is_shellbrank((*line)[len]) && !is_metacharacter((*line)[len]))
 	{
-		(*line)++;
 		len++;
 	}
-	word = (char *)malloc(sizeof(char) * (len + 1));
-	if (!word)
-		return (free(desc), NULL);
-	ft_memcpy(word, line_p, len);
-	word[len] = '\0';
-	desc->word = word;
-	desc->kind = TK_WORD;
-	return (desc);
+	return (make_token(line, len, TK_WORD));
 }
 
 t_token_list	*make_word_list(t_token_list *cur, t_word_desc *desc)
@@ -145,27 +137,23 @@ t_token_list	*make_word_list(t_token_list *cur, t_word_desc *desc)
 // SUCCESS	:		t_token_list pointer
 t_token_list	*tokenize(char *line)
 {
-	t_token_list head;
-	t_token_list *cur;
-	t_token_list *eof;
+	t_token_list	head;
+	t_token_list	*cur;
+	t_token_list	*eof;
 
 	head.next = NULL;
 	cur = &head;
 	while (*line)
 	{
-		skip_shellbrank(&line); 
-		if (is_word(line))
+		if (is_shellbrank(*line))
+			skip_shellbrank(&line);
+		else if (is_word(line))
 			cur = make_word_list(cur, make_word_token(&line));
 		else if (is_operator(line))
 			cur = make_word_list(cur, make_operator_token(&line));
-		else 
+		else
 			printf("### Error\n");
 	}
-	eof = (t_token_list *)malloc(sizeof(t_token_list));
-	eof->word = (t_word_desc *)ft_calloc(sizeof(t_word_desc), 1);
-	eof->word->kind = TK_EOF;
-	eof->next = NULL;
-	cur->next = eof;
+	cur = make_word_list(cur, make_token(NULL, 0, TK_EOF));
 	return (head.next);
 }
-
