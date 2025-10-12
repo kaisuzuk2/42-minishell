@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 14:59:46 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/11 15:19:42 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/12 14:27:17 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,20 +26,20 @@ void	dispose_token_words(t_token_list *list)
 	{
 		t = list;
 		list = list->next;
-		dispose_word(t);
+		dispose_word(t->word);
 		free(t);
 	}
 }
 
-void	dispose_desc_words(t_word_desc *list)
+void	dispose_desc_words(t_word_list *list)
 {
-	t_word_desc	*t;
+	t_word_list	*t;
 
 	while (list)
 	{
 		t = list;
 		list = list->next;
-		dispose_word(t);
+		dispose_word(t->word);
 		free(t);
 	}
 }

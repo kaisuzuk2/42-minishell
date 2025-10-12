@@ -6,7 +6,7 @@
 #    By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/07 14:10:24 by kaisuzuk          #+#    #+#              #
-#    Updated: 2025/10/10 12:12:31 by kaisuzuk         ###   ########.fr        #
+#    Updated: 2025/10/12 14:25:05 by kaisuzuk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,8 @@ INC		+=	-I$(FT_NAME)/libft
 SRCS	=	minishell.c \
 			bashline.c \
 			tokenize.c \
-			parser.c
+			parser.c \
+			dispose_cmd.c
 
 OBJS	=	$(SRCS:.c=.o)
 
@@ -37,7 +38,7 @@ all: $(NAME)
 
 $(NAME): $(FT_NAME) $(OBJS)
 	$(MAKE) $(FT_NAME)
-	$(CC) -o $(NAME) $(DEBUG) $(INC) $(OBJS) -lreadline -L$(FT_NAME) -lftprintf -lbsd
+	$(CC) -o $(NAME) $(DEBUG) $(FLAG) $(INC) $(OBJS) -lreadline -L$(FT_NAME) -lftprintf -lbsd
 
 %.o: %.c
 	$(CC) -c  $(INC) -g $< -o $@
