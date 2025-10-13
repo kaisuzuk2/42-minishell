@@ -6,98 +6,101 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 10:53:00 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/11 15:08:28 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/13 11:01:48 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef COMMAND_H
 # define COMMAND_H
 
+/* Possible values for the `flags' field of a WORD_DESC. */
+// ### TODO: フラグの内容を精査する　使いすべきものを確認する
+# define W_NOEXPAND 0x01
+# define W_SQUOTE 0x02
+# define W_DQUOTE 0x03
+# define W_HASDOLLAR 0x04
+
 /* **************************************************************** */
-/*									 */
-/*			Token Structs				 */
-/*									 */
+/*										*/
+/*			Token Structs					*/
+/*										*/
 /* **************************************************************** */
 
 typedef enum e_token_kind
 {
 	TK_WORD,
 	TK_GREAT_GREAT, // >>
-	TK_GREAT, // >
-	TK_LESS_LESS, // <<
-	TK_LESS, // <
+	TK_GREAT,       // >
+	TK_LESS_LESS,   // <<
+	TK_LESS,        // <
 	TK_PIPE,
 	TK_EOF,
-}							t_token_kind;
+}						t_token_kind;
 
 typedef struct s_word_desc
 {
-	t_token_kind			kind;
-	char					*word;
-	int						flag;
-}							t_word_desc;
+	t_token_kind		kind;
+	char				*word;
+	int					flag;
+}						t_word_desc;
 
 typedef struct s_token_list
 {
-	t_word_desc				*word;
-	struct s_token_list		*next;
-}							t_token_list;
+	t_word_desc			*word;
+	struct s_token_list	*next;
+}						t_token_list;
 
 /* **************************************************************** */
-/*									 */
-/*			Shell Command Structs				 */
-/*									 */
+/*										*/
+/*			Shell Command Structs					*/
+/*										*/
 /* **************************************************************** */
 
 typedef enum e_command_type
 {
 	CM_SIMPLE,
 	CM_CONNECTION,
-}							t_command_type;
+}						t_command_type;
 
 typedef struct s_word_list
 {
-	struct s_word_list		*next;
-	t_word_desc				*word;
-}							t_word_list;
+	struct s_word_list	*next;
+	t_word_desc			*word;
+}						t_word_list;
 
 typedef enum e_instruction
 {
-	r_output_direction,  // >
-	r_input_direction, // <
-	r_appending_to, // >>
-	r_reading_until, // << 
-} t_instruction;
+	r_output_direction, // >
+	r_input_direction,  // <
+	r_appending_to,     // >>
+	r_reading_until,    // <<
+}						t_instruction;
 
 // ### TODO: ユニオンのnormitette確認する
 typedef union
 {
 	int dest; // 2 >& 1
-	t_word_desc *filename; 
-} t_redirectee;
+	t_word_desc			*filename;
+}						t_redirectee;
 
-typedef struct s_redirect 
+typedef struct s_redirect
 {
-	struct s_redirect *next;
-	t_redirectee redirector; // fd
-	int flags; // open flag O_CREAT
+	struct s_redirect	*next;
+	t_redirectee redirector;   // fd
+	int flags;                 // open flag O_CREAT
 	t_instruction instruction; // redirect kind
-	t_redirectee redirectee; // filename
-	char *here_doc_eof;
-} t_redirect;
+	t_redirectee redirectee;   // filename
+	char				*here_doc_eof;
+}						t_redirect;
 
-
-typedef struct s_command 
+typedef struct s_command
 {
-	t_command_type type;
-	// command args : <ls -l> <cat -e> 
-	struct s_command *command;
-	t_word_list *words;
-	t_redirect *redirects;
-	struct s_command *next;
-} t_command;
-
-
-
+	t_command_type		type;
+	// command args : <ls -l> <cat -e>
+	struct s_command	*command;
+	t_word_list			*words;
+	t_redirect			*redirects;
+	struct s_command	*next;
+}						t_command;
 
 #endif
