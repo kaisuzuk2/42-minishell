@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/13 11:33:42 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/13 11:42:41 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,16 +52,14 @@ static t_bool	is_operator(char *line)
 	return (FALSE);
 }
 
-static void set_token_flg(char *line, t_word_desc *desc)
+static void	set_token_flg(char *line, t_word_desc *desc)
 {
+	if (ft_strchr(line, '$'))
+		desc->flag = W_HASDOLLAR;
 	if (*line == '\'')
 		desc->flag = W_SQUOTE;
 	else if (*line == '\"')
 		desc->flag = W_DQUOTE;
-	else if (*line == '$')
-		desc->flag = W_HASDOLLAR;
-	else 
-		desc->flag = W_NOEXPAND;
 }
 
 static t_word_desc	*make_token(char **line, size_t len, t_token_kind kind)
@@ -74,6 +72,7 @@ static t_word_desc	*make_token(char **line, size_t len, t_token_kind kind)
 		return (NULL);
 	if (!line)
 		word = NULL;
+	desc->flag = W_NOEXPAND;
 	else
 	{
 		set_token_flg(*line, desc);
