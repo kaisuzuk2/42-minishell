@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/13 11:42:41 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/13 15:06:20 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,9 @@ static t_word_desc	*make_token(char **line, size_t len, t_token_kind kind)
 	desc = (t_word_desc *)ft_calloc(sizeof(t_word_desc), 1);
 	if (!desc) // ### TODO: エラー処理
 		return (NULL);
+	desc->flag = W_NOEXPAND;
 	if (!line)
 		word = NULL;
-	desc->flag = W_NOEXPAND;
 	else
 	{
 		set_token_flg(*line, desc);

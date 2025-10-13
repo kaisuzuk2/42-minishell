@@ -6,17 +6,11 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 13:13:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/12 15:44:58 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/13 15:55:20 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/*
-
-2) t_word_list, t_command, t_redirectをNULL止めする
-
-*/
 
 static t_word_desc	*tokendup(t_word_desc *desc)
 {
@@ -48,7 +42,8 @@ static t_command	*new_command(t_command_type type)
 }
 
 // comman->t_word_list +
-static t_word_list	*append_command_words(t_command *command, t_token_list **token)
+static t_word_list	*append_command_words(t_command *command,
+		t_token_list **token)
 {
 	t_word_list	*list;
 	t_word_list	*cur;
@@ -111,60 +106,65 @@ static t_redirect	*connect_redirection(t_command *command,
 	}
 }
 
-static t_command	*make_simple_command(t_token_list **token)
+static t_command	*make_simple_command(t_token_list **token_p, t_token_list *token)
 {
 	t_command		*command;
-	t_token_list	*cur_token;
 	t_word_list		*list;
 	t_redirect		*redir;
+	t_token_kind	kind;
 
-	cur_token = *token;
 	command = new_command(CM_SIMPLE);
 	if (!command) // TODO: エラー処理
 		return (NULL);
-	while (cur_token->word->kind != TK_EOF)
+	while (token->word->kind != TK_EOF)
 	{
-		if (cur_token->word->kind == TK_WORD)
-			list = append_command_words(command, &cur_token); // ### TODO: エラー処理
-		else if ((cur_token->word->kind == TK_GREAT_GREAT
-				|| cur_token->word->kind == TK_GREAT
-				|| cur_token->word->kind == TK_LESS_LESS
-				|| cur_token->word->kind == TK_LESS)
-			&& cur_token->next->word->kind == TK_WORD)
-			redir = connect_redirection(command, &cur_token);
+		kind = token->word->kind;
+		if (kind == TK_WORD)
+			list = append_command_words(command, &token); // ### TODO: エラー処理
+		else if ((kind == TK_GREAT_GREAT || kind == TK_GREAT
+				|| kind == TK_LESS_LESS || kind == TK_LESS)
+			&& token->next->word->kind == TK_WORD)
+			redir = connect_redirection(command, &token);
 		else
 		{
 			printf("Syntax Error\n"); //### TODO: エラー処理
 			exit(99);
 		}
-		(*token) = cur_token;
+		kind = token->word->kind;
 	}
-	*token = cur_token;
+	*token_p = token;
 	return (command);
 }
 
 t_command	*connection(t_token_list *token)
 {
-	t_command	*command;
 	t_command	*head;
 	t_command	*cur;
+	t_command *t;
 	t_redirect	*cur_redir;
 
-	command = new_command(CM_CONNECTION);
-	if (!command) // ### TODO: エラー処理考
+	head = new_command(CM_CONNECTION);
+	if (!head) // ### TODO: エラー処理
 		return (NULL);
-	head = command;
-	cur = command;
+	cur = head;
 	while (token && token->word->kind != TK_EOF)
 	{
-		if (token->word->kind == TK_PIPE)
+		if (token->word->kind != TK_PIPE)
 		{
-			cur->next = new_command(CM_CONNECTION);
+			t = make_simple_command(&token, token); // ### TODO: エラー処理
+			if (!t)
+				return (dispose_command(head), NULL);
+			cur->command = t;
+		}
+		else
+		{
+			t = new_command(CM_CONNECTION); // ### TODO: エラー処理
+			if (!t)
+				return (dispose_command(head), NULL);
+			cur->next = t;
 			token = token->next;
 			cur = cur->next;
 		}
-		else
-			cur->command = make_simple_command(&token); // ### TODO: エラー処理
 	}
 	cur->words = ft_calloc(sizeof(t_word_list), 1);
 	return (head);
