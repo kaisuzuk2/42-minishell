@@ -6,12 +6,16 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:12:50 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/12 10:05:40 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/14 10:55:25 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
+typedef int t_bool;
+#define TRUE 1
+#define FALSE 0
 
 #include <unistd.h>
 #include <stdlib.h>
@@ -28,8 +32,7 @@
 #include "ft_printf.h"
 #include "libft.h"
 
-typedef int t_bool;
-#define TRUE 1
-#define FALSE 0
+# define SINGLE_QUOTE_CHAR '\''
+# define DOUBLE_QUOTE_CHAR '\"'
 
 #endif

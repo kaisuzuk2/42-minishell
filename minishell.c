@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:13:31 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/12 15:45:37 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/14 11:42:49 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ int main(void)
 		token = tokenize(line);
 		// show_token_list(token);
 		parse = parser(token);
+		expand(parse);
 		show_parse_list(parse);
 		// interpret(line);
 		free(line);

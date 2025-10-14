@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/13 15:06:20 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/14 13:36:42 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ static void	skip_shellbrank(char **line)
 static char	*is_metacharacter(char c)
 {
 	// ### TODO: メタ文字これでいいか再検討
-	return (ft_strchr("*?~#\\$!;|&<>(){}", c));
+	// https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_10
+	return (ft_strchr("&|;<>", c));
 }
 
 static t_bool	startswith(const char *s, const char *op)
@@ -41,6 +42,7 @@ static t_bool	is_operator(char *line)
 	int	i;
 
 	// ### TODO: オペレーターこれでいいか再検討
+	// https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_10
 	static char *const operators[] = {"<<", "<", ">>", ">", "|"};
 	i = 0;
 	while (i < sizeof(operators) / sizeof(operators[0]))
@@ -144,7 +146,7 @@ static t_word_desc	*make_word_token(char **line)
 		}
 		len++;
 	}
-	if (quote)
+	if (quote_flg)
 		printf("### Quote error\n"); // ### TODO: エラー処理
 	return (make_token(line, len, TK_WORD));
 }

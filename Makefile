@@ -6,7 +6,7 @@
 #    By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/07 14:10:24 by kaisuzuk          #+#    #+#              #
-#    Updated: 2025/10/12 14:25:05 by kaisuzuk         ###   ########.fr        #
+#    Updated: 2025/10/14 10:56:42 by kaisuzuk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,8 @@ SRCS	=	minishell.c \
 			bashline.c \
 			tokenize.c \
 			parser.c \
-			dispose_cmd.c
+			expand.c \
+			dispose_cmd.c 
 
 OBJS	=	$(SRCS:.c=.o)
 
