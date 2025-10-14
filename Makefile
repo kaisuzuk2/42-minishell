@@ -6,7 +6,7 @@
 #    By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/07 14:10:24 by kaisuzuk          #+#    #+#              #
-#    Updated: 2025/10/14 10:56:42 by kaisuzuk         ###   ########.fr        #
+#    Updated: 2025/10/14 14:05:29 by kaisuzuk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ CC		=	cc
 FLAG	=	-Wall -Werror -Wextra
 INC		=	-Iincludes
 
-DEBUG	=	-fsanitize=address -g
+SANITIZE	=	-fsanitize=address
+DEBUG	=	-g
 
 MAKE	=	make -C
 RM		=	rm -rf

@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/14 13:36:42 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/14 14:11:56 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ static t_word_desc	*make_word_token(char **line)
 	char	quote;
 
 	quote = 0;
+	quote_flg = 0;
 	len = 0;
 	if ((*line)[len] == '\'' || (*line)[len] == '\"')
 	{

@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 14:05:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/14 11:43:54 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/14 14:13:23 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,7 @@ static t_bool	expand_var_token(t_word_list *list)
 
 	while (list)
 	{
+		t = TRUE;
 		if (list->word->flag == W_SQUOTE)
 			t = expand_squote(list->word);
 		else if (list->word->flag == W_DQUOTE)

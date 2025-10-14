@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 13:13:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/13 15:55:20 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/14 14:36:59 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,8 @@ static t_command	*make_simple_command(t_token_list **token_p, t_token_list *toke
 	t_redirect		*redir;
 	t_token_kind	kind;
 
+	list = NULL;
+	redir = NULL;
 	command = new_command(CM_SIMPLE);
 	if (!command) // TODO: エラー処理
 		return (NULL);
@@ -120,15 +122,38 @@ static t_command	*make_simple_command(t_token_list **token_p, t_token_list *toke
 	{
 		kind = token->word->kind;
 		if (kind == TK_WORD)
+		{
 			list = append_command_words(command, &token); // ### TODO: エラー処理
+			if (!list)
+			{
+				if (redir)
+					dispose_redirects(redir);
+				free(command);
+				return (NULL);
+			}
+		}
 		else if ((kind == TK_GREAT_GREAT || kind == TK_GREAT
 				|| kind == TK_LESS_LESS || kind == TK_LESS)
 			&& token->next->word->kind == TK_WORD)
+		{
 			redir = connect_redirection(command, &token);
+			if (!redir)
+			{
+				if (list)
+					dispose_desc_words(list);
+				free(command);
+				return (NULL);
+			}
+		}
 		else
 		{
 			printf("Syntax Error\n"); //### TODO: エラー処理
-			exit(99);
+			if (list)
+				dispose_desc_words(list);
+			if (redir)
+				dispose_redirects(redir);
+			free(command);
+			return (NULL);
 		}
 		kind = token->word->kind;
 	}
