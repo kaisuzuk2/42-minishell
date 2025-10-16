@@ -1,30 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   externs.h                                          :+:      :+:    :+:   */
+/*   list.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/16 09:58:09 by kaisuzuk         ###   ########.fr       */
+/*   Created: 2025/10/16 09:56:34 by kaisuzuk          #+#    #+#             */
+/*   Updated: 2025/10/16 09:57:47 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXTERNS_H
-# define EXTERNS_H
+#include "minishell.h"
 
-# include "command.h"
+size_t list_length(t_generic_list *list)
+{
+	size_t res;
 
-// tokenize.c
-t_token_list	*tokenize(char *line);
-
-// parser.c
-t_command		*parser(t_token_list *token);
-
-// expand.c
-t_bool			expand(t_command *command);
-
-// list.c
-size_t			list_length(t_generic_list *list);
-
-#endif
+	res = 0;
+	while (list)
+	{
+		list = list->next;
+		res++;
+	}
+	return (res);
+}

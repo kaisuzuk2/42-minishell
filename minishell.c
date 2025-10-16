@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:13:31 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/14 14:20:10 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/16 10:28:21 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,37 @@ void show_parse_list(t_command *command)
 }
 // tmp code ↑
 
+/*
+parse test
+*/
+// int main(void)
+// {
+// 	char *line;
+
+// 	t_token_list *token;
+// 	t_command *parse;
+
+// 	while (1)
+// 	{
+// 		//### TODO:  prompt is $PS1
+// 		line = readline("minishell$ ");
+
+// 		if (!line)
+// 			break;
+// 		if (*line)
+// 			add_history(line);
+// 		token = tokenize(line);
+// 		// show_token_list(token);
+// 		parse = parser(token);
+// 		dispose_token_words(token);
+// 		expand(parse);
+// 		show_parse_list(parse);
+// 		// interpret(line);
+// 		dispose_command(parse);
+// 		free(line);
+// 	}
+// }
+
 int main(void)
 {
 	char *line;
@@ -125,21 +156,13 @@ int main(void)
 
 	while (1)
 	{
-		//### TODO:  prompt is $PS1
 		line = readline("minishell$ ");
-
 		if (!line)
 			break;
 		if (*line)
 			add_history(line);
 		token = tokenize(line);
-		// show_token_list(token);
 		parse = parser(token);
-		dispose_token_words(token);
 		expand(parse);
-		show_parse_list(parse);
-		// interpret(line);
-		dispose_command(parse);
-		free(line);
 	}
 }
