@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 10:53:00 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/13 11:01:48 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/16 12:43:59 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@
 # define W_SQUOTE 0x02
 # define W_DQUOTE 0x03
 # define W_HASDOLLAR 0x04
+
+typedef struct s_glist
+{
+	struct s_glist *next;
+} t_generic_list;
 
 /* **************************************************************** */
 /*										*/
