@@ -6,79 +6,90 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 10:01:13 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/17 10:16:26 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/17 13:10:54 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// int	sh_mktmpfd(const char *nameroot, char **filename)
-// {
-// 	*filename = ft_strjoin("/tmp/", nameroot);
-// 	if (!*filename)
-// 		return (-1);
-// 	return (ft_mkstemp(filename));
-// }
+char	*heredoc_expand(t_redirect *r, size_t *lenp);
 
-// static int	here_document_to_file(char *prog_name, t_redirect *r)
-// {
-// 	int		fd;
-// 	int		fd2;
-// 	char	*filename;
+int	sh_mktmpfd(const char *nameroot, char **filename)
+{
+	*filename = ft_strjoin("/tmp/", nameroot);
+	if (!*filename)
+		return (-1);
+	return (ft_mkstemp(filename));
+}
 
-// 	fd = sh_mktmpfd("sh-thd", &filename);
-// 	if (fd < 0)
-// 		return (EXECUTION_FAILURE);
-// 	ft_dprintf(fd, r->document);
-// 	free(r->document);
-// 	close(fd);
-// 	fd2 = open(filename, O_RDONLY, 0600);
-// 	if (fd2 < 0)
-// 	{
-// 		internal_error(prog_name, filename, strerror(errno));
-// 		unlink(filename);
-// 		free(filename);
-// 		return (EXIT_FAILURE);
-// 	}
-// 	if (unlink(filename) < 0)
-// 	{
-// 		close(fd2);
-// 		free(filename);
-// 		return (sys_error("unlink error"), EXIT_FAILURE);
-// 	}
-// 	return (free(filename), fd2);
-// }
+static int	here_document_to_file(t_redirect *r)
+{
+	int		fd;
+	int		fd2;
+	char	*filename;
+
+	fd = sh_mktmpfd("sh-thd", &filename);
+	if (fd < 0)
+		return (EXECUTION_FAILURE);
+	ft_dprintf(fd, r->redirectee.filename->word);
+	close(fd);
+	fd2 = open(filename, O_RDONLY, 0600);
+	if (fd2 < 0)
+	{
+		// internal_error(prog_name, filename, strerror(errno)); ### TODO: エラー処理
+		unlink(filename);
+		free(filename);
+		return (EXIT_FAILURE);
+	}
+	if (unlink(filename) < 0)
+	{
+		close(fd2);
+		free(filename);
+		// return (sys_error("unlink error"), EXIT_FAILURE);
+		return (EXIT_FAILURE); // ### TODO: エラー処理
+	}
+	return (free(filename), fd2);
+}
 
 // malloc, pipe, open error		:	EXECUTION_FAILUE
 // success						:	fd
-// static int	here_document_to_fd(char *prog_name, t_redirect *r, char **envp)
-// {
-// 	int		herepipe[2];
-// 	size_t	document_len;
-// 	int		fd;
+static int	here_document_to_fd(t_redirect *r)
+{
+	int		herepipe[2];
+	size_t	document_len;
+	int		fd;
 
-// 	document_len = 0;
-// 	if (r->document && !heredoc_expand(r, &document_len, envp))
-// 		return (sys_error(MALLOC_STR), EXECUTION_FAILURE);
-// 	if (document_len == 0)
-// 	{
-// 		fd = open("/dev/null", O_RDONLY);
-// 		if (fd < 0)
-// 			return (internal_error(prog_name, "/dev/null", strerror(errno)),
-// 				EXECUTION_FAILURE);
-// 		return (fd);
-// 	}
-// 	else if (document_len <= HEREDOC_PIPESIZE)
-// 	{
-// 		if (pipe(herepipe) < 0)
-// 			return (sys_error("cannnot here document"), EXECUTION_FAILURE);
-// 		ft_dprintf(herepipe[1], r->document);
-// 		close(herepipe[1]);
-// 		return (herepipe[0]);
-// 	}
-// 	else
-// 		return (here_document_to_file(prog_name, r));
-// }
+	document_len = 0;
+	if (r->redirectee.filename->word && !heredoc_expand(r, &document_len))
+	{
+		// return (sys_error(MALLOC_STR), EXECUTION_FAILURE);
+		return (EXECUTION_FAILURE); // ### TODO: エラー処理
+	}
+	if (document_len == 0)
+	{
+		fd = open("/dev/null", O_RDONLY);
+		if (fd < 0)
+		{
+			// return (internal_error(prog_name, "/dev/null", strerror(errno)),
+			// 	EXECUTION_FAILURE);
+			return (EXECUTION_FAILURE); // ### TODO: エラー処理
+		}
+		return (fd);
+	}
+	else if (document_len <= HEREDOC_PIPESIZE)
+	{
+		if (pipe(herepipe) < 0)
+		{
+			// return (sys_error("cannnot here document"), EXECUTION_FAILURE);
+			// ### TODO: エラー処理
+		}
+		ft_dprintf(herepipe[1], r->redirectee.filename->word);
+		close(herepipe[1]);
+		return (herepipe[0]);
+	}
+	else
+		return (here_document_to_file(r));
+}
 
 static int	do_redirection_internal(t_redirect *r)
 {
@@ -125,13 +136,13 @@ int	do_redirections(t_redirect *redirect)
 		|| redirect->instruction == r_appending_to)
 		if (do_redirection_internal(redirect) == EXECUTION_FAILURE)
 			return (EXECUTION_FAILURE);
-	// if (redirect->instruction == r_reading_until)
-	// {
-	// 	here_fd = here_document_to_fd(prog_name, redirect, envp);
-	// 	if (here_fd == EXECUTION_FAILURE)
-	// 		return (EXECUTION_FAILURE);
-	// 	if (dup2(here_fd, STDIN_FILENO) < 0)
-	// 		return (EXECUTION_FAILURE);
-	// }
+	if (redirect->instruction == r_reading_until)
+	{
+		here_fd = here_document_to_fd(redirect);
+		if (here_fd == EXECUTION_FAILURE)
+			return (EXECUTION_FAILURE);
+		if (dup2(here_fd, STDIN_FILENO) < 0)
+			return (EXECUTION_FAILURE);
+	}
 	return (EXECUTION_SUCCESS);
 }

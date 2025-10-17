@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 13:13:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/17 10:36:00 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/17 14:01:07 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,16 @@ static void append_redirect(t_redirect *redirect, t_token_list *token)
 	redirect->redirector.dest = STDOUT_FILENO;
 }
 
+// <<
+static void heredoc_redirect(t_redirect *redirect, t_token_list *token)
+{
+	redirect->instruction = r_reading_until;
+	redirect->here_doc_eof = savestring(token->word->word);
+	redirect->redirectee.filename = (t_word_desc *)malloc(sizeof(t_word_desc));
+	redirect->redirectee.filename->word = make_here_document(redirect); // ### TODO: エラー処理
+	redirect->redirectee.filename->flag = token->word->flag;
+}
+
 static t_redirect	*make_redirection(t_token_list **token)
 {
 	t_redirect	*redirect;
@@ -104,6 +114,8 @@ static t_redirect	*make_redirection(t_token_list **token)
 		return (NULL);
 	if ((*token)->word->kind == TK_LESS)
 		input_redirect(redirect, (*token)->next);
+	else if ((*token)->word->kind == TK_LESS_LESS)
+		heredoc_redirect(redirect, (*token)->next);
 	else if ((*token)->word->kind == TK_GREAT)
 		output_redirect(redirect, (*token)->next);
 	else if ((*token)->word->kind == TK_GREAT_GREAT)

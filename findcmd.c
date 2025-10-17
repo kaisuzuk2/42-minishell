@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 12:29:59 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/17 09:09:45 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/17 12:51:22 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 // findcmd_utils_bonus.c
 t_bool			is_absolute_program(char *arg);
 void			free_path(char **path);
-char			*savestring(char *str);
 
 static char	*join_path_element(char *dir, char *arg)
 {
