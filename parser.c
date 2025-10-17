@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 13:13:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/17 10:32:37 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/17 10:36:00 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static void output_redirect(t_redirect *redirect ,t_token_list *token)
 	redirect->redirector.dest = STDOUT_FILENO;
 }
 
-// <<
+// >>
 static void append_redirect(t_redirect *redirect, t_token_list *token)
 {
 	redirect->instruction = r_appending_to;
@@ -106,6 +106,8 @@ static t_redirect	*make_redirection(t_token_list **token)
 		input_redirect(redirect, (*token)->next);
 	else if ((*token)->word->kind == TK_GREAT)
 		output_redirect(redirect, (*token)->next);
+	else if ((*token)->word->kind == TK_GREAT_GREAT)
+		append_redirect(redirect, (*token)->next);
 	*token = (*token)->next->next;
 	return (redirect);
 }
