@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 10:31:38 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/17 09:16:02 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/17 10:15:46 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,10 @@ static void	execute_disk_command(t_command *cmd)
 	char	*command;
 	char	**arg;
 
+	if (cmd->command->redirects && do_redirections(cmd->command->redirects) != 0)
+	{
+		exit(EXECUTION_FAILURE); // ### TODO: エラー処理
+	}
 	command = search_for_command(cmd->command->words->word->word);
 	if (!command)
 		exit(99); // ### TODO: エラー処理

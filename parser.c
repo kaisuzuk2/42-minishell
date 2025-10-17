@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 13:13:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/14 14:36:59 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/17 10:32:37 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,24 @@ static void	input_redirect(t_redirect *redirect, t_token_list *token)
 	redirect->redirector.dest = STDIN_FILENO;
 }
 
+// >
+static void output_redirect(t_redirect *redirect ,t_token_list *token)
+{
+	redirect->instruction = r_output_direction;
+	redirect->redirectee.filename = tokendup(token->word);
+	redirect->flags = O_WRONLY | O_CREAT | O_TRUNC;
+	redirect->redirector.dest = STDOUT_FILENO;
+}
+
+// <<
+static void append_redirect(t_redirect *redirect, t_token_list *token)
+{
+	redirect->instruction = r_appending_to;
+	redirect->redirectee.filename = tokendup(token->word);
+	redirect->flags = O_WRONLY | O_CREAT | O_APPEND;
+	redirect->redirector.dest = STDOUT_FILENO;
+}
+
 static t_redirect	*make_redirection(t_token_list **token)
 {
 	t_redirect	*redirect;
@@ -86,6 +104,8 @@ static t_redirect	*make_redirection(t_token_list **token)
 		return (NULL);
 	if ((*token)->word->kind == TK_LESS)
 		input_redirect(redirect, (*token)->next);
+	else if ((*token)->word->kind == TK_GREAT)
+		output_redirect(redirect, (*token)->next);
 	*token = (*token)->next->next;
 	return (redirect);
 }

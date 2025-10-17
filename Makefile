@@ -6,7 +6,7 @@
 #    By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/07 14:10:24 by kaisuzuk          #+#    #+#              #
-#    Updated: 2025/10/17 09:14:26 by kaisuzuk         ###   ########.fr        #
+#    Updated: 2025/10/17 10:10:46 by kaisuzuk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,8 @@ SRCS	=	minishell.c \
 			findcmd.c \
 			findcmd_utils.c \
 			list.c \
-			strvec.c
+			strvec.c \
+			redir.c
 
 
 OBJS	=	$(SRCS:.c=.o)

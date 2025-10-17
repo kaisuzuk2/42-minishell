@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/17 08:06:43 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/17 10:08:57 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,8 @@ char	*search_for_command(char *cmd);
 
 // strvec.c
 char	**strvec_from_word_list(t_word_list *list);
+
+// redir.c
+int	do_redirections(t_redirect *redirect);
 
 #endif
