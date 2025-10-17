@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 12:29:59 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/16 12:37:06 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/17 09:09:45 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,6 @@
 t_bool			is_absolute_program(char *arg);
 void			free_path(char **path);
 char			*savestring(char *str);
-
-static char	*savestring_command(rl_char_is_quoted_p *cmd)
-{
-	char	*arg;
-
-	arg = savestring(cmd->cmdv[0]);
-	if (!arg)
-	{
-		return (NULL); // ### TODO: エラー処理
-	}
-	return (arg);
-}
 
 static char	*join_path_element(char *dir, char *arg)
 {
@@ -44,7 +32,7 @@ static char	*join_path_element(char *dir, char *arg)
 	return (full_path);
 }
 
-static t_bool	file_status(char *full_path, char **file_to_lose_on,)
+static t_bool	file_status(char *full_path, char **file_to_lose_on)
 {
 	if (!access(full_path, F_OK))
 	{
@@ -78,7 +66,7 @@ static char	*find_user_command_in_path(char *cmd, char **path_list,
 		{
 			return (NULL); // ### TODO: エラー処理
 		}
-		if (file_status(full_path, file_to_lose_on, cmd))
+		if (file_status(full_path, file_to_lose_on))
 			break ;
 		else
 		{
@@ -90,7 +78,7 @@ static char	*find_user_command_in_path(char *cmd, char **path_list,
 	return (full_path);
 }
 
-char	*search_for_command(char *cmd, char *envp[])
+char	*search_for_command(char *cmd)
 {
 	char	**path_list;
 	char	*path;
@@ -98,10 +86,10 @@ char	*search_for_command(char *cmd, char *envp[])
 	char	*file_to_lose_on;
 
 	if (is_absolute_program(cmd))
-		return (savestring_command(cmd));
+		return (savestring(cmd));
 	path = getenv("PATH");
 	if (!path)
-		return (savestring_command(cmd));
+		return (savestring(cmd));
 	path_list = ft_split(path, ':');
 	if (!path_list)
 	{

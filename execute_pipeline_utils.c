@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 10:39:59 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/16 12:13:33 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/17 08:09:26 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_bool	open_pipe(t_pipefd *pipefd, int *fildes)
 {
 	if (pipe(fildes) < 0)
 	{
-		sys_error("pipe_error");
+		printf("pipe_error"); // ### TODO: エラー出力
 		if (pipefd->pipe_in != -1)
 			close(pipefd->pipe_in);
 		return (FALSE);
@@ -55,7 +55,7 @@ t_bool	execute_pipe_internal(t_pipefd *pipefd, int *fildes)
 	{
 		if (pipefd->pipe_in != -1)
 			close(pipefd->pipe_in);
-		wait_for(-1);
+		// wait_for(-1); ### TODO: エラー処理
 		return (FALSE);
 	}
 	pipefd->pipe_out = fildes[1];

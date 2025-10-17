@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/16 12:43:09 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/17 08:06:43 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,11 @@ size_t			list_length(t_generic_list *list);
 
 // execute_pipeline.c
 int execute_pipeline(t_command *cmd);
+
+// findcmd.c
+char	*search_for_command(char *cmd);
+
+// strvec.c
+char	**strvec_from_word_list(t_word_list *list);
 
 #endif

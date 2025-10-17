@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:35:25 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/16 10:07:23 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/17 08:17:49 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,16 @@ char	**strvec_from_word_list(t_word_list *list)
 	size_t i;
 
 	count = list_length((t_generic_list *)list);
-	arr = (char **)malloc(sizeof(char *) * (count + startin_index + 1));
+	arr = (char **)malloc(sizeof(char *) * (count + 1));
 	if (!arr)
 		return (NULL);
 	i = 0;
 	while (i < count)
 	{
-		arr[i] = list;
+		arr[i] = list->word->word;
 		list = list->next;
 		i++;
 	}
-	arr[i] = '\0';
+	arr[i] = NULL;
 	return (arr);
 }

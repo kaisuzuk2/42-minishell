@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 10:31:38 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/16 12:41:19 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/17 09:16:02 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,11 @@
    If so, and it isn't a directory, then execute its contents as
    a shell script.
 */
+
+t_bool			do_piping(int pipe_in, int pipe_out);
+void			close_pipe(t_pipefd *pipefd);
+int				open_pipe(t_pipefd *pipefd, int *fildes);
+int				execute_pipe_internal(t_pipefd *pipefd, int *fildes);
 
 static pid_t	wait_for(pid_t lastpid)
 {
@@ -46,29 +51,33 @@ static pid_t	wait_for(pid_t lastpid)
 		return (EXECUTION_FAILURE);
 }
 
-static int shell_execve(char *command, char **arg)
+static int	shell_execve(char *command, char **arg)
 {
 	execve(command, arg, environ);
+	return (99); // ### TODO: エラー処理
 }
 
-static void execute_disk_command(t_command *cmd)
+static void	execute_disk_command(t_command *cmd)
 {
-	char *command;
-	char **arg;
+	char	*command;
+	char	**arg;
 
-	command = search_for_command(cmd->words->word->word);
+	command = search_for_command(cmd->command->words->word->word);
 	if (!command)
 		exit(99); // ### TODO: エラー処理
-	arg = strvec_from_word_list(cmd->words);
+	arg = strvec_from_word_list(cmd->command->words);
 	if (!arg)
+	{
 		free(command);
 		exit(99); // ### TODO: エラー処理
+	}
 	exit(shell_execve(command, arg));
 }
 
-static int execute_simple_command(t_command *cmd, t_pipefd pipefd, int close_fd)
+static int	execute_simple_command(t_command *cmd, t_pipefd pipefd,
+		int close_fd)
 {
-	const pid_t pid = fork();
+	const pid_t	pid = fork();
 
 	if (pid < 0)
 		return (EXECUTION_FAILURE); // ### TODO: エラー処理
@@ -84,7 +93,7 @@ static int execute_simple_command(t_command *cmd, t_pipefd pipefd, int close_fd)
 	return (pid);
 }
 
-int execute_pipeline(t_command *cmd)
+int	execute_pipeline(t_command *cmd)
 {
 	int fildes[2];
 	t_pipefd pipefd;
@@ -105,5 +114,5 @@ int execute_pipeline(t_command *cmd)
 		cur_cmd = cur_cmd->next;
 	}
 	lastpid = execute_simple_command(cur_cmd, pipefd, fildes[0]);
-	return (waitfor(lastpid));
+	return (wait_for(lastpid));
 }
