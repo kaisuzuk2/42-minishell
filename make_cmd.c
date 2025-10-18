@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:23:18 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/17 14:08:52 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/17 14:10:09 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*make_here_document(t_redirect *r)
 		if (is_heredoc_eof(r->here_doc_eof, buf))
 			break ;
 		document = documentcat(document, buf);
-		document = documentcat(document, "\n");
+		document = documentcat(document, "\n"); // ### TODO: もう少し考える
 		free(buf);
 		if (!document)
 		{

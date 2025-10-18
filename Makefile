@@ -6,7 +6,7 @@
 #    By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/07 14:10:24 by kaisuzuk          #+#    #+#              #
-#    Updated: 2025/10/17 12:53:54 by kaisuzuk         ###   ########.fr        #
+#    Updated: 2025/10/18 10:24:00 by kaisuzuk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,9 @@ SRCS	=	minishell.c \
 			strvec.c \
 			redir.c \
 			make_cmd.c \
-			ft_mkstemp.c
+			ft_mkstemp.c \
+			builtin.c \
+			builtin_echo.c 
 
 
 OBJS	=	$(SRCS:.c=.o)

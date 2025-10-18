@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 10:31:38 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/17 10:15:46 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/18 10:25:11 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ static int	execute_simple_command(t_command *cmd, t_pipefd pipefd,
 		int close_fd)
 {
 	const pid_t	pid = fork();
+	t_builtin_func *builtin;
 
 	if (pid < 0)
 		return (EXECUTION_FAILURE); // ### TODO: エラー処理
@@ -91,6 +92,11 @@ static int	execute_simple_command(t_command *cmd, t_pipefd pipefd,
 			close(close_fd);
 		if (!do_piping(pipefd.pipe_in, pipefd.pipe_out))
 			return (EXECUTION_FAILURE); // ### TODO: エラー処理
+		if (find_shell_builtin(cmd->command->words->word->word))
+		{
+			builtin = find_shell_builtin(cmd->command->words->word->word);
+			builtin(cmd->command->words->next);
+		}
 		else
 			execute_disk_command(cmd);
 	}

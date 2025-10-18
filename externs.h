@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/17 12:53:38 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/18 10:21:51 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,11 @@ int	do_redirections(t_redirect *redirect);
 
 // make_cmd.c
 char	*make_here_document(t_redirect *r);
+
+// builtin.c
+t_builtin_func *find_shell_builtin(const char *name);
+
+// builtin_echo.c
+int builtin_echo(t_word_list *list);
 
 #endif
