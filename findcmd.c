@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 12:29:59 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/17 12:51:22 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/19 13:43:52 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static char	*find_user_command_in_path(char *cmd, char **path_list,
 	return (full_path);
 }
 
-char	*search_for_command(char *cmd)
+char	*search_for_command(char *cmd, t_varlist *env)
 {
 	char	**path_list;
 	char	*path;
@@ -86,7 +86,7 @@ char	*search_for_command(char *cmd)
 
 	if (is_absolute_program(cmd))
 		return (savestring(cmd));
-	path = getenv("PATH");
+	path = list_getenv(env, "PATH");
 	if (!path)
 		return (savestring(cmd));
 	path_list = ft_split(path, ':');

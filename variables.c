@@ -6,11 +6,44 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 08:02:57 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/19 10:01:48 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/19 15:07:25 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// ### TODO: exportフラグチェック
+char **get_env_arr(t_varlist *env)
+{
+	const size_t len = list_length((t_generic_list *)env);
+	char **res;
+	int i;
+
+	res = (char **)malloc(sizeof(char *) * len);
+	if (!res)
+		return (NULL);
+	i = 0;
+	while (i < len - 1)
+	{
+		res[i] = savestring(env->list->exportstr);	
+		env = env->next;
+		i++;
+	}
+	res[i] = NULL;
+	return (res);
+}
+
+// ### TODO: フラグチェック
+char *list_getenv(t_varlist *env, char *key)
+{
+	while (env->next)
+	{
+		if (!ft_strcmp(env->list->name, key)) // ### TODO: strcmpでいいか確認
+			return (env->list->value);
+		env = env->next;
+	}
+	return (NULL);
+}
 
 t_shell_var	*create_shell_var(void)
 {
@@ -32,35 +65,57 @@ t_varlist	*create_varlist(void)
 	return (varlist);
 }
 
-void	set_variable_name(t_shell_var *map, char *env)
+t_bool	set_variable_name(t_shell_var *map, char *env)
 {
 	char	*name_ptr;
+	int i;
 
+	i = 0;
 	name_ptr = ft_strchr(env, '='); // ### TODO: マクロ化
 	if (!name_ptr)
-		map->name = env;
+		map->name = savestring(env);
 	else
 	{
-		*name_ptr = '\0';
-		map->name = env;
+		while (env[i])
+		{
+			if (env[i] == '=')
+				break;
+			i++;
+		}
+		map->name = savestring(env);
+		map->name[i] = '\0';
 	}
+	if (!map->name)
+		return (FALSE);
+	return (TRUE);
 }
 
 // ### TODO: nameを先に設定するとvalueが設定できなくなる
-void	set_variable_value(t_shell_var *map, char *env)
+t_bool	set_variable_value(t_shell_var *map, char *env)
 {
 	char	*value_ptr;
 
 	value_ptr = ft_strchr(env, '=');
 	if (!value_ptr)
-		return ;
+		return (TRUE);
 	value_ptr++;
-	map->value = value_ptr;
+	map->value = savestring(value_ptr);
+	if (!map->value)
+		return (FALSE);
+	return (TRUE);
 }
 
-void	set_variable_exportstr(t_shell_var *map, char *env)
+t_bool	set_variable_exportstr(t_shell_var *map, char *env)
 {
-	map->exportstr = env;
+	map->exportstr = savestring(env);
+	if (!map->exportstr)
+		return (FALSE);
+	return (TRUE);
+}
+
+void set_variable_attributes(t_shell_var *map)
+{
+	map->attributes = 1;
 }
 
 t_varlist	*set_variable_item(t_varlist *head, char **envp)
@@ -75,9 +130,13 @@ t_varlist	*set_variable_item(t_varlist *head, char **envp)
 		cur->list = create_shell_var();
 		if (!cur->list)
 			return (NULL); // ### TODO: エラー処理
-		set_variable_value(cur->list, envp[i]);
-		set_variable_name(cur->list, envp[i]);
-		set_variable_exportstr(cur->list, envp[i]);
+		if (!set_variable_value(cur->list, envp[i]))
+			return (NULL);
+		if (!set_variable_name(cur->list, envp[i]))
+			return (NULL);
+		if (!set_variable_exportstr(cur->list, envp[i]))
+			return (NULL);
+		set_variable_attributes(cur->list);
 		cur->next = create_varlist();
 		if (!cur->next)
 			return (NULL); // ### TODO: エラー処理

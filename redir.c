@@ -6,13 +6,13 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 10:01:13 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/17 13:10:54 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/19 13:36:45 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*heredoc_expand(t_redirect *r, size_t *lenp);
+char	*heredoc_expand(t_redirect *r, size_t *lenp, t_varlist *env);
 
 int	sh_mktmpfd(const char *nameroot, char **filename)
 {
@@ -53,14 +53,14 @@ static int	here_document_to_file(t_redirect *r)
 
 // malloc, pipe, open error		:	EXECUTION_FAILUE
 // success						:	fd
-static int	here_document_to_fd(t_redirect *r)
+static int	here_document_to_fd(t_redirect *r, t_varlist *env)
 {
 	int		herepipe[2];
 	size_t	document_len;
 	int		fd;
 
 	document_len = 0;
-	if (r->redirectee.filename->word && !heredoc_expand(r, &document_len))
+	if (r->redirectee.filename->word && !heredoc_expand(r, &document_len, env))
 	{
 		// return (sys_error(MALLOC_STR), EXECUTION_FAILURE);
 		return (EXECUTION_FAILURE); // ### TODO: エラー処理
@@ -127,7 +127,7 @@ static int	do_redirection_internal(t_redirect *r)
 	return (EXECUTION_SUCCESS);
 }
 
-int	do_redirections(t_redirect *redirect)
+int	do_redirections(t_redirect *redirect, t_varlist *env)
 {
 	int	here_fd;
 
@@ -138,7 +138,7 @@ int	do_redirections(t_redirect *redirect)
 			return (EXECUTION_FAILURE);
 	if (redirect->instruction == r_reading_until)
 	{
-		here_fd = here_document_to_fd(redirect);
+		here_fd = here_document_to_fd(redirect, env);
 		if (here_fd == EXECUTION_FAILURE)
 			return (EXECUTION_FAILURE);
 		if (dup2(here_fd, STDIN_FILENO) < 0)

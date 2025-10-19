@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 14:05:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/14 14:13:23 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/19 13:25:12 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int	get_varlen(char *str)
 	return (res);
 }
 
-static char	*get_varvalue(char *doll_ptr)
+static char	*get_varvalue(t_varlist *env, char *doll_ptr)
 {
 	char	*varname;
 	char	*varvalue;
@@ -58,7 +58,7 @@ static char	*get_varvalue(char *doll_ptr)
 	varname = ft_substr(doll_ptr + 1, 0, get_varlen(doll_ptr + 1));
 	if (!varname)
 		return (NULL);
-	varvalue = getenv(varname);
+	varvalue = list_getenv(env, varname);
 	free(varname);
 	if (!varvalue) // ### TODO: エラー処理
 		return ("");
@@ -93,7 +93,7 @@ static char	*append_remainder(char *document, char *remainder)
 	return (res);
 }
 
-char	*expand_string_to_string(char *document)
+char	*expand_string_to_string(t_varlist *env, char *document)
 {
 	char	*res;
 	char	*res_tmp;
@@ -106,7 +106,7 @@ char	*expand_string_to_string(char *document)
 	document_ptr = document;
 	while (ft_strchr(document_ptr, '$'))
 	{
-		varvalue = get_varvalue(ft_strchr(document_ptr, '$'));
+		varvalue = get_varvalue(env, ft_strchr(document_ptr, '$'));
 		if (!varvalue)
 			return (NULL); // ### TODO: エラー処理
 		res = join_string_until_varvalue(res, &document_ptr);
@@ -134,7 +134,7 @@ static t_bool	expand_squote(t_word_desc *desc)
 	return (TRUE);
 }
 
-static t_bool	expand_dquote(t_word_desc *desc)
+static t_bool	expand_dquote(t_varlist *env, t_word_desc *desc)
 {
 	char	*rm_char;
 	char	*res;
@@ -142,7 +142,7 @@ static t_bool	expand_dquote(t_word_desc *desc)
 	rm_char = string_quote_removal(desc->word, DOUBLE_QUOTE_CHAR);
 	if (!rm_char)
 		return (FALSE);
-	res = expand_string_to_string(rm_char);
+	res = expand_string_to_string(env, rm_char);
 	if (!res)
 		return (free(rm_char), FALSE);
 	free(desc->word);
@@ -151,7 +151,7 @@ static t_bool	expand_dquote(t_word_desc *desc)
 	return (TRUE);
 }
 
-static t_bool	expand_var_token(t_word_list *list)
+static t_bool	expand_var_token(t_varlist *env, t_word_list *list)
 {
 	t_bool	t;
 	char	*res;
@@ -162,10 +162,10 @@ static t_bool	expand_var_token(t_word_list *list)
 		if (list->word->flag == W_SQUOTE)
 			t = expand_squote(list->word);
 		else if (list->word->flag == W_DQUOTE)
-			t = expand_dquote(list->word);
+			t = expand_dquote(env, list->word);
 		else if (is_hasdollar(list->word))
 		{
-			res = expand_string_to_string(list->word->word );
+			res = expand_string_to_string(env, list->word->word );
 			if (!res)
 				return (FALSE);
 			free(list->word->word);
@@ -178,13 +178,13 @@ static t_bool	expand_var_token(t_word_list *list)
 	return (TRUE);
 }
 
-t_bool	expand(t_command *command)
+t_bool	expand(t_varlist *env, t_command *command)
 {
 	while (command)
 	{
 		if (command->command)
 		{
-			if (!expand_var_token(command->command->words))
+			if (!expand_var_token(env, command->command->words))
 				return (FALSE);
 		}
 		command = command->next;

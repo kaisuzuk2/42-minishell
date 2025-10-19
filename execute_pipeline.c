@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 10:31:38 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/18 10:25:11 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/19 15:07:51 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,22 +51,23 @@ static pid_t	wait_for(pid_t lastpid)
 		return (EXECUTION_FAILURE);
 }
 
-static int	shell_execve(char *command, char **arg)
+static int	shell_execve(char *command, char **arg, char **env)
 {
-	execve(command, arg, environ);
+	execve(command, arg, env);
 	return (99); // ### TODO: エラー処理
 }
 
-static void	execute_disk_command(t_command *cmd)
+static void	execute_disk_command(t_command *cmd, t_varlist *env)
 {
 	char	*command;
 	char	**arg;
+	char **envarr;
 
-	if (cmd->command->redirects && do_redirections(cmd->command->redirects) != 0)
+	if (cmd->command->redirects && do_redirections(cmd->command->redirects, env) != 0)
 	{
 		exit(EXECUTION_FAILURE); // ### TODO: エラー処理
 	}
-	command = search_for_command(cmd->command->words->word->word);
+	command = search_for_command(cmd->command->words->word->word, env);
 	if (!command)
 		exit(99); // ### TODO: エラー処理
 	arg = strvec_from_word_list(cmd->command->words);
@@ -75,11 +76,14 @@ static void	execute_disk_command(t_command *cmd)
 		free(command);
 		exit(99); // ### TODO: エラー処理
 	}
-	exit(shell_execve(command, arg));
+	envarr = get_env_arr(env);
+	if (!envarr)
+		exit(99); // ### TODO: エラー処理
+	exit(shell_execve(command, arg, envarr));
 }
 
 static int	execute_simple_command(t_command *cmd, t_pipefd pipefd,
-		int close_fd)
+		int close_fd, t_varlist *env)
 {
 	const pid_t	pid = fork();
 	t_builtin_func *builtin;
@@ -98,12 +102,12 @@ static int	execute_simple_command(t_command *cmd, t_pipefd pipefd,
 			builtin(cmd->command->words->next);
 		}
 		else
-			execute_disk_command(cmd);
+			execute_disk_command(cmd, env);
 	}
 	return (pid);
 }
 
-int	execute_pipeline(t_command *cmd)
+int	execute_pipeline(t_varlist *env, t_command *cmd)
 {
 	int fildes[2];
 	t_pipefd pipefd;
@@ -120,9 +124,9 @@ int	execute_pipeline(t_command *cmd)
 		pipefd.pipe_out = -1;
 		if (!execute_pipe_internal(&pipefd, fildes))
 			return (EXECUTION_FAILURE); //### TODO: エラー処理
-		lastpid = execute_simple_command(cur_cmd, pipefd, fildes[0]);
+		lastpid = execute_simple_command(cur_cmd, pipefd, fildes[0], env);
 		cur_cmd = cur_cmd->next;
 	}
-	lastpid = execute_simple_command(cur_cmd, pipefd, fildes[0]);
+	lastpid = execute_simple_command(cur_cmd, pipefd, fildes[0], env);
 	return (wait_for(lastpid));
 }

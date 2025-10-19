@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:13:31 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/19 09:56:49 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/19 15:08:47 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,8 +162,9 @@ int main(int argc, char *argv[], char *envp[])
 
 	t_token_list *token;
 	t_command *parse;
-	t_varlist *env_value;
+	t_varlist *shell_variables;
 
+	shell_variables = initialize_shell_variables(envp);
 	while (1)
 	{
 		line = readline("minishell$ ");
@@ -173,9 +174,8 @@ int main(int argc, char *argv[], char *envp[])
 			add_history(line);
 		token = tokenize(line);
 		parse = parser(token);
-		expand(parse);
-		env_value = initialize_shell_variables(envp);
-		show_envvalue(env_value);
-		// execute_pipeline(parse);
+		expand(shell_variables, parse);
+		// show_envvalue(shell_variables);
+		execute_pipeline(shell_variables, parse);
 	}
 }
