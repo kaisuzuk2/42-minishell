@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:13:31 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/17 08:07:00 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/19 09:56:49 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,15 @@ void show_parse_list(t_command *command)
 		command = command->next;
 	}
 }
+
+void show_envvalue(t_varlist *list)
+{
+	while (list->next)
+	{
+		printf("%s=%s\n", list->list->name, list->list->value);
+		list = list->next;
+	}
+}
 // tmp code ↑
 
 /*
@@ -147,12 +156,13 @@ parse test
 // 	}
 // }
 
-int main(void)
+int main(int argc, char *argv[], char *envp[])
 {
 	char *line;
 
 	t_token_list *token;
 	t_command *parse;
+	t_varlist *env_value;
 
 	while (1)
 	{
@@ -164,6 +174,8 @@ int main(void)
 		token = tokenize(line);
 		parse = parser(token);
 		expand(parse);
-		execute_pipeline(parse);
+		env_value = initialize_shell_variables(envp);
+		show_envvalue(env_value);
+		// execute_pipeline(parse);
 	}
 }
