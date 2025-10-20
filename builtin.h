@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 10:17:13 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/18 10:18:44 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/20 08:28:30 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 # define BUILTIN_H
 
 #include "command.h"
+#include "variables.h"
 
-typedef int t_builtin_func(t_word_list *list);
+typedef int t_builtin_func(t_word_list *list, t_varlist *env);
+
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 10:31:38 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/19 15:07:51 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/20 08:32:26 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,8 @@ static int	execute_simple_command(t_command *cmd, t_pipefd pipefd,
 		if (find_shell_builtin(cmd->command->words->word->word))
 		{
 			builtin = find_shell_builtin(cmd->command->words->word->word);
-			builtin(cmd->command->words->next);
+			builtin(cmd->command->words->next, env);
+			exit(99);
 		}
 		else
 			execute_disk_command(cmd, env);

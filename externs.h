@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/19 14:04:51 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/20 09:30:12 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,24 @@ t_builtin_func	*find_shell_builtin(const char *name);
 // builtin_echo.c
 int				builtin_echo(t_word_list *list);
 
+// builtin_env.c
+int builtin_env(t_word_list *list, t_varlist *env);
+
+// builtin_export.c
+int builtin_export(t_word_list *list, t_varlist *env);
+
+// builtin_export.c
+int builtin_export(t_word_list *list, t_varlist *env);
+
 // variables.c
 t_varlist		*initialize_shell_variables(char **envp);
 char *list_getenv(t_varlist *env, char *key);
 char **get_env_arr(t_varlist *env);
+t_shell_var	*create_shell_var(void);
+t_varlist	*create_varlist(void);
+t_bool	set_variable_name(t_shell_var *map, char *env);
+t_bool	set_variable_value(t_shell_var *map, char *env);
+t_bool	set_variable_exportstr(t_shell_var *map, char *env);
+void set_variable_attributes(t_shell_var *map);
 
 #endif
