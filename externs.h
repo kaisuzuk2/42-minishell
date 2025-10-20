@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/20 09:33:17 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/20 11:00:48 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,9 @@ int builtin_export(t_word_list *list, t_varlist *env);
 
 // builtin_unset.c
 int builtin_unset(t_word_list *list, t_varlist *env);
+
+// builtin_pwd.c
+int builtin_pwd(t_word_list *list, t_varlist *env);
 
 // variables.c
 t_varlist		*initialize_shell_variables(char **envp);
