@@ -6,7 +6,7 @@
 #    By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/07 14:10:24 by kaisuzuk          #+#    #+#              #
-#    Updated: 2025/10/20 09:02:45 by kaisuzuk         ###   ########.fr        #
+#    Updated: 2025/10/20 09:50:39 by kaisuzuk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,6 +46,7 @@ SRCS	=	minishell.c \
 			builtin_echo.c \
 			builtin_env.c \
 			builtin_export.c \
+			builtin_unset.c \
 			variables.c
 
 
@@ -55,7 +56,7 @@ all: $(NAME)
 
 $(NAME): $(FT_NAME) $(OBJS)
 	$(MAKE) $(FT_NAME)
-	$(CC) -o $(NAME) $(DEBUG) $(SANITIZE) $(FLAG) $(INC) $(OBJS) -lreadline -L$(FT_NAME) -lftprintf -lbsd
+	$(CC) -o $(NAME) $(DEBUG)  $(FLAG) $(INC) $(OBJS) -lreadline -L$(FT_NAME) -lftprintf -lbsd
 
 %.o: %.c
 	$(CC) -c  $(INC) -g $< -o $@

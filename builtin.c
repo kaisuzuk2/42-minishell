@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 10:13:08 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/20 09:03:31 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/20 09:46:29 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 t_builtin_func *find_shell_builtin(const char *name)
 {
-	const char *builtin_name[] = {"echo", "env", "export"};
-	const t_builtin_func *builtin_table[] = {&builtin_echo, &builtin_env, &builtin_export};
+	const char *builtin_name[] = {"echo", "env", "export", "unset"};
+	const t_builtin_func *builtin_table[] = {&builtin_echo, &builtin_env, &builtin_export, &builtin_unset};
 	int i;
 
 	i = 0;
