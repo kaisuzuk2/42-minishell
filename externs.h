@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/21 11:59:10 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/21 14:32:10 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,5 +85,7 @@ t_bool	set_variable_value(t_shell_var *map, char *env);
 t_bool	set_variable_exportstr(t_shell_var *map, char *env);
 void set_variable_attributes(t_shell_var *map);
 t_bool bind_variable(t_varlist *env, char *key, char *value);
+t_shell_var *list_getshell_var(t_varlist *env, char *key);
+t_bool add_variable_item(t_varlist *env, char *exportstr);
 
 #endif

@@ -6,11 +6,13 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 08:37:57 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/20 09:30:48 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/21 14:32:46 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// ### TODO: 設定がすでにされている場合のケース
 
 static int show_var_attributes(t_varlist *env)
 {

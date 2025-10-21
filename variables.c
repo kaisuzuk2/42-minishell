@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 08:02:57 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/21 10:50:59 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/21 14:27:18 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char **get_env_arr(t_varlist *env)
 	return (res);
 }
 
-static t_shell_var *list_getshell_var(t_varlist *env, char *key)
+t_shell_var *list_getshell_var(t_varlist *env, char *key)
 {
 	while (env->next)
 	{
@@ -140,6 +140,27 @@ void set_variable_attributes(t_shell_var *map)
 {
 	map->attributes = 1;
 }
+
+t_bool add_variable_item(t_varlist *env, char *exportstr)
+{
+	while (env->next)
+		env = env->next;
+	if (!set_variable_name(env->list, exportstr));
+		return (FALSE);
+	if (!set_variable_value(env->list, exportstr))
+		return (FALSE);
+	if (!set_variable_exportstr(env->list, exportstr));
+		return (FALSE);
+	set_variable_attributes(env->list);	
+	env->next = create_varlist();
+	if (!env->next)
+		return (FALSE); // ### TODO: エラー処理
+	env->next->list = create_shell_var();
+	if (!env->next->list)
+		return (FALSE); // ### TODO: エラー処理
+	return (TRUE);
+}
+
 
 t_varlist	*set_variable_item(t_varlist *head, char **envp)
 {
