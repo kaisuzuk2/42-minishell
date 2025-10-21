@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 11:03:04 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/21 14:34:05 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/21 15:43:56 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,13 @@ static char	*sh_makepath(char *path, char *dir)
 		return (free(tmp), NULL);
 	free(tmp);
 	return (res);
+}
+
+// 絶対パスの移動 ../ ./ / .. .
+// ../dir
+static char *sh_canonpath(char *path, char *dir)
+{
+	
 }
 
 static t_bool bindpwd(t_varlist *env, char *old_pwd, char *new_path)
