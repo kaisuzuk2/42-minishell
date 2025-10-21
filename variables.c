@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 08:02:57 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/19 15:07:25 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/21 10:50:59 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,29 @@ char **get_env_arr(t_varlist *env)
 	}
 	res[i] = NULL;
 	return (res);
+}
+
+static t_shell_var *list_getshell_var(t_varlist *env, char *key)
+{
+	while (env->next)
+	{
+		if (!ft_strcmp(env->list->name, key))
+			return (env->list);
+		env = env->next;
+	}
+	return (NULL);
+}
+
+t_bool bind_variable(t_varlist *env, char *key, char *value)
+{
+	t_shell_var *shellvar;
+
+	shellvar = list_getshell_var(env, key);
+	if (!shellvar)
+		return (FALSE); // ### TODO: エラー処理
+	free(shellvar->value);
+	shellvar->value = savestring(value); // ### TODO: エラー処理
+	return (0); 
 }
 
 // ### TODO: フラグチェック

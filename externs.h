@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/20 11:00:48 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/21 11:59:10 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,9 @@ int				do_redirections(t_redirect *redirect, t_varlist *env);
 char			*make_here_document(t_redirect *r);
 
 // builtin.c
+int execute_builtin_command(t_command *cmd, t_varlist *env);
 t_builtin_func	*find_shell_builtin(const char *name);
+t_bool is_builtin(char *command);
 
 // builtin_echo.c
 int				builtin_echo(t_word_list *list);
@@ -69,6 +71,9 @@ int builtin_unset(t_word_list *list, t_varlist *env);
 // builtin_pwd.c
 int builtin_pwd(t_word_list *list, t_varlist *env);
 
+// builtin_cd.c
+int builtin_cd(t_word_list *list, t_varlist *env);
+
 // variables.c
 t_varlist		*initialize_shell_variables(char **envp);
 char *list_getenv(t_varlist *env, char *key);
@@ -79,5 +84,6 @@ t_bool	set_variable_name(t_shell_var *map, char *env);
 t_bool	set_variable_value(t_shell_var *map, char *env);
 t_bool	set_variable_exportstr(t_shell_var *map, char *env);
 void set_variable_attributes(t_shell_var *map);
+t_bool bind_variable(t_varlist *env, char *key, char *value);
 
 #endif

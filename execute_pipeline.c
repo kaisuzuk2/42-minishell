@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 10:31:38 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/20 08:32:26 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/21 11:59:33 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,8 @@ int	execute_pipeline(t_varlist *env, t_command *cmd)
 	pipefd.pipe_out = -1;
 	fildes[0] = -1;
 	fildes[1] = -1;
+	if (is_builtin(cur_cmd->command->words->word->word) && !cur_cmd->next)
+		return (execute_builtin_command(cur_cmd->command, env));
 	while (cur_cmd->next)
 	{
 		pipefd.pipe_out = -1;

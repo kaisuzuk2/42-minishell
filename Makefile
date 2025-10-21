@@ -6,7 +6,7 @@
 #    By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/07 14:10:24 by kaisuzuk          #+#    #+#              #
-#    Updated: 2025/10/20 11:01:00 by kaisuzuk         ###   ########.fr        #
+#    Updated: 2025/10/21 10:44:25 by kaisuzuk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,6 +48,7 @@ SRCS	=	minishell.c \
 			builtin_export.c \
 			builtin_unset.c \
 			builtin_pwd.c \
+			builtin_cd.c \
 			variables.c
 
 
