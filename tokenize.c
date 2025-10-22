@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/14 14:11:56 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/22 17:06:51 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static t_word_desc	*make_token(char **line, size_t len, t_token_kind kind)
 	t_word_desc	*desc;
 	char		*word;
 
-	desc = (t_word_desc *)ft_calloc(sizeof(t_word_desc), 1);
+	desc = (t_word_desc *)xcalloc(sizeof(t_word_desc), 1);
 	if (!desc) // ### TODO: エラー処理
 		return (NULL);
 	desc->flag = W_NOEXPAND;
@@ -78,7 +78,7 @@ static t_word_desc	*make_token(char **line, size_t len, t_token_kind kind)
 	else
 	{
 		set_token_flg(*line, desc);
-		word = (char *)malloc(sizeof(char) * (len + 1));
+		word = (char *)xmalloc(sizeof(char) * (len + 1));
 		if (!word) // ### TODO: エラー処理
 			return (free(desc), NULL);
 		ft_memcpy(word, *line, len);
@@ -148,7 +148,7 @@ static t_word_desc	*make_word_token(char **line)
 		len++;
 	}
 	if (quote_flg)
-		printf("### Quote error\n"); // ### TODO: エラー処理
+		return (NULL); // ### TODO: エラー処理
 	return (make_token(line, len, TK_WORD));
 }
 
@@ -158,7 +158,7 @@ t_token_list	*make_word_list(t_token_list *cur, t_word_desc *desc)
 
 	if (!desc)
 		return (NULL);
-	new = (t_token_list *)ft_calloc(sizeof(t_token_list), 1);
+	new = (t_token_list *)xcalloc(sizeof(t_token_list), 1);
 	if (!new)
 		return (NULL);
 	new->word = desc;
@@ -173,6 +173,7 @@ t_token_list	*tokenize(char *line)
 	t_token_list	head;
 	t_token_list	*cur;
 	t_token_list	*eof;
+	t_word_desc *word_token;
 
 	head.next = NULL;
 	cur = &head;
@@ -180,14 +181,19 @@ t_token_list	*tokenize(char *line)
 	{
 		if (is_shellbrank(*line))
 			skip_shellbrank(&line);
+		if (*line == '#')
+			return (head.next);
 		else if (is_word(line))
-			cur = make_word_list(cur, make_word_token(&line));
+		{
+			word_token = make_word_token(&line);
+			if (!word_token)
+				return (parser_error("syntax error"), dispose_token_words(head.next), NULL);
+			cur = make_word_list(cur, word_token);
+		}
 		else if (is_operator(line))
 			cur = make_word_list(cur, make_operator_token(&line));
-		else
-			printf("### Error\n");
 		if (!cur)
-			return (dispose_token_words(&head), NULL);
+			return (dispose_token_words(head.next), NULL);
 	}
 	cur = make_word_list(cur, make_token(NULL, 0, TK_EOF));
 	return (head.next);

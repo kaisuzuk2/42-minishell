@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: suzukikaisei <suzukikaisei@student.42.f    +#+  +:+       +#+         #
+#    By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/07 14:10:24 by kaisuzuk          #+#    #+#              #
-#    Updated: 2025/10/22 11:12:59 by suzukikaise      ###   ########.fr        #
+#    Updated: 2025/10/22 16:45:57 by kaisuzuk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,7 +49,8 @@ SRCS	=	minishell.c \
 			builtin_unset.c \
 			builtin_pwd.c \
 			builtin_cd.c \
-			variables.c
+			variables.c \
+			error.c
 
 
 OBJS	=	$(SRCS:.c=.o)
@@ -58,7 +59,7 @@ all: $(NAME)
 
 $(NAME): $(FT_NAME) $(OBJS)
 	$(MAKE) $(FT_NAME)
-	$(CC) -o $(NAME) $(DEBUG)  $(FLAG) $(INC) $(OBJS) -lreadline -L$(FT_NAME) -lftprintf
+	$(CC) -o $(NAME) $(DEBUG) $(FLAG) $(INC) $(OBJS) -lreadline -L$(FT_NAME) -lftprintf
 
 %.o: %.c
 	$(CC) -c  $(INC) -g $< -o $@

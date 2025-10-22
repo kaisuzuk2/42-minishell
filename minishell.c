@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suzukikaisei <suzukikaisei@student.42.f    +#+  +:+       +#+        */
+/*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:13:31 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/22 11:07:56 by suzukikaise      ###   ########.fr       */
+/*   Updated: 2025/10/22 16:12:32 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,6 +173,8 @@ int main(int argc, char *argv[], char *envp[])
 		if (*line)
 			add_history(line);
 		token = tokenize(line);
+		if (!token)
+			continue ;
 		parse = parser(token);
 		expand(shell_variables, parse);
 		// show_envvalue(shell_variables);
