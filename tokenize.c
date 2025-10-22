@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/22 17:06:51 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/22 17:09:55 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ static t_word_desc	*make_word_token(char **line)
 		len++;
 	}
 	if (quote_flg)
-		return (NULL); // ### TODO: エラー処理
+		return (parser_error("syntax error"), NULL); // ### TODO: エラー処理
 	return (make_token(line, len, TK_WORD));
 }
 
@@ -187,7 +187,7 @@ t_token_list	*tokenize(char *line)
 		{
 			word_token = make_word_token(&line);
 			if (!word_token)
-				return (parser_error("syntax error"), dispose_token_words(head.next), NULL);
+				return (dispose_token_words(head.next), NULL);
 			cur = make_word_list(cur, word_token);
 		}
 		else if (is_operator(line))
@@ -196,5 +196,7 @@ t_token_list	*tokenize(char *line)
 			return (dispose_token_words(head.next), NULL);
 	}
 	cur = make_word_list(cur, make_token(NULL, 0, TK_EOF));
+	if (!cur)
+		return (dispose_token_words(head.next), NULL);
 	return (head.next);
 }
