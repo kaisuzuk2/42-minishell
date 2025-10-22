@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 11:03:04 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/22 14:31:57 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/22 15:14:26 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,6 +181,7 @@ int builtin_cd(t_word_list *list, t_varlist *env)
 	int lcd_printpath;
 	char *t;
 	char *new_path;
+	int e;
 
 	lcd_printpath = 0;
 	if (!list || !list->word->word[0])
@@ -212,10 +213,13 @@ int builtin_cd(t_word_list *list, t_varlist *env)
 	free(t);
 	if (!new_path)
 		return (99); // ### TODO: エラー処理
-	printf("### %s\n", new_path);
-	change_to_directory(new_path);
-	bindpwd(env, list_getenv(env, "PWD"), new_path);
-	return (0);
+	if (!change_to_directory(new_path))
+	{
+		bindpwd(env, list_getenv(env, "PWD"), new_path);
+		return (0);
+	}
+	// e = errno;
+	return (99); // ### TODO: エラー処理
 }
 
 // int	builtin_cd(t_word_list *list, t_varlist *env)
