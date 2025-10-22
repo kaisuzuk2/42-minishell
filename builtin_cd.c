@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 11:03:04 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/22 13:56:20 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/22 14:31:57 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,18 +64,19 @@ static char	*sh_makepath(char *path, char *dir)
 // ../dir
 static char *sh_canonpath(char *tmp_path)
 {
-	char *res;
+	char *t;
 	char *p;
 	char *q;
 	char *base;
 
-	res = (char *)malloc(sizeof(char) * (ft_strlen(tmp_path) + 1));
-	if (!res)
+	t = savestring(tmp_path);
+	if (!t)
 		return (NULL); // ### TODO: エラー処理
 	
-	p = tmp_path;
+	p = t;
+	q = t;
 	p++;
-	q =res;
+	q++;
 	base = p;
 
 	while (*p)
@@ -89,10 +90,11 @@ static char *sh_canonpath(char *tmp_path)
 		while (*p && *p == '/')
 			p++;
 		if (p[0] == '.' && (p[1] == '/' || p[1] == '\0'))
-			p += 2;
+			p += 1;
 		else if (p[0] == '.' && p[1] == '.' && (p[2] == '/' || p[2] == '\0'))
 		{
-			p += 3;
+			p += 2;
+			q--;
 			if (q > base)
 				while (--q > base && !(*q == '/'));
 		}
@@ -104,7 +106,7 @@ static char *sh_canonpath(char *tmp_path)
 		}
 	}
 	*q = '\0';
-	return (res);
+	return (t);
 }
 
 static char *make_absolute(char *dirname, char *cwd)
@@ -210,6 +212,7 @@ int builtin_cd(t_word_list *list, t_varlist *env)
 	free(t);
 	if (!new_path)
 		return (99); // ### TODO: エラー処理
+	printf("### %s\n", new_path);
 	change_to_directory(new_path);
 	bindpwd(env, list_getenv(env, "PWD"), new_path);
 	return (0);
