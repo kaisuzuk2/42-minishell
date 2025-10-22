@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: suzukikaisei <suzukikaisei@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 07:58:42 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/18 11:09:26 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/22 11:09:16 by suzukikaise      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static t_bool is_option(t_word_list **list_p, t_word_list *list)
 	return (display_return);
 }
 
-int builtin_echo(t_word_list *list)
+int builtin_echo(t_word_list *list, t_varlist *env)
 {
 	const t_bool display_return = is_option(&list, list);
 

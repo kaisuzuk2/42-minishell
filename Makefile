@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+         #
+#    By: suzukikaisei <suzukikaisei@student.42.f    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/07 14:10:24 by kaisuzuk          #+#    #+#              #
-#    Updated: 2025/10/21 10:44:25 by kaisuzuk         ###   ########.fr        #
+#    Updated: 2025/10/22 11:12:59 by suzukikaise      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,7 +58,7 @@ all: $(NAME)
 
 $(NAME): $(FT_NAME) $(OBJS)
 	$(MAKE) $(FT_NAME)
-	$(CC) -o $(NAME) $(DEBUG)  $(FLAG) $(INC) $(OBJS) -lreadline -L$(FT_NAME) -lftprintf -lbsd
+	$(CC) -o $(NAME) $(DEBUG)  $(FLAG) $(INC) $(OBJS) -lreadline -L$(FT_NAME) -lftprintf
 
 %.o: %.c
 	$(CC) -c  $(INC) -g $< -o $@

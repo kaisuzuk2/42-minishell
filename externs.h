@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   externs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: suzukikaisei <suzukikaisei@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/21 14:32:10 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/22 11:09:18 by suzukikaise      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ t_builtin_func	*find_shell_builtin(const char *name);
 t_bool is_builtin(char *command);
 
 // builtin_echo.c
-int				builtin_echo(t_word_list *list);
+int				builtin_echo(t_word_list *list, t_varlist *env);
 
 // builtin_env.c
 int builtin_env(t_word_list *list, t_varlist *env);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: suzukikaisei <suzukikaisei@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 11:03:04 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/21 15:43:56 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/22 11:06:55 by suzukikaise      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,56 @@ static char	*sh_makepath(char *path, char *dir)
 
 // 絶対パスの移動 ../ ./ / .. .
 // ../dir
-static char *sh_canonpath(char *path, char *dir)
+static char *sh_canonpath(char *tmp_path)
 {
+	char *res;
+	char *p;
+	char *q;
+	char *base;
+
+	res = (char *)malloc(sizeof(char) * (ft_strlen(tmp_path) + 1));
+	if (!res)
+		return (NULL); // ### TODO: エラー処理
 	
+	p = tmp_path;
+	p++;
+	q =res;
+	base = p;
+
+	while (*p)
+	{
+		if (*p == '/')
+		{
+			*q = *p;
+			q++;
+			p++;
+		}
+		while (*p && *p == '/')
+			p++;
+		if (p[0] == '.' && (p[1] == '/' || p[1] == '\0'))
+			p += 2;
+		else if (p[0] == '.' && p[1] == '.' && (p[2] == '/' || p[2] == '\0'))
+		{
+			p += 3;
+			if (q > base)
+				while (--q > base && !(*q == '/'));
+		}
+		else
+		{
+			*q = *p;
+			p++;
+			q++;
+		}
+	}
+	*q = '\0';
+	return (res);
+}
+
+static char *make_absolute(char *dirname, char *cwd)
+{
+	if (cwd == 0 || dirname[0] == '/')
+		return (savestring(dirname));
+	return (sh_makepath(cwd, dirname));	
 }
 
 static t_bool bindpwd(t_varlist *env, char *old_pwd, char *new_path)
@@ -121,27 +168,69 @@ static t_bool bindpwd(t_varlist *env, char *old_pwd, char *new_path)
 }
 
 
-static int	change_to_directory(char *new_path)
+static int	change_to_directory(char *path)
 {
-	return (chdir(new_path));
+	return (chdir(path));
 }
 
-int	builtin_cd(t_word_list *list, t_varlist *env)
+int builtin_cd(t_word_list *list, t_varlist *env)
 {
 	char *dirname;
-	char *current_path;
+	int lcd_printpath;
+	char *t;
 	char *new_path;
-	
-	if (list->next)
+
+	lcd_printpath = 0;
+	if (!list || !list->word->word[0])
 	{
-		printf("too many arguments\n");
-		return (99); // ### TODO: エラー処理
+		dirname = list_getenv(env, "HOME");
+		if (!dirname)
+		{
+			printf("HOME not set\n"); // ### TODO: エラー処理
+			return (99);
+		}
 	}
-	dirname = list->word->word;
-	current_path = NULL;
-	current_path = list_getenv(env, "PWD");
-	new_path = sh_makepath(current_path, dirname);
-	printf("### %s\n", new_path);
-	if (!chdir(new_path))
-		bindpwd(env, current_path, new_path);
+	else if (list->word->word[0] == '-' && list->word->word[1] == '\0')
+	{
+		dirname = list_getenv(env, "OLDPWD");
+		if (!dirname)
+		{
+			printf("OLDPWD not set\n"); // ### TODO: エラー処理
+			return (99); 
+		}
+		lcd_printpath = 1;
+	}
+	else
+		dirname = list->word->word;
+	
+	t = make_absolute(dirname, list_getenv(env, "PWD"));
+	if (!t)
+		return (99); // ### TODO: エラー処理
+	new_path = sh_canonpath(t);
+	free(t);
+	if (!new_path)
+		return (99); // ### TODO: エラー処理
+	change_to_directory(new_path);
+	bindpwd(env, list_getenv(env, "PWD"), new_path);
+	return (0);
 }
+
+// int	builtin_cd(t_word_list *list, t_varlist *env)
+// {
+// 	char *dirname;
+// 	char *current_path;
+// 	char *new_path;
+	
+// 	if (list->next)
+// 	{
+// 		printf("too many arguments\n");
+// 		return (99); // ### TODO: エラー処理
+// 	}
+// 	dirname = list->word->word;
+// 	current_path = NULL;
+// 	current_path = list_getenv(env, "PWD");
+// 	new_path = sh_makepath(current_path, dirname);
+// 	printf("### %s\n", new_path);
+// 	if (!chdir(new_path))
+// 		bindpwd(env, current_path, new_path);
+// }
