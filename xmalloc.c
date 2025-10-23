@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 16:50:16 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/22 17:04:06 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/23 10:04:52 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void *xcalloc(size_t nmemb, size_t size)
 {
 	void *tmp;
 
-	tmp = ft_calloc(nmenb, size);
+	tmp = ft_calloc(nmemb, size);
 	if (!tmp)
 	{
 		fatal_error("ft_calloc", MALLOC_ERROR_STR);

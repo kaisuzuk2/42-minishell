@@ -6,7 +6,7 @@
 #    By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/07 14:10:24 by kaisuzuk          #+#    #+#              #
-#    Updated: 2025/10/22 16:45:57 by kaisuzuk         ###   ########.fr        #
+#    Updated: 2025/10/23 10:04:39 by kaisuzuk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,7 +50,8 @@ SRCS	=	minishell.c \
 			builtin_pwd.c \
 			builtin_cd.c \
 			variables.c \
-			error.c
+			error.c \
+			xmalloc.c
 
 
 OBJS	=	$(SRCS:.c=.o)
