@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 14:59:46 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/23 14:59:31 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/23 15:15:55 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,14 @@ void	dispose_redirects(t_redirect *list)
 		free(t);
 		list = list->next;
 	}
+}
+
+void dispose_simple_command(t_command *command)
+{
+	if (command->redirects)
+		dispose_redirects(command->redirects);
+	dispose_desc_words(command->words);
+	free(command);
 }
 
 void	dispose_command(t_command *command)
