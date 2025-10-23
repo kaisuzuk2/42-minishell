@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   externs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suzukikaisei <suzukikaisei@student.42.f    +#+  +:+       +#+        */
+/*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/22 11:09:18 by suzukikaise      ###   ########.fr       */
+/*   Updated: 2025/10/23 13:30:27 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int				ft_mkstemp(char **template);
 int				do_redirections(t_redirect *redirect, t_varlist *env);
 
 // make_cmd.c
-char			*make_here_document(t_redirect *r);
+char			*make_here_document(char *here_doc_eof);
 
 // builtin.c
 int execute_builtin_command(t_command *cmd, t_varlist *env);

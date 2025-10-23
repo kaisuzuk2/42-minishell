@@ -6,7 +6,7 @@
 #    By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/07 14:10:24 by kaisuzuk          #+#    #+#              #
-#    Updated: 2025/10/23 10:52:42 by kaisuzuk         ###   ########.fr        #
+#    Updated: 2025/10/23 14:00:07 by kaisuzuk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,8 @@ SRCS	=	minishell.c \
 			tokenize_utils_tokenkinds.c \
 			tokenize_utils.c \
 			parser.c \
+			parser_redirect.c \
+			parser_utils.c \
 			expand.c \
 			dispose_cmd.c \
 			execute_pipeline.c \
@@ -62,7 +64,7 @@ all: $(NAME)
 
 $(NAME): $(FT_NAME) $(OBJS)
 	$(MAKE) $(FT_NAME)
-	$(CC) -o $(NAME) $(DEBUG) $(FLAG) $(INC) $(OBJS) -lreadline -L$(FT_NAME) -lftprintf
+	$(CC) -o $(NAME) $(DEBUG) $(FLAG) $(SANITIZE) $(INC) $(OBJS) -lreadline -L$(FT_NAME) -lftprintf
 
 %.o: %.c
 	$(CC) -c  $(INC) -g $< -o $@

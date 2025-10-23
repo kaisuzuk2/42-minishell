@@ -6,11 +6,14 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 10:35:48 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/23 11:24:24 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/23 13:25:49 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// tokenize_utils.c
+t_bool	startswith(const char *s, const char *op);
 
 t_bool	is_shellbrank(char c)
 {

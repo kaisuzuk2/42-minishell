@@ -6,11 +6,14 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 10:39:48 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/23 11:23:57 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/23 13:26:19 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// tokenize_utils_tokenkinds.c
+t_bool	is_shellbrank(char c);
 
 void	skip_shellbrank(char **line)
 {

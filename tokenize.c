@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/23 11:24:33 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/23 14:19:29 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static t_word_desc	*make_token(char **line, size_t len, t_token_kind kind)
 	char		*word;
 
 	desc = (t_word_desc *)xcalloc(sizeof(t_word_desc), 1);
-	if (!desc) // ### TODO: エラー処理
+	if (!desc)
 		return (NULL);
 	desc->flag = W_NOEXPAND;
 	if (!line)
@@ -39,7 +39,7 @@ static t_word_desc	*make_token(char **line, size_t len, t_token_kind kind)
 	{
 		set_token_flg(*line, desc);
 		word = (char *)xmalloc(sizeof(char) * (len + 1));
-		if (!word) // ### TODO: エラー処理
+		if (!word)
 			return (free(desc), NULL);
 		ft_memcpy(word, *line, len);
 		word[len] = '\0';
@@ -56,7 +56,7 @@ static t_word_desc	*make_operator_token(char **line)
 			TK_GREAT_GREAT, TK_GREAT, TK_PIPE};
 	int					i;
 
-	static char *const operators[] = {"|","<<","<" ,">"};
+	static char *const operators[] = {"<<", "<", ">>", ">", "|"};
 	static char *const unsupport_operators[] = {"&&", "&", "||", ";;", ";", "<>" , "<<-" , "<&", ">|",">&", "(", ")"};
 	i = 0;
 	while (i < sizeof(unsupport_operators) / sizeof(unsupport_operators[0]))

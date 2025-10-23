@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:23:18 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/19 13:35:13 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/23 13:35:38 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,19 @@ static char	*documentcat(char *document, char *buf)
 {
 	char	*tmp;
 
-	if (!document)
+	if (!document || *document == '\0')
 	{
+		free(document);
 		document = ft_strdup(buf);
 		if (!document)
-			return (NULL);
+			return (fatal_error("malloc", MALLOC_ERROR_STR), NULL);
 	}
 	else
 	{
 		tmp = ft_strjoin(document, buf);
 		free(document);
 		if (!tmp)
-			return (NULL);
+			return (fatal_error("malloc", MALLOC_ERROR_STR), NULL);
 		document = tmp;
 	}
 	return (document);
@@ -52,28 +53,26 @@ static t_bool	is_heredoc_eof(char *here_doc_eof, char *buf)
 	return (FALSE);
 }
 
-char	*make_here_document(t_redirect *r)
+char	*make_here_document(char *here_doc_eof)
 {
 	char	*buf;
 	char	*document;
 
-	document = NULL;
+	document = strdup("");
+	if (!document)
+		return(fatal_error("malloc", MALLOC_ERROR_STR), NULL);
 	while (1)
 	{
 		buf = readline("> "); // ### TODO: プロンプトは$PS2
 		if (!buf)
 			break ;
-		if (is_heredoc_eof(r->here_doc_eof, buf))
+		if (is_heredoc_eof(here_doc_eof, buf))
 			break ;
 		document = documentcat(document, buf);
 		document = documentcat(document, "\n"); // ### TODO: もう少し考える
 		free(buf);
 		if (!document)
-		{
-			// dispose_command(c);
-			// sys_error(MALLOC_STR);
-			exit(EXECUTION_FAILURE); // ### TODO: エラー処理
-		}
+			return (NULL); 
 	}
 	return (document);
 }

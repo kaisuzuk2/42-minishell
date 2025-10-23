@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:13:31 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/22 16:12:32 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/23 15:00:35 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,6 +176,8 @@ int main(int argc, char *argv[], char *envp[])
 		if (!token)
 			continue ;
 		parse = parser(token);
+		if (!parse)
+			continue ;
 		expand(shell_variables, parse);
 		// show_envvalue(shell_variables);
 		execute_pipeline(shell_variables, parse);

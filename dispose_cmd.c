@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 14:59:46 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/14 14:50:22 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/23 14:59:31 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,11 @@ void	dispose_command(t_command *command)
 		simple = t->command;
 		if (t->redirects)
 			dispose_redirects(t->redirects);
-		if (simple->redirects)
+		if (simple && simple->redirects)
 			dispose_redirects(simple->redirects);
 		if (t->words)
 			dispose_desc_words(t->words);
-		if (simple->words)
+		if (simple && simple->words)
 			dispose_desc_words(simple->words);
 		free(simple);
 		free(t);

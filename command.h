@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 10:53:00 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/16 12:43:59 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/23 12:15:37 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,20 @@ typedef enum e_instruction
 	r_reading_until,    // <<
 }						t_instruction;
 
-// ### TODO: ユニオンのnormitette確認する
+// ### TODO: destはfdの複製用のため不要 削除してfilenameだけにする
 typedef union
 {
 	int dest; // 2 >& 1
 	t_word_desc			*filename;
 }						t_redirectee;
+
+// parser.c set for redirect by table
+typedef struct s_redirect_info
+{	
+	t_token_kind kind;
+	t_instruction instruction;
+	int flag;
+} t_redirect_info;
 
 typedef struct s_redirect
 {
