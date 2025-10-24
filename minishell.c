@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:13:31 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/24 10:49:46 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/24 13:33:22 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ void show_token_and_redir(t_command *command)
 
 void show_parse_list(t_command *command)
 {
-	if (command)
+	while (command)
 	{
 		show_token_and_redir(command->command);
 		command = command->next;
@@ -157,17 +157,18 @@ int main(void)
 		if (*line)
 			add_history(line);
 		token = tokenize(line);
-		show_token_list(token);
-		dispose_token_words(token);
-		// parse = parser(token);
+		// show_token_list(token);
 		// dispose_token_words(token);
+		parse = parser(token);
+		dispose_token_words(token);
 		// expand(parse);
-		// show_parse_list(parse);
+		show_parse_list(parse);
 		// interpret(line);
-		// dispose_command(parse);
+		dispose_command(parse);
 		free(line);
 	}
 	dispose_token_words(token);
+	dispose_command(parse);
 }
 
 // int main(int argc, char *argv[], char *envp[])

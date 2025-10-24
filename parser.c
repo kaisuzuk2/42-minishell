@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 13:13:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/23 16:58:08 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/24 13:44:45 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static t_command	*make_simple_command(t_token_list **token_p,
 	command = new_command(CM_SIMPLE);
 	if (!command) // TODO: エラー処理
 		return (NULL);
-	while (token->word->kind != TK_EOF)
+	while (token->word->kind != TK_EOF && token->word->kind != TK_PIPE)
 	{
 		kind = token->word->kind;
 		if (kind == TK_WORD)
@@ -93,8 +93,10 @@ static t_command	*make_simple_command(t_token_list **token_p,
 				return (dispose_simple_command(command), NULL);
 		}
 		else
+		{
 			return (parser_error(SYNTAX_ERROR_STR),
 				dispose_simple_command(command), NULL);
+		}
 	}
 	*token_p = token;
 	return (command);
@@ -126,10 +128,10 @@ t_command	*parser(t_token_list *token)
 			if (!t)
 				return (dispose_command(head), NULL);
 			cur->next = t;
-			token = token->next;
 			cur = cur->next;
+			token = token->next;
 		}
 	}
-	cur->words = ft_calloc(sizeof(t_word_list), 1);
+	// cur->words = ft_calloc(sizeof(t_word_list), 1);
 	return (head);
 }

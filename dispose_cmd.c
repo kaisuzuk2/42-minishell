@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 14:59:46 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/24 10:37:14 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/24 13:49:53 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,10 @@ void	dispose_redirects(t_redirect *list)
 	while (list)
 	{
 		t = list;
+		list = list->next;
 		dispose_word(t->redirectee.filename);
 		free(t->here_doc_eof);
 		free(t);
-		list = list->next;
 	}
 }
 
@@ -82,15 +82,7 @@ void	dispose_command(t_command *command)
 		t = command;
 		command = command->next;
 		simple = t->command;
-		if (t->redirects)
-			dispose_redirects(t->redirects);
-		if (simple && simple->redirects)
-			dispose_redirects(simple->redirects);
-		if (t->words)
-			dispose_desc_words(t->words);
-		if (simple && simple->words)
-			dispose_desc_words(simple->words);
-		free(simple);
+		dispose_simple_command(simple);
 		free(t);
 	}
 }
