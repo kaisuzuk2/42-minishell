@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 13:13:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/23 15:41:47 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/23 16:58:08 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,11 @@
 // parser_redirect.c
 t_bool				set_redirect(t_redirect *redir, t_redirect_info info,
 						t_token_list *token);
+t_redirect			*make_redirection(t_token_list **token);
 
 // parser_utils.c
 t_word_desc			*tokendup(t_word_desc *desc);
-
-static t_command	*new_command(t_command_type type)
-{
-	t_command	*command;
-
-	command = (t_command *)ft_calloc(sizeof(t_command), 1);
-	if (!command)
-		return (NULL);
-	command->type = type;
-	return (command);
-}
+t_command			*new_command(t_command_type type);
 
 // comman->t_word_list +
 static t_word_list	*append_command_words(t_command *command,
@@ -55,32 +46,6 @@ static t_word_list	*append_command_words(t_command *command,
 	cur->next = list;
 	*token = (*token)->next;
 	return (list);
-}
-
-static t_redirect	*make_redirection(t_token_list **token)
-{
-	t_redirect	*redirect;
-	int			i;
-
-	const t_redirect_info redirect_info_table[] = {
-		{TK_LESS, r_input_direction, O_RDONLY},
-		{TK_LESS_LESS, r_reading_until, 0},
-		{TK_GREAT, r_output_direction, O_WRONLY | O_CREAT | O_TRUNC},
-		{TK_GREAT_GREAT, r_appending_to, O_WRONLY | O_CREAT | O_APPEND},
-	};
-	redirect = (t_redirect *)xcalloc(sizeof(t_redirect), 1);
-	if (!redirect) // ### TODO: エラー処理
-		return (NULL);
-	i = 0;
-	while (i < sizeof(redirect_info_table) / sizeof(redirect_info_table[0]))
-	{
-		if ((*token)->word->kind == redirect_info_table[i].kind)
-			set_redirect(redirect, redirect_info_table[i], (*token)->next);
-		i++;
-	}
-	// tokenに一致しない場合の処理どうする？
-	*token = (*token)->next->next;
-	return (redirect);
 }
 
 static t_redirect	*connect_redirection(t_command *command,
@@ -135,7 +100,7 @@ static t_command	*make_simple_command(t_token_list **token_p,
 	return (command);
 }
 
-t_command	*connection(t_token_list *token)
+t_command	*parser(t_token_list *token)
 {
 	t_command	*head;
 	t_command	*cur;
@@ -143,7 +108,7 @@ t_command	*connection(t_token_list *token)
 	t_redirect	*cur_redir;
 
 	head = new_command(CM_CONNECTION);
-	if (!head) // ### TODO: エラー処理
+	if (!head)
 		return (NULL);
 	cur = head;
 	while (token && token->word->kind != TK_EOF)
@@ -167,9 +132,4 @@ t_command	*connection(t_token_list *token)
 	}
 	cur->words = ft_calloc(sizeof(t_word_list), 1);
 	return (head);
-}
-
-t_command	*parser(t_token_list *token)
-{
-	return (connection(token));
 }
