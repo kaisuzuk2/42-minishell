@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 14:59:46 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/23 15:15:55 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/24 10:37:14 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	dispose_token_words(t_token_list *list)
 {
 	t_token_list	*t;
 
+	if (!list)
+		return ;
 	while (list)
 	{
 		t = list;

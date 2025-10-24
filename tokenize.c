@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/23 14:19:29 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/24 10:51:13 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,10 +126,15 @@ t_token_list	*tokenize(char *line)
 
 	head.next = NULL;
 	cur = &head;
+	token = NULL;
 	while (*line)
 	{
 		if (is_shellbrank(*line))
+		{
 			skip_shellbrank(&line);
+			if (!(*line))
+				break;
+		}
 		if (*line == '#')
 			return (head.next);
 		else if (is_word(line))
@@ -140,7 +145,7 @@ t_token_list	*tokenize(char *line)
 			return (dispose_token_words(head.next), NULL);
 		cur = make_word_list(cur, token);
 		if (!cur)
-			return (dispose_token_words(head.next), NULL);
+			return (dispose_word(token), dispose_token_words(head.next), NULL);
 	}
 	cur = make_word_list(cur, make_token(NULL, 0, TK_EOF));
 	if (!cur)
