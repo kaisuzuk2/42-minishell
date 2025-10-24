@@ -6,23 +6,23 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/24 11:23:08 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/24 18:27:02 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // tokenize_utils.c
-void	skip_shellbrank(char **line);
-void	set_token_flg(char *line, t_word_desc *desc);
-t_bool	startswith(const char *s, const char *op);
+void				skip_shellbrank(char **line);
+void				set_token_flg(char *line, t_word_desc *desc);
+t_bool				startswith(const char *s, const char *op);
 
 // tokenize_utils_tokenkinds.c
-t_bool	is_shellbrank(char c);
-t_bool	is_word(char *line);
-char	*is_metacharacter(char c);
-t_bool	is_operator(char *line);
-t_bool is_quote(char c);
+t_bool				is_shellbrank(char c);
+t_bool				is_word(char *line);
+char				*is_metacharacter(char c);
+t_bool				is_operator(char *line);
+t_bool				is_quote(char c);
 
 static t_word_desc	*make_token(char **line, size_t len, t_token_kind kind)
 {
@@ -50,57 +50,62 @@ static t_word_desc	*make_token(char **line, size_t len, t_token_kind kind)
 	return (desc);
 }
 
-static t_word_desc	*make_operator_token(char **line)
+// 見つからなかったときの-1をdefineに設定
+static int	get_support_operator_idx(char *line)
 {
-	static int const	operators_table[] = {TK_LESS_LESS, TK_LESS,
-			TK_GREAT_GREAT, TK_GREAT, TK_PIPE};
-	int					i;
+	int	i;
 
-	static char *const operators[] = {"<<", "<", ">>", ">", "|"};
-	static char *const unsupport_operators[] = {"&&", "&", "||", ";;", ";", "<>" , "<<-" , "<&", ">|",">&", "(", ")"};
+	char *const operators[] = {"<<", "<", ">>", ">", "|"};
+	char *const unsupport_operators[] = {"&&", "&", "||", ";;", ";",
+		"<>", "<<-", "<&", ">|", ">&", "(", ")"};
 	i = 0;
 	while (i < sizeof(unsupport_operators) / sizeof(unsupport_operators[0]))
 	{
-		if (!startswith(*line, unsupport_operators[i]))
-		{
-			parser_operator_error(NOT_SUPPORTED_STR, unsupport_operators[i]);
-			return (NULL);
-		}
+		if (!startswith(line, unsupport_operators[i]))
+			return (parser_operator_error(NOT_SUPPORTED_STR, unsupport_operators[i]), -1);
 		i++;
 	}
 	i = 0;
 	while (i < sizeof(operators) / sizeof(operators[0]))
 	{
-		if (!startswith(*line, operators[i]))
-			return (make_token(line, ft_strlen(operators[i]),
-					operators_table[i]));
+		if (!startswith(line, operators[i]))
+			return (i);
 		i++;
 	}
-	return (NULL);
+	return (-1);
 }
 
-static t_word_desc	*make_word_token(char **line)
+static t_word_desc	*make_operator_token(char **line, int idx)
+{
+	int const	operators_table[] = {TK_LESS_LESS, TK_LESS,
+			TK_GREAT_GREAT, TK_GREAT, TK_PIPE};
+
+	char *const operators[] = {"<<", "<", ">>", ">", "|"};
+	return (make_token(line, ft_strlen(operators[idx]), operators_table[idx]));
+}
+
+static int	*count_word_token_len(char *line)
 {
 	size_t	len;
 	char	quote;
 
 	quote = 0;
 	len = 0;
-	if (is_quote((*line)[len]))
-		quote = (*line)[len++];
-	while ((*line)[len])
+	if (is_quote(line[len]))
+		quote = line[len++];
+	while (line[len])
 	{
-		if (quote && (*line)[len] == quote)
+		if (quote && line[len] == quote)
 			quote = 0;
-		else if (!quote && is_quote((*line)[len]))
-			quote = (*line)[len];
-		if (!quote && (is_shellbrank((*line)[len]) || is_metacharacter((*line)[len])))
-			break;
+		else if (!quote && is_quote(line[len]))
+			quote = line[len];
+		if (!quote && (is_shellbrank(line[len]) || is_metacharacter(line[len])))
+			break ;
 		len++;
 	}
 	if (quote)
-		return (parser_error(SYNTAX_ERROR_STR), NULL);
-	return (make_token(line, len, TK_WORD));
+		return (parser_error(SYNTAX_ERROR_STR), SYNTAX_ERROR);
+	return (len);
 }
 
 t_token_list	*make_word_list(t_token_list *cur, t_word_desc *desc)
@@ -122,7 +127,9 @@ t_token_list	*tokenize(char *line)
 	t_token_list	head;
 	t_token_list	*cur;
 	t_token_list	*eof;
-	t_word_desc *token;
+	t_word_desc		*token;
+	int				word_token_len;
+	int operator_idx;
 
 	head.next = NULL;
 	cur = &head;
@@ -133,22 +140,42 @@ t_token_list	*tokenize(char *line)
 		{
 			skip_shellbrank(&line);
 			if (!(*line))
-				break;
+				break ;
 		}
 		if (*line == '#')
 			return (head.next);
 		else if (is_word(line))
-			token = make_word_token(&line);
+		{
+			word_token_len = count_word_token_len(line);
+			if (word_token_len == SYNTAX_ERROR)
+				return (dispose_token_words(head.next), NULL);
+			token = make_token(&line, word_token_len, TK_WORD);
+		}
 		else if (is_operator(line))
-			token = make_operator_token(&line);
+		{
+			operator_idx = get_support_operator_idx(line);
+			if (operator_idx == -1)
+				return (dispose_token_words(head.next), NULL);
+			token = make_operator_token(&line, operator_idx);
+		}
 		if (!token)
-			return (dispose_token_words(head.next), NULL);
+		{
+			dispose_token_words(head.next);
+			exit(1);
+		}
 		cur = make_word_list(cur, token);
 		if (!cur)
-			return (dispose_word(token), dispose_token_words(head.next), NULL);
+		{
+			dispose_word(token);
+			dispose_token_words(head.next);
+			exit(1);
+		}
 	}
 	cur = make_word_list(cur, make_token(NULL, 0, TK_EOF));
 	if (!cur)
-		return (dispose_token_words(head.next), NULL);
+	{
+		dispose_token_words(head.next);
+		exit(1);
+	}
 	return (head.next);
 }

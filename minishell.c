@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:13:31 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/24 13:33:22 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/24 18:20:21 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,9 @@ void show_token_and_redir(t_command *command)
 {
 	t_word_list *list;
 	t_redirect *redir;
-
+	
+	if (!command)
+		return ;
 	list = command->words;
 	while (list)
 	{
@@ -157,9 +159,18 @@ int main(void)
 		if (*line)
 			add_history(line);
 		token = tokenize(line);
-		// show_token_list(token);
+		if (!token)
+		{
+			continue ;
+		}
+		show_token_list(token);
 		// dispose_token_words(token);
 		parse = parser(token);
+		if (!parse)
+		{
+			dispose_token_words(token);
+			continue;
+		}
 		dispose_token_words(token);
 		// expand(parse);
 		show_parse_list(parse);

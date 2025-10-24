@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:12:50 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/22 17:05:24 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/24 14:26:29 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,7 @@ typedef int t_bool;
 
 # define EXECUTION_FAILURE 1
 # define EXECUTION_SUCCESS 0
-
-
+# define SYNTAX_ERROR -1
 
 typedef struct s_pipefd
 {
