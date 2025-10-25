@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 13:13:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/25 16:22:35 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/25 16:23:51 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,69 +101,6 @@ static t_command	*make_simple_command(t_token_list **token_p,
 	return (command);
 }
 
-// t_command	*parser(t_token_list *token)
-// {
-// 	t_command		*head;
-// 	t_command		*cur;
-// 	t_token_error	e;
-
-// 	head = new_command(CM_CONNECTION);
-// 	if (!head)
-// 		return (NULL);
-// 	cur = head;
-// 	memset(&e, 0, sizeof(e));
-// 	while (token && token->word->kind != TK_EOF)
-// 	{
-// 		memset(&e, 0, sizeof(e));
-// 		if (token->word->kind != TK_PIPE)
-// 		{
-// 			cur->command = make_simple_command(&token, token, &e);
-// 			if (!cur->command)
-// 				break ;
-// 		}
-// 		else
-// 		{
-// 			cur->next = new_command(CM_CONNECTION);
-// 			if (!cur->next)
-// 				break ;
-// 			cur = cur->next;
-// 			token = token->next;
-// 		}
-// 	}
-// 	if (e.status != ST_OK)
-// 	{
-// 		dispose_command(head);
-// 		if (e.status == ST_ERR_NOMEM)
-// 			exit(1);
-// 		return (parser_operator_error(e.msg, e.detail), NULL);
-
-// 	}
-// 	return (head);
-// }
-
-// t_command *add_command(t_command *cur, t_token_list **token_p, t_token_list *token, t_token_error *e)
-// {
-// 	t_command *connect_com;
-// 	t_command *simple_com;
-
-// 	if (!cur->command && token->word->kind == TK_PIPE)
-// 		return (e->status = ST_ERR_SYNTAX, e->msg = PARSE_ERROR_STR, e->detail = token->word->word, NULL);
-// 	if (token->word->kind == TK_WORD)
-// 	{
-// 		simple_com = make_simple_command(token_p, token, e);
-// 		if (!simple_com)
-// 			return (NULL);
-// 		cur->command = simple_com;
-// 	}
-// 	if (token->word->kind == TK_PIPE)
-// 	{
-// 		connect_com = new_command(CM_CONNECTION);
-// 		if (!connect_com)
-// 			return (dispose_simple_command(simple_com), NULL);
-// 		cur->next = connect_com;
-// 	}
-// }
-
 static t_command *make_connection_command(t_command *cur, t_token_list **token_p, t_command_type type, t_token_error *e)
 {
 	t_command *new;
@@ -226,31 +163,3 @@ t_command *parser(t_token_list *token)
 	}
 	return (head);
 }
-
-// t_command *parser(t_token_list *token)
-// {
-// 	t_token_error e;
-// 	t_command *head;
-// 	t_command *cur;
-
-// 	head = (t_command *)xmalloc(sizeof(t_command));
-// 	if (!head)
-// 	{
-// 		dispose_desc_words(token);
-// 		exit(1);
-// 	}
-// 	cur = head;
-// 	while (token && token->word->kind != TK_EOF)
-// 	{
-// 		cur = add_command(cur, &token, token , &e);
-// 		if (!cur)
-// 		{
-// 			dispose_desc_words(token);
-// 			dispose_command(head);
-// 			if (e.status == ST_ERR_NOMEM)
-// 				exit (1);
-// 			return (parser_operator_error(e.msg, e.detail), NULL);
-// 		}
-// 	}
-// 	return (head);
-// }
