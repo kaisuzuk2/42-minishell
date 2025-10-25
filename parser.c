@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 13:13:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/25 15:14:59 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/25 16:22:35 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,10 +172,36 @@ static t_command *make_connection_command(t_command *cur, t_token_list **token_p
 		return (e->status = ST_ERR_SYNTAX, e->msg = PARSE_ERROR_STR, e->detail = (*token_p)->word->word, NULL);
 	new = new_command(type);
 	if (!new)
-		return (NULL);
+		return (e->status = ST_ERR_NOMEM, NULL);
 	cur->next = new;
 	(*token_p) = (*token_p)->next;
 	return new;
+}
+
+static t_command *add_command(t_command *cur, t_token_list **token_p, t_token_list *token, t_token_error *e)
+{
+	if (!cur->command && token->word->kind == TK_PIPE)
+		return (e->status = ST_ERR_SYNTAX, e->msg = PARSE_ERROR_STR, e->detail = token->word->word, NULL);
+	if (token->word->kind == TK_WORD)
+		cur->command = make_simple_command(token_p, token, e);
+	if (token->word->kind == TK_PIPE && token->next->word->kind == TK_EOF)
+		return (e->status = ST_ERR_SYNTAX, e->msg = PARSE_ERROR_STR, e->detail = token->word->word, NULL);
+	if (token->word->kind == TK_PIPE)
+		return (make_connection_command(cur, token_p, CM_CONNECTION, e));
+	return (cur);
+}
+
+static int parse_error(t_token_error *e, t_token_list *token, t_command *command)
+{
+	if (e->status == ST_OK)
+		return (0);
+	if (e->status == ST_ERR_SYNTAX)
+		parser_operator_error(e->msg, e->detail);
+	dispose_token_words(token);
+	dispose_command(command);
+	if (e->status == ST_ERR_NOMEM)
+		exit (1);
+	return (1);
 }
 
 t_command *parser(t_token_list *token)
@@ -194,20 +220,9 @@ t_command *parser(t_token_list *token)
 	while (token && token->word->kind != TK_EOF)
 	{
 		memset(&e, 0, sizeof(e));
-		if (token->word->kind != TK_PIPE)
-			cur->command = make_simple_command(&token, token, &e);
-		else
-			cur = make_connection_command(cur, &token, CM_CONNECTION, &e);
-		if (e.status != ST_OK)
-		{
-			if (e.status != ST_ERR_NOMEM)
-				parser_operator_error(e.msg, e.detail);
-			dispose_token_words(token);
-			dispose_command(head);
-			if (e.status == ST_ERR_NOMEM)
-				exit (1);
+		cur = add_command(cur, &token, token, &e);
+		if (parse_error(&e, token, head))
 			return (NULL);
-		}
 	}
 	return (head);
 }
