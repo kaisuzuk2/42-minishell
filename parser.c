@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 13:13:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/25 12:58:08 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/25 15:14:59 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,70 +64,178 @@ static t_redirect	*connect_redirection(t_command *command,
 	}
 }
 
+static t_bool	is_redirect(t_token_kind kind)
+{
+	return (kind == TK_GREAT_GREAT || kind == TK_GREAT || kind == TK_LESS_LESS
+		|| kind == TK_LESS);
+}
+
+// setting local errno
 static t_command	*make_simple_command(t_token_list **token_p,
-		t_token_list *token)
+		t_token_list *token, t_token_error *e)
 {
 	t_command		*command;
-	t_word_list		*list;
-	t_redirect		*redir;
-	t_token_kind	kind;
 
-	list = NULL;
-	redir = NULL;
 	command = new_command(CM_SIMPLE);
 	if (!command) // TODO: エラー処理
-		return (NULL);
+		return (e->status = ST_ERR_NOMEM, NULL);
 	while (token->word->kind != TK_EOF && token->word->kind != TK_PIPE)
 	{
-		kind = token->word->kind;
-		if (kind == TK_WORD)
+		if (token->word->kind == TK_WORD)
 		{
 			if (!append_command_words(command, &token))
-				return (dispose_simple_command(command), NULL);
+				return (dispose_simple_command(command),
+					e->status = ST_ERR_NOMEM, NULL);
 		}
-		else if ((kind == TK_GREAT_GREAT || kind == TK_GREAT
-				|| kind == TK_LESS_LESS || kind == TK_LESS)
-			&& token->next->word->kind == TK_WORD)
+		else if (is_redirect(token->word->kind) && token->next->word->kind == TK_WORD)
 		{
 			if (!connect_redirection(command, &token))
-				return (dispose_simple_command(command), NULL);
+				return (dispose_simple_command(command),
+					e->status = ST_ERR_NOMEM, NULL);
 		}
 		else
-		{
-			return (parser_operator_error(PARSE_ERROR_STR, "newline"),
-				dispose_simple_command(command), NULL);
-		}
+			return (dispose_simple_command(command), e->status = ST_ERR_SYNTAX,
+				e->msg = PARSE_ERROR_STR, e->detail = "newline", NULL);
 	}
 	*token_p = token;
 	return (command);
 }
 
-t_command	*parser(t_token_list *token)
-{
-	t_command	*head;
-	t_command	*cur;
-	t_redirect	*cur_redir;
+// t_command	*parser(t_token_list *token)
+// {
+// 	t_command		*head;
+// 	t_command		*cur;
+// 	t_token_error	e;
 
-	head = new_command(CM_CONNECTION);
-	if (!head)
+// 	head = new_command(CM_CONNECTION);
+// 	if (!head)
+// 		return (NULL);
+// 	cur = head;
+// 	memset(&e, 0, sizeof(e));
+// 	while (token && token->word->kind != TK_EOF)
+// 	{
+// 		memset(&e, 0, sizeof(e));
+// 		if (token->word->kind != TK_PIPE)
+// 		{
+// 			cur->command = make_simple_command(&token, token, &e);
+// 			if (!cur->command)
+// 				break ;
+// 		}
+// 		else
+// 		{
+// 			cur->next = new_command(CM_CONNECTION);
+// 			if (!cur->next)
+// 				break ;
+// 			cur = cur->next;
+// 			token = token->next;
+// 		}
+// 	}
+// 	if (e.status != ST_OK)
+// 	{
+// 		dispose_command(head);
+// 		if (e.status == ST_ERR_NOMEM)
+// 			exit(1);
+// 		return (parser_operator_error(e.msg, e.detail), NULL);
+
+// 	}
+// 	return (head);
+// }
+
+// t_command *add_command(t_command *cur, t_token_list **token_p, t_token_list *token, t_token_error *e)
+// {
+// 	t_command *connect_com;
+// 	t_command *simple_com;
+
+// 	if (!cur->command && token->word->kind == TK_PIPE)
+// 		return (e->status = ST_ERR_SYNTAX, e->msg = PARSE_ERROR_STR, e->detail = token->word->word, NULL);
+// 	if (token->word->kind == TK_WORD)
+// 	{
+// 		simple_com = make_simple_command(token_p, token, e);
+// 		if (!simple_com)
+// 			return (NULL);
+// 		cur->command = simple_com;
+// 	}
+// 	if (token->word->kind == TK_PIPE)
+// 	{
+// 		connect_com = new_command(CM_CONNECTION);
+// 		if (!connect_com)
+// 			return (dispose_simple_command(simple_com), NULL);
+// 		cur->next = connect_com;
+// 	}
+// }
+
+static t_command *make_connection_command(t_command *cur, t_token_list **token_p, t_command_type type, t_token_error *e)
+{
+	t_command *new;
+
+	if (!cur->command)
+		return (e->status = ST_ERR_SYNTAX, e->msg = PARSE_ERROR_STR, e->detail = (*token_p)->word->word, NULL);
+	new = new_command(type);
+	if (!new)
 		return (NULL);
+	cur->next = new;
+	(*token_p) = (*token_p)->next;
+	return new;
+}
+
+t_command *parser(t_token_list *token)
+{
+	t_token_error e;
+	t_command *head;
+	t_command *cur;
+
+	head = (t_command *)xmalloc(sizeof(t_command));
+	if (!head)
+	{
+		dispose_token_words(token);
+		exit (1);
+	}
 	cur = head;
 	while (token && token->word->kind != TK_EOF)
 	{
+		memset(&e, 0, sizeof(e));
 		if (token->word->kind != TK_PIPE)
-		{
-			cur->command = make_simple_command(&token, token);
-			if (!cur->command)
-				return (dispose_command(head), NULL);
-		}
+			cur->command = make_simple_command(&token, token, &e);
 		else
+			cur = make_connection_command(cur, &token, CM_CONNECTION, &e);
+		if (e.status != ST_OK)
 		{
-			cur->next = new_command(CM_CONNECTION);
-			if (!cur->next)
-				return (dispose_command(head), NULL);
-			cur = cur->next;
-			token = token->next;
+			if (e.status != ST_ERR_NOMEM)
+				parser_operator_error(e.msg, e.detail);
+			dispose_token_words(token);
+			dispose_command(head);
+			if (e.status == ST_ERR_NOMEM)
+				exit (1);
+			return (NULL);
 		}
 	}
 	return (head);
 }
+
+// t_command *parser(t_token_list *token)
+// {
+// 	t_token_error e;
+// 	t_command *head;
+// 	t_command *cur;
+
+// 	head = (t_command *)xmalloc(sizeof(t_command));
+// 	if (!head)
+// 	{
+// 		dispose_desc_words(token);
+// 		exit(1);
+// 	}
+// 	cur = head;
+// 	while (token && token->word->kind != TK_EOF)
+// 	{
+// 		cur = add_command(cur, &token, token , &e);
+// 		if (!cur)
+// 		{
+// 			dispose_desc_words(token);
+// 			dispose_command(head);
+// 			if (e.status == ST_ERR_NOMEM)
+// 				exit (1);
+// 			return (parser_operator_error(e.msg, e.detail), NULL);
+// 		}
+// 	}
+// 	return (head);
+// }
