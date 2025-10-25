@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 13:13:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/25 18:27:22 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/26 08:56:53 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ t_command	*parser(t_token_list *token)
 	t_command		*head;
 	t_command		*cur;
 
-	head = (t_command *)xmalloc(sizeof(t_command));
+	head = (t_command *)xcalloc(sizeof(t_command), 1);
 	if (!head)
 	{
 		dispose_token_words(token);

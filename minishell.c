@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:13:31 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/25 15:15:46 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/26 08:51:32 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,7 @@ int main(void)
 	t_token_list *token;
 	t_command *parse;
 	
+	parse = NULL;
 	token = NULL;
 	while (1)
 	{

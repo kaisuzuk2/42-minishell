@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 14:59:46 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/24 13:55:39 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/26 08:50:03 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,10 @@ void	dispose_command(t_command *command)
 	t_command *simple;
 	t_command *t;
 
+	if (!command)
+		return ;
 	while (command)
 	{
-		if (!command)
-			return ;
 		t = command;
 		command = command->next;
 		simple = t->command;
