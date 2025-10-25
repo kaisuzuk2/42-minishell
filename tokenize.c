@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/24 18:27:02 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/25 10:10:13 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,15 @@ char				*is_metacharacter(char c);
 t_bool				is_operator(char *line);
 t_bool				is_quote(char c);
 
-static t_word_desc	*make_token(char **line, size_t len, t_token_kind kind)
+static t_word_desc	*make_token(char **line, size_t len, t_token_kind kind,
+		t_token_error *e)
 {
 	t_word_desc	*desc;
 	char		*word;
 
 	desc = (t_word_desc *)xcalloc(sizeof(t_word_desc), 1);
 	if (!desc)
-		return (NULL);
+		return (e->status = ST_ERR_NOMEM, NULL);
 	desc->flag = W_NOEXPAND;
 	if (!line)
 		word = NULL;
@@ -40,7 +41,7 @@ static t_word_desc	*make_token(char **line, size_t len, t_token_kind kind)
 		set_token_flg(*line, desc);
 		word = (char *)xmalloc(sizeof(char) * (len + 1));
 		if (!word)
-			return (free(desc), NULL);
+			return (free(desc), e->status = ST_ERR_NOMEM, NULL);
 		ft_memcpy(word, *line, len);
 		word[len] = '\0';
 		*line += len;
@@ -51,40 +52,34 @@ static t_word_desc	*make_token(char **line, size_t len, t_token_kind kind)
 }
 
 // 見つからなかったときの-1をdefineに設定
-static int	get_support_operator_idx(char *line)
+static t_word_desc *make_operator_token(char **line_p, char *line, t_token_error *e)
 {
-	int	i;
+	int			i;
+	int const	operators_table[] = {TK_LESS_LESS, TK_LESS, TK_GREAT_GREAT,
+			TK_GREAT, TK_PIPE};
 
 	char *const operators[] = {"<<", "<", ">>", ">", "|"};
-	char *const unsupport_operators[] = {"&&", "&", "||", ";;", ";",
-		"<>", "<<-", "<&", ">|", ">&", "(", ")"};
+	char *const unsupport_operators[] = {"&&", "&", "||", ";;", ";", "<>",
+		"<<-", "<&", ">|", ">&", "(", ")"};
 	i = 0;
 	while (i < sizeof(unsupport_operators) / sizeof(unsupport_operators[0]))
 	{
 		if (!startswith(line, unsupport_operators[i]))
-			return (parser_operator_error(NOT_SUPPORTED_STR, unsupport_operators[i]), -1);
+			return (e->status = ST_ERR_SYNTAX, e->msg = NOT_SUPPORTED_STR,
+				e->detail = unsupport_operators[i], NULL);
 		i++;
 	}
 	i = 0;
 	while (i < sizeof(operators) / sizeof(operators[0]))
 	{
 		if (!startswith(line, operators[i]))
-			return (i);
+			return ((make_token(line_p, ft_strlen(operators[i]), operators_table[i], e)));
 		i++;
 	}
-	return (-1);
+	return (e->status = ST_ERR_SYNTAX, NULL);
 }
 
-static t_word_desc	*make_operator_token(char **line, int idx)
-{
-	int const	operators_table[] = {TK_LESS_LESS, TK_LESS,
-			TK_GREAT_GREAT, TK_GREAT, TK_PIPE};
-
-	char *const operators[] = {"<<", "<", ">>", ">", "|"};
-	return (make_token(line, ft_strlen(operators[idx]), operators_table[idx]));
-}
-
-static int	*count_word_token_len(char *line)
+static t_word_desc *make_word_token(char **line_p, char *line, t_token_error *e)
 {
 	size_t	len;
 	char	quote;
@@ -104,8 +99,13 @@ static int	*count_word_token_len(char *line)
 		len++;
 	}
 	if (quote)
-		return (parser_error(SYNTAX_ERROR_STR), SYNTAX_ERROR);
-	return (len);
+	{
+		e->status = ST_ERR_SYNTAX;
+		e->msg = SYNTAX_ERROR_STR;
+		e->detail = NULL;
+		return (NULL);
+	}
+	return (make_token(line_p, len, TK_WORD, e));
 }
 
 t_token_list	*make_word_list(t_token_list *cur, t_word_desc *desc)
@@ -128,40 +128,33 @@ t_token_list	*tokenize(char *line)
 	t_token_list	*cur;
 	t_token_list	*eof;
 	t_word_desc		*token;
-	int				word_token_len;
-	int operator_idx;
+	t_token_error	e;
+	int				operator_idx;
 
 	head.next = NULL;
 	cur = &head;
 	token = NULL;
 	while (*line)
 	{
+		memset(&e, 0, sizeof(e));
 		if (is_shellbrank(*line))
-		{
 			skip_shellbrank(&line);
-			if (!(*line))
-				break ;
-		}
+		if (!(*line))
+			break ;
 		if (*line == '#')
 			return (head.next);
 		else if (is_word(line))
-		{
-			word_token_len = count_word_token_len(line);
-			if (word_token_len == SYNTAX_ERROR)
-				return (dispose_token_words(head.next), NULL);
-			token = make_token(&line, word_token_len, TK_WORD);
-		}
+			token = make_word_token(&line, line, &e);
 		else if (is_operator(line))
-		{
-			operator_idx = get_support_operator_idx(line);
-			if (operator_idx == -1)
-				return (dispose_token_words(head.next), NULL);
-			token = make_operator_token(&line, operator_idx);
-		}
+			token = make_operator_token(&line, line, &e);
 		if (!token)
 		{
-			dispose_token_words(head.next);
-			exit(1);
+			if (e.status == ST_ERR_NOMEM)
+			{
+				dispose_token_words(head.next);
+				exit(1);
+			}
+			return (NULL);
 		}
 		cur = make_word_list(cur, token);
 		if (!cur)
@@ -171,7 +164,8 @@ t_token_list	*tokenize(char *line)
 			exit(1);
 		}
 	}
-	cur = make_word_list(cur, make_token(NULL, 0, TK_EOF));
+	memset(&e, 0, sizeof(e));
+	cur = make_word_list(cur, make_token(NULL, 0, TK_EOF, &e));
 	if (!cur)
 	{
 		dispose_token_words(head.next);
