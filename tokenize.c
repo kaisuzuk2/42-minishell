@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/25 12:01:37 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/25 12:04:27 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,8 @@ static t_word_desc	*make_word_token(char **line_p, char *line,
 		len++;
 	}
 	if (quote)
-		return (e->status = ST_ERR_SYNTAX, e->msg = SYNTAX_ERROR_STR, e->detail = QUOTE_ERROR_STR, NULL);
+		return (e->status = ST_ERR_SYNTAX, e->msg = SYNTAX_ERROR_STR,
+			e->detail = QUOTE_ERROR_STR, NULL);
 	return (make_token(line_p, len, TK_WORD, e));
 }
 
@@ -115,12 +116,12 @@ t_token_list	*make_word_list(t_token_list *cur, t_word_desc *desc,
 		return (NULL);
 	new = (t_token_list *)xcalloc(sizeof(t_token_list), 1);
 	if (!new)
-		return (dispose_word(desc), e->status = ST_ERR_NOMEM, e->msg = MALLOC_ERROR_STR, NULL);
+		return (dispose_word(desc), e->status = ST_ERR_NOMEM,
+			e->msg = MALLOC_ERROR_STR, NULL);
 	new->word = desc;
 	cur->next = new;
 	return (new);
 }
-
 
 static t_token_list	*make_word_list_wrapper(t_token_list *cur, char **line_p,
 		char *line, t_token_error *e)
@@ -162,23 +163,23 @@ t_token_list	*append_token(char *line)
 			if (e.status == ST_ERR_NOMEM)
 				exit(1);
 			else
-				return (parser_operator_error(e.msg, e.detail),NULL);
+				return (parser_operator_error(e.msg, e.detail), NULL);
 		}
 	}
 	return (head.next);
 }
 
-t_token_list *tokenize(char *line)
+t_token_list	*tokenize(char *line)
 {
-	t_token_list *list;
-	t_token_list *t;
-	t_word_desc *eof;
-	t_token_error e;
+	t_token_list	*list;
+	t_token_list	*t;
+	t_word_desc		*eof;
+	t_token_error	e;
 
 	list = append_token(line);
 	if (!list)
 		return (NULL);
-	eof = make_token(NULL, 0 ,TK_EOF, &e);
+	eof = make_token(NULL, 0, TK_EOF, &e);
 	if (!eof)
 	{
 		dispose_token_words(list);

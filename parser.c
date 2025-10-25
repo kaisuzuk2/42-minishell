@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 13:13:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/24 13:44:45 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/25 12:58:08 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ static t_command	*make_simple_command(t_token_list **token_p,
 		}
 		else
 		{
-			return (parser_error(SYNTAX_ERROR_STR),
+			return (parser_operator_error(PARSE_ERROR_STR, "newline"),
 				dispose_simple_command(command), NULL);
 		}
 	}
@@ -106,7 +106,6 @@ t_command	*parser(t_token_list *token)
 {
 	t_command	*head;
 	t_command	*cur;
-	t_command	*t;
 	t_redirect	*cur_redir;
 
 	head = new_command(CM_CONNECTION);
@@ -117,21 +116,18 @@ t_command	*parser(t_token_list *token)
 	{
 		if (token->word->kind != TK_PIPE)
 		{
-			t = make_simple_command(&token, token); // ### TODO: エラー処理
-			if (!t)
+			cur->command = make_simple_command(&token, token);
+			if (!cur->command)
 				return (dispose_command(head), NULL);
-			cur->command = t;
 		}
 		else
 		{
-			t = new_command(CM_CONNECTION); // ### TODO: エラー処理
-			if (!t)
+			cur->next = new_command(CM_CONNECTION);
+			if (!cur->next)
 				return (dispose_command(head), NULL);
-			cur->next = t;
 			cur = cur->next;
 			token = token->next;
 		}
 	}
-	// cur->words = ft_calloc(sizeof(t_word_list), 1);
 	return (head);
 }
