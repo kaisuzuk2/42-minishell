@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/25 11:51:48 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/25 12:01:37 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,12 +102,7 @@ static t_word_desc	*make_word_token(char **line_p, char *line,
 		len++;
 	}
 	if (quote)
-	{
-		e->status = ST_ERR_SYNTAX;
-		e->msg = SYNTAX_ERROR_STR;
-		e->detail = NULL;
-		return (NULL);
-	}
+		return (e->status = ST_ERR_SYNTAX, e->msg = SYNTAX_ERROR_STR, e->detail = QUOTE_ERROR_STR, NULL);
 	return (make_token(line_p, len, TK_WORD, e));
 }
 
@@ -151,15 +146,14 @@ t_token_list	*append_token(char *line)
 	t_token_list	*cur;
 	t_token_error	e;
 
+	head.next = NULL;
 	cur = &head;
 	while (*line)
 	{
 		memset(&e, 0, sizeof(e));
 		if (is_shellbrank(*line))
 			skip_shellbrank(&line);
-		if (!(*line))
-			break ;
-		if (*line == '#')
+		if (!*line || *line == '#')
 			return (head.next);
 		cur = make_word_list_wrapper(cur, &line, line, &e);
 		if (e.status != ST_OK)
@@ -168,7 +162,7 @@ t_token_list	*append_token(char *line)
 			if (e.status == ST_ERR_NOMEM)
 				exit(1);
 			else
-				return (NULL);
+				return (parser_operator_error(e.msg, e.detail),NULL);
 		}
 	}
 	return (head.next);
@@ -201,51 +195,3 @@ t_token_list *tokenize(char *line)
 	}
 	return (list);
 }
-
-// t_token_list	*tokenize(char *line)
-// {
-// 	t_token_list	head;
-// 	t_token_list	*cur;
-// 	t_token_list	*eof;
-// 	t_word_desc		*token;
-// 	t_token_error	e;
-// 	int				operator_idx;
-
-// 	head.next = NULL;
-// 	cur = &head;
-// 	while (*line)
-// 	{
-// 		token = NULL;
-// 		memset(&e, 0, sizeof(e));
-// 		if (is_shellbrank(*line))
-// 			skip_shellbrank(&line);
-// 		if (!(*line))
-// 			break ;
-// 		if (*line == '#')
-// 			return (head.next);
-// 		else if (is_word(line))
-// 			token = make_word_token(&line, line, &e);
-// 		else if (is_operator(line))
-// 			token = make_operator_token(&line, line, &e);
-// 		if (token)
-// 			cur = make_word_list(cur, token);
-// 		if (e.status != ST_ERR_NOMEM)
-// 		{
-// 			return (NULL);
-// 		}
-// 		if (!cur)
-// 		{
-// 			dispose_word(token);
-// 			dispose_token_words(head.next);
-// 			exit(1);
-// 		}
-// 	}
-// 	memset(&e, 0, sizeof(e));
-// 	cur = make_word_list(cur, make_token(NULL, 0, TK_EOF, &e));
-// 	if (!cur)
-// 	{
-// 		dispose_token_words(head.next);
-// 		exit(1);
-// 	}
-// 	return (head.next);
-// }

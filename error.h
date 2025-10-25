@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 15:42:24 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/23 09:35:37 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/25 12:03:34 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,11 @@
 
 # define MALLOC_ERROR_STR "cannnot allocate"
 # define SYNTAX_ERROR_STR "syntax error"
+# define QUOTE_ERROR_STR "unclosed quote"
 # define NOT_SUPPORTED_STR "not supported operator"
 
 void fatal_error(char *func, char *str);
 void parser_error(char *str);
-void parser_operator_error(char *str, char *op);
+void parser_operator_error(const char *msg, const char *detail);
 
 #endif
