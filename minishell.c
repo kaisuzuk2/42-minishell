@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:13:31 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/26 08:51:32 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/26 11:01:31 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,13 +141,15 @@ void show_token_list(t_token_list *token)
 /*
 parse test
 */
-int main(void)
+int main(int argc, char *argv[], char *envp[])
 {
 	char *line;
 
 	t_token_list *token;
 	t_command *parse;
+	t_varlist *env;
 	
+	env = initialize_shell_variables(envp);
 	parse = NULL;
 	token = NULL;
 	while (1)
@@ -168,7 +170,7 @@ int main(void)
 		if (!parse)
 			continue ;
 		dispose_token_words(token);
-		// expand(parse);
+		expand(env, parse);
 		show_parse_list(parse);
 		// interpret(line);
 		dispose_command(parse);

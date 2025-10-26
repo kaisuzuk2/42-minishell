@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 08:02:57 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/24 16:59:38 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/26 12:48:50 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,10 @@ t_bool bind_variable(t_varlist *env, char *key, char *value)
 // ### TODO: フラグチェック
 char *list_getenv(t_varlist *env, char *key)
 {
+	if (!key)
+		return (NULL);
+	if (*key == 0)
+		return (NULL);
 	while (env->next)
 	{
 		if (!ft_strcmp(env->list->name, key)) // ### TODO: strcmpでいいか確認

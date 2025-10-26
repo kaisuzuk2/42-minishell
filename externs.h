@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/23 13:30:27 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/26 13:11:18 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ t_command		*parser(t_token_list *token);
 
 // expand.c
 t_bool			expand(t_varlist *env, t_command *command);
+
+// subst.c
 char			*expand_string_to_string(t_varlist *env, char *document);
 
 // list.c
