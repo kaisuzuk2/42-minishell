@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/26 14:37:51 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/26 18:07:34 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,8 @@ int				do_redirections(t_redirect *redirect, t_varlist *env);
 char			*make_here_document(char *here_doc_eof);
 
 // builtin.c
-int execute_builtin_command(t_command *cmd, t_varlist *env);
-t_builtin_func	*find_shell_builtin(const char *name);
-t_bool is_builtin(char *command);
+int execute_builtin_command(t_command *cmd, const char *builtin_list[], const t_builtin_func builtin_table[], t_varlist *env);
+t_bool is_builtin(char *command, const char *builtin_list[]);
 
 // builtin_echo.c
 int				builtin_echo(t_word_list *list, t_varlist *env);

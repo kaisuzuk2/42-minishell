@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 10:31:38 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/26 16:16:04 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/26 18:25:17 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,13 @@ static void	execute_disk_command(t_command *cmd, t_varlist *env)
 	exit(shell_execve(command, arg, envarr));
 }
 
-static int	execute_simple_command( t_pipefd pipefd, t_command *cmd,
+static int	execute_simple_command(t_pipefd pipefd, t_command *cmd,
 		int close_fd, t_varlist *env)
 {
-	const pid_t		pid = fork();
+	pid_t			pid;
 	t_builtin_func	*builtin;
 
+	pid = fork();
 	if (pid < 0)
 		return (EXECUTION_FAILURE); // ### TODO: エラー処理
 	if (pid == 0)
@@ -111,22 +112,21 @@ static int	execute_simple_command( t_pipefd pipefd, t_command *cmd,
 
 int	execute_pipeline(t_command *cmd, t_varlist *env)
 {
-	int fildes[2];
-	t_pipefd pipefd;
-	pid_t lastpid;
-	t_command *cur_cmd;
+	int			fildes[2];
+	t_pipefd	pipefd;
+	pid_t		lastpid;
+	t_command	*cur_cmd;
 
 	cur_cmd = cmd;
 	pipefd.pipe_in = -1;
-	// if (is_builtin(cur_cmd->command->words->word->word) && !cur_cmd->next)
-	// 	return (execute_builtin_command(cur_cmd->command, env));
 	while (cur_cmd)
 	{
 		pipefd.pipe_out = -1;
 		if (cur_cmd->next)
 		{
 			if (!execute_pipe_internal(&pipefd, fildes))
-				return (dispose_command(cmd), EXECUTION_FAILURE); // ### TODO: エラー処理
+				return (dispose_command(cmd), EXECUTION_FAILURE);
+			// ### TODO: エラー処理
 		}
 		else
 			fildes[0] = -1;
@@ -137,4 +137,16 @@ int	execute_pipeline(t_command *cmd, t_varlist *env)
 		cur_cmd = cur_cmd->next;
 	}
 	return (wait_for(lastpid));
+}
+
+int	execute_cmd(t_command *cmd, t_varlist *env)
+{
+	const char				*builtin_list[] = {"cd", "echo", "env", "export",
+						"pwd", "unset"};
+	const t_builtin_func	builtin_table[] = {builtin_cd, builtin_echo,
+			builtin_env, builtin_export, builtin_pwd, builtin_unset};
+
+	if (!cmd->next && is_builtin(cmd->command->words->word->word, builtin_list))
+		return (execute_builtin_command(cmd->command,builtin_list, builtin_table, env));
+	return (execute_pipeline(cmd, env));
 }

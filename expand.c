@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 14:05:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/26 13:15:09 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/26 16:52:18 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@ t_bool	is_hasdollar(t_word_desc *desc);
 t_bool is_d_quote(t_word_desc *desc);
 t_bool is_s_quote(t_word_desc *desc);
 char	*string_quote_removal(char *string, char quote);
+
+
+// ### TODO: ~と?の展開
+
 
 static t_bool expand_dollar(t_varlist *env, t_word_desc *desc)
 {
