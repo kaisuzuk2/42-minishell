@@ -6,13 +6,13 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 10:01:13 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/19 13:36:45 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/26 14:55:57 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*heredoc_expand(t_redirect *r, size_t *lenp, t_varlist *env);
+char		*heredoc_expand(t_redirect *r, size_t *lenp, t_varlist *env);
 
 int	sh_mktmpfd(const char *nameroot, char **filename)
 {
@@ -119,7 +119,6 @@ static int	do_redirection_internal(t_redirect *r)
 			// return (sys_error("cannot duplicate fd"), close(fd),
 			// 	EXECUTION_FAILURE);
 			return (EXECUTION_FAILURE); // ### TODO: エラー処理
-
 		}
 		close(fd);
 		r = r->next;
@@ -127,18 +126,18 @@ static int	do_redirection_internal(t_redirect *r)
 	return (EXECUTION_SUCCESS);
 }
 
-int	do_redirections(t_redirect *redirect, t_varlist *env)
+int	do_redirections(t_redirect *redir, t_varlist *env)
 {
-	int	here_fd;
+	int here_fd;
 
-	if (redirect->instruction == r_input_direction
-		|| redirect->instruction == r_output_direction
-		|| redirect->instruction == r_appending_to)
-		if (do_redirection_internal(redirect) == EXECUTION_FAILURE)
+	if (redir->instruction == r_input_direction
+		|| redir->instruction == r_output_direction
+		|| redir->instruction == r_appending_to)
+		if (do_redirection_internal(redir) == EXECUTION_FAILURE)
 			return (EXECUTION_FAILURE);
-	if (redirect->instruction == r_reading_until)
+	if (redir->instruction == r_reading_until)
 	{
-		here_fd = here_document_to_fd(redirect, env);
+		here_fd = here_document_to_fd(redir, env);
 		if (here_fd == EXECUTION_FAILURE)
 			return (EXECUTION_FAILURE);
 		if (dup2(here_fd, STDIN_FILENO) < 0)

@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 13:13:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/26 10:43:16 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/26 15:47:24 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ static t_command	*add_command(t_command *cur, t_token_list **token_p,
 	}
 	if (is_wordtoken(token->word->kind))
 		cur->command = make_simple_command(token_p, token, e);
-	if (is_pipetoken(token->word->kind))
+	else if (is_pipetoken(token->word->kind))
 		return (make_connection_command(cur, token_p, CM_CONNECTION, e));
 	return (cur);
 }
@@ -138,7 +138,7 @@ t_command	*parser(t_token_list *token)
 	t_command		*head;
 	t_command		*cur;
 
-	head = (t_command *)xcalloc(sizeof(t_command), 1);
+	head = new_command(CM_CONNECTION);
 	if (!head)
 	{
 		dispose_token_words(token);

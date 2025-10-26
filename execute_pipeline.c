@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 10:31:38 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/24 17:04:21 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/26 16:16:04 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,10 @@ static void	execute_disk_command(t_command *cmd, t_varlist *env)
 {
 	char	*command;
 	char	**arg;
-	char **envarr;
+	char	**envarr;
 
-	if (cmd->command->redirects && do_redirections(cmd->command->redirects, env) != 0)
+	if (cmd->command->redirects && do_redirections(cmd->command->redirects,
+			env) != 0)
 	{
 		exit(EXECUTION_FAILURE); // ### TODO: エラー処理
 	}
@@ -82,11 +83,11 @@ static void	execute_disk_command(t_command *cmd, t_varlist *env)
 	exit(shell_execve(command, arg, envarr));
 }
 
-static int	execute_simple_command(t_command *cmd, t_pipefd pipefd,
+static int	execute_simple_command( t_pipefd pipefd, t_command *cmd,
 		int close_fd, t_varlist *env)
 {
-	const pid_t	pid = fork();
-	t_builtin_func *builtin;
+	const pid_t		pid = fork();
+	t_builtin_func	*builtin;
 
 	if (pid < 0)
 		return (EXECUTION_FAILURE); // ### TODO: エラー処理
@@ -96,19 +97,19 @@ static int	execute_simple_command(t_command *cmd, t_pipefd pipefd,
 			close(close_fd);
 		if (!do_piping(pipefd.pipe_in, pipefd.pipe_out))
 			return (EXECUTION_FAILURE); // ### TODO: エラー処理
-		if (find_shell_builtin(cmd->command->words->word->word))
-		{
-			builtin = find_shell_builtin(cmd->command->words->word->word);
-			builtin(cmd->command->words->next, env);
-			exit(99);
-		}
-		else
-			execute_disk_command(cmd, env);
+		// if (find_shell_builtin(cmd->command->words->word->word))
+		// {
+		// 	builtin = find_shell_builtin(cmd->command->words->word->word);
+		// 	builtin(cmd->command->words->next, env);
+		// 	exit(99);
+		// }
+		// else
+		execute_disk_command(cmd, env);
 	}
 	return (pid);
 }
 
-int	execute_pipeline(t_varlist *env, t_command *cmd)
+int	execute_pipeline(t_command *cmd, t_varlist *env)
 {
 	int fildes[2];
 	t_pipefd pipefd;
@@ -117,19 +118,23 @@ int	execute_pipeline(t_varlist *env, t_command *cmd)
 
 	cur_cmd = cmd;
 	pipefd.pipe_in = -1;
-	pipefd.pipe_out = -1;
-	fildes[0] = -1;
-	fildes[1] = -1;
-	if (is_builtin(cur_cmd->command->words->word->word) && !cur_cmd->next)
-		return (execute_builtin_command(cur_cmd->command, env));
-	while (cur_cmd->next)
+	// if (is_builtin(cur_cmd->command->words->word->word) && !cur_cmd->next)
+	// 	return (execute_builtin_command(cur_cmd->command, env));
+	while (cur_cmd)
 	{
 		pipefd.pipe_out = -1;
-		if (!execute_pipe_internal(&pipefd, fildes))
-			return (EXECUTION_FAILURE); //### TODO: エラー処理
-		lastpid = execute_simple_command(cur_cmd, pipefd, fildes[0], env);
+		if (cur_cmd->next)
+		{
+			if (!execute_pipe_internal(&pipefd, fildes))
+				return (dispose_command(cmd), EXECUTION_FAILURE); // ### TODO: エラー処理
+		}
+		else
+			fildes[0] = -1;
+		lastpid = execute_simple_command(pipefd, cur_cmd, fildes[0], env);
+		close_pipe(&pipefd);
+		if (cur_cmd->next)
+			pipefd.pipe_in = fildes[0];
 		cur_cmd = cur_cmd->next;
 	}
-	lastpid = execute_simple_command(cur_cmd, pipefd, fildes[0], env);
 	return (wait_for(lastpid));
 }

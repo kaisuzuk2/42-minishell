@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:13:31 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/26 11:01:31 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/26 16:09:56 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,57 +141,22 @@ void show_token_list(t_token_list *token)
 /*
 parse test
 */
-int main(int argc, char *argv[], char *envp[])
-{
-	char *line;
-
-	t_token_list *token;
-	t_command *parse;
-	t_varlist *env;
-	
-	env = initialize_shell_variables(envp);
-	parse = NULL;
-	token = NULL;
-	while (1)
-	{
-		//### TODO:  prompt is $PS1
-		line = readline("minishell$ ");
-
-		if (!line)
-			break;
-		if (*line)
-			add_history(line);
-		token = tokenize(line);
-		if (!token)
-			continue ;
-		show_token_list(token);
-		// dispose_token_words(token);
-		parse = parser(token);
-		if (!parse)
-			continue ;
-		dispose_token_words(token);
-		expand(env, parse);
-		show_parse_list(parse);
-		// interpret(line);
-		dispose_command(parse);
-		free(line);
-	}
-	dispose_token_words(token);
-	dispose_command(parse);
-}
-
 // int main(int argc, char *argv[], char *envp[])
 // {
 // 	char *line;
 
 // 	t_token_list *token;
 // 	t_command *parse;
-// 	t_varlist *shell_variables;
-
-// 	shell_variables = initialize_shell_variables(envp);
+// 	t_varlist *env;
+	
+// 	env = initialize_shell_variables(envp);
+// 	parse = NULL;
+// 	token = NULL;
 // 	while (1)
 // 	{
+// 		//### TODO:  prompt is $PS1
 // 		line = readline("minishell$ ");
+
 // 		if (!line)
 // 			break;
 // 		if (*line)
@@ -199,11 +164,46 @@ int main(int argc, char *argv[], char *envp[])
 // 		token = tokenize(line);
 // 		if (!token)
 // 			continue ;
+// 		show_token_list(token);
+// 		// dispose_token_words(token);
 // 		parse = parser(token);
 // 		if (!parse)
 // 			continue ;
-// 		expand(shell_variables, parse);
-// 		// show_envvalue(shell_variables);
-// 		execute_pipeline(shell_variables, parse);
+// 		dispose_token_words(token);
+// 		expand(env, parse);
+// 		show_parse_list(parse);
+// 		// interpret(line);
+// 		dispose_command(parse);
+// 		free(line);
 // 	}
+// 	dispose_token_words(token);
+// 	dispose_command(parse);
 // }
+
+int main(int argc, char *argv[], char *envp[])
+{
+	char *line;
+
+	t_token_list *token;
+	t_command *parse;
+	t_varlist *shell_variables;
+
+	shell_variables = initialize_shell_variables(envp);
+	while (1)
+	{
+		line = readline("minishell$ ");
+		if (!line)
+			break;
+		if (*line)
+			add_history(line);
+		token = tokenize(line);
+		if (!token)
+			continue ;
+		parse = parser(token);
+		if (!parse)
+			continue ;
+		expand(shell_variables, parse);
+		// show_envvalue(shell_variables);
+		execute_pipeline(parse, shell_variables);
+	}
+}

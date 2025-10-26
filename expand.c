@@ -6,96 +6,17 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 14:05:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/26 13:09:41 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/26 13:15:09 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*
-
-フラグを元に条件分岐する
-1) $を展開する
-2) クォートを除去する
-
-チルダを展開する
-
-*/
-
 // expand_utils.c 
 t_bool	is_hasdollar(t_word_desc *desc);
 t_bool is_d_quote(t_word_desc *desc);
 t_bool is_s_quote(t_word_desc *desc);
-
-
-static char	*string_quote_removal(char *string, char quote)
-{
-	char	set[2];
-
-	set[0] = quote;
-	set[1] = '\0';
-	return (ft_strtrim(string, set));
-}
-
-// envkey is alnum or underbar
-static int	get_varlen(char *str)
-{
-	int	res;
-
-	res = 0;
-	while (*str)
-	{
-		if (!(ft_isalnum(*str)) && !(*str == '_')) 
-			break ;
-		res++;
-		str++;
-	}
-	return (res);
-}
-
-static char	*get_varvalue(t_varlist *env, char *doll_ptr)
-{
-	char	*varname;
-	char	*varvalue;
-
-	varvalue = NULL;
-	varname = ft_substr(doll_ptr + 1, 0, get_varlen(doll_ptr + 1));
-	if (!varname)
-		return (NULL);
-	varvalue = list_getenv(env, varname);
-	free(varname);
-	if (!varvalue)
-		return ("");
-	return (varvalue);
-}
-
-static char	*join_string_until_varvalue(char *res, char **document)
-{
-	char	*doll_ptr;
-	char	*tmp;
-	char	*res_tmp;
-
-	doll_ptr = ft_strchr(*document, '$');
-	tmp = ft_substr(*document, 0, (doll_ptr - *document));
-	if (!tmp)
-		return (free(res), NULL);
-	res_tmp = ft_strjoin(res, tmp);
-	free(res);
-	free(tmp);
-	*document = doll_ptr + 1 + get_varlen(doll_ptr + 1);
-	return (res_tmp);
-}
-
-static char	*append_remainder(char *document, char *remainder)
-{
-	char	*res;
-
-	if (!remainder)
-		return (document);
-	res = ft_strjoin(document, remainder);
-	free(document);
-	return (res);
-}
+char	*string_quote_removal(char *string, char quote);
 
 static t_bool expand_dollar(t_varlist *env, t_word_desc *desc)
 {
