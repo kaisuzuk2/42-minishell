@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:23:18 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/23 13:35:38 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/26 10:14:29 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,14 @@ static char	*documentcat(char *document, char *buf)
 		free(document);
 		document = ft_strdup(buf);
 		if (!document)
-			return (fatal_error("malloc", MALLOC_ERROR_STR), NULL);
+			return (fatal_error("malloc", MALLOC_ERR_STR), NULL);
 	}
 	else
 	{
 		tmp = ft_strjoin(document, buf);
 		free(document);
 		if (!tmp)
-			return (fatal_error("malloc", MALLOC_ERROR_STR), NULL);
+			return (fatal_error("malloc", MALLOC_ERR_STR), NULL);
 		document = tmp;
 	}
 	return (document);
@@ -60,7 +60,7 @@ char	*make_here_document(char *here_doc_eof)
 
 	document = strdup("");
 	if (!document)
-		return(fatal_error("malloc", MALLOC_ERROR_STR), NULL);
+		return(fatal_error("malloc", MALLOC_ERR_STR), NULL);
 	while (1)
 	{
 		buf = readline("> "); // ### TODO: プロンプトは$PS2

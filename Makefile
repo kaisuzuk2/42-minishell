@@ -6,7 +6,7 @@
 #    By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/07 14:10:24 by kaisuzuk          #+#    #+#              #
-#    Updated: 2025/10/25 11:52:10 by kaisuzuk         ###   ########.fr        #
+#    Updated: 2025/10/26 10:20:29 by kaisuzuk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,8 @@ SRCS	=	minishell.c \
 			parser.c \
 			parser_redirect.c \
 			parser_utils.c \
+			parser_error.c \
+			parser_is_tokenkind.c \
 			expand.c \
 			dispose_cmd.c \
 			execute_pipeline.c \

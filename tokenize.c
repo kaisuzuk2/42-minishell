@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/26 09:07:35 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/26 10:39:58 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 void				skip_shellbrank(char **line);
 void				set_token_flg(char *line, t_word_desc *desc);
 t_bool				startswith(const char *s, const char *op);
-static t_word_desc	*make_token(char **line, size_t len, t_token_kind kind,
+t_word_desc	*make_token(char **line, size_t len, t_token_kind kind,
 						t_token_error *e);
 t_token_list		*make_word_list(t_token_list *cur, t_word_desc *desc,
 						t_token_error *e);
@@ -42,7 +42,7 @@ static t_word_desc	*make_operator_token(char **line_p, char *line,
 	while (i < sizeof(unsupport_operators) / sizeof(unsupport_operators[0]))
 	{
 		if (!startswith(line, unsupport_operators[i]))
-			return (e->status = ST_ERR_SYNTAX, e->msg = NOT_SUPPORTED_STR,
+			return (e->status = ST_ERR_SYNTAX, e->msg = NOSUP_STR,
 				e->detail = unsupport_operators[i], NULL);
 		i++;
 	}
@@ -78,8 +78,10 @@ static t_word_desc	*make_word_token(char **line_p, char *line,
 		len++;
 	}
 	if (quote)
-		return (e->status = ST_ERR_SYNTAX, e->msg = SYNTAX_ERROR_STR,
-			e->detail = QUOTE_ERROR_STR, NULL);
+	{
+		return (e->status = ST_ERR_SYNTAX, e->msg = SYNTAX_ERR_STR,
+			e->detail = QUOTE_ERR_STR, NULL);
+	}
 	return (make_token(line_p, len, TK_WORD, e));
 }
 

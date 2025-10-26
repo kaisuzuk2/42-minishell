@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 13:13:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/26 08:56:53 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/26 10:43:16 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,20 @@ t_bool				set_redirect(t_redirect *redir, t_redirect_info info,
 t_word_desc			*tokendup(t_word_desc *desc);
 t_command			*new_command(t_command_type type);
 t_bool				is_redirect(t_token_kind kind);
-int					parse_error(t_token_error *e, t_token_list *token,
-						t_command *command);
 t_redirect			*connect_redirection(t_command *command,
 						t_token_list **token);
+
+// parser_error.c
 void				set_parse_error(t_token_status status, const char *msg,
 						const char *detail, t_token_error *e);
+int					parse_error(t_token_error *e, t_token_list *token,
+						t_command *command);
+
+// parser_is_tokenkind.c
+t_bool				is_redirect(t_token_kind kind);
+t_bool				is_wordtoken(t_token_kind kind);
+t_bool				is_eoftoken(t_token_kind kind);
+t_bool				is_pipetoken(t_token_kind kind);
 
 static t_word_list	*append_command_words(t_command *command,
 		t_token_list **token_p, t_token_list *token)
@@ -51,7 +59,6 @@ static t_word_list	*append_command_words(t_command *command,
 	return (list);
 }
 
-// setting local errno
 static t_command	*make_simple_command(t_token_list **token_p,
 		t_token_list *token, t_token_error *e)
 {
@@ -59,26 +66,24 @@ static t_command	*make_simple_command(t_token_list **token_p,
 
 	command = new_command(CM_SIMPLE);
 	if (!command)
-		return (e->status = ST_ERR_NOMEM, NULL);
-	while (token->word->kind != TK_EOF && token->word->kind != TK_PIPE)
+		return (set_parse_error(ST_ERR_NOMEM, NULL, NULL, e), NULL);
+	while (!is_eoftoken(token->word->kind) && !is_pipetoken(token->word->kind))
 	{
-		if (token->word->kind == TK_WORD)
+		if (is_wordtoken(token->word->kind))
 		{
 			if (!append_command_words(command, &token, token))
-				return (dispose_simple_command(command),
-					set_parse_error(ST_ERR_NOMEM, NULL, NULL, e), NULL);
+				set_parse_error(ST_ERR_NOMEM, NULL, NULL, e);
 		}
 		else if (is_redirect(token->word->kind)
-			&& token->next->word->kind == TK_WORD)
+			&& is_wordtoken(token->next->word->kind))
 		{
 			if (!connect_redirection(command, &token))
-				return (dispose_simple_command(command),
-					set_parse_error(ST_ERR_NOMEM, NULL, NULL, e), NULL);
+				set_parse_error(ST_ERR_NOMEM, NULL, NULL, e);
 		}
 		else
-			return (dispose_simple_command(command),
-				set_parse_error(ST_ERR_SYNTAX, PARSE_ERROR_STR,
-					token->word->word, e), NULL);
+			set_parse_error(ST_ERR_SYNTAX, PARSE_ERR_STR, token->word->word, e);
+		if (e->status != ST_OK)
+			return (dispose_simple_command(command), NULL);
 	}
 	*token_p = token;
 	return (command);
@@ -91,7 +96,7 @@ static t_command	*make_connection_command(t_command *cur,
 
 	if (!cur->command)
 	{
-		set_parse_error(ST_ERR_SYNTAX, PARSE_ERROR_STR, (*token_p)->word->word,
+		set_parse_error(ST_ERR_SYNTAX, PARSE_ERR_STR, (*token_p)->word->word,
 			e);
 		return (NULL);
 	}
@@ -110,19 +115,19 @@ static t_command	*make_connection_command(t_command *cur,
 static t_command	*add_command(t_command *cur, t_token_list **token_p,
 		t_token_list *token, t_token_error *e)
 {
-	if (!cur->command && token->word->kind == TK_PIPE)
+	if (!cur->command && !is_wordtoken(token->word->kind))
 	{
-		set_parse_error(ST_ERR_SYNTAX, PARSE_ERROR_STR, token->word->word, e);
+		set_parse_error(ST_ERR_SYNTAX, PARSE_ERR_STR, token->word->word, e);
 		return (NULL);
 	}
-	if (token->word->kind == TK_PIPE && token->next->word->kind == TK_EOF)
+	if (is_pipetoken(token->word->kind) && is_eoftoken(token->next->word->kind))
 	{
-		set_parse_error(ST_ERR_SYNTAX, PARSE_ERROR_STR, token->word->word, e);
+		set_parse_error(ST_ERR_SYNTAX, PARSE_ERR_STR, token->word->word, e);
 		return (NULL);
 	}
-	if (token->word->kind == TK_WORD)
+	if (is_wordtoken(token->word->kind))
 		cur->command = make_simple_command(token_p, token, e);
-	if (token->word->kind == TK_PIPE)
+	if (is_pipetoken(token->word->kind))
 		return (make_connection_command(cur, token_p, CM_CONNECTION, e));
 	return (cur);
 }
@@ -140,7 +145,7 @@ t_command	*parser(t_token_list *token)
 		exit(1);
 	}
 	cur = head;
-	while (token && token->word->kind != TK_EOF)
+	while (token && !is_eoftoken(token->word->kind))
 	{
 		memset(&e, 0, sizeof(e));
 		cur = add_command(cur, &token, token, &e);

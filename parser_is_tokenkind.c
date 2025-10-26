@@ -1,26 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.h                                            :+:      :+:    :+:   */
+/*   parser_is_tokenkind.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/22 15:42:24 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/26 10:13:18 by kaisuzuk         ###   ########.fr       */
+/*   Created: 2025/10/26 09:43:21 by kaisuzuk          #+#    #+#             */
+/*   Updated: 2025/10/26 09:44:13 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ERROR_H
-# define ERROR_H
+#include "minishell.h"
 
-# define MALLOC_ERR_STR "cannnot allocate"
-# define SYNTAX_ERR_STR "syntax error"
-# define QUOTE_ERR_STR "unclosed quote"
-# define NOSUP_STR "not supported operator"
-# define PARSE_ERR_STR "syntax error near unexpected token"
+t_bool	is_redirect(t_token_kind kind)
+{
+	return (kind == TK_GREAT_GREAT || kind == TK_GREAT || kind == TK_LESS_LESS
+		|| kind == TK_LESS);
+}
 
-void fatal_error(char *func, char *str);
-void parser_error(char *str);
-void parser_operator_error(const char *msg, const char *detail);
+t_bool is_wordtoken(t_token_kind kind)
+{
+	return (kind == TK_WORD);
+}
 
-#endif
+t_bool is_eoftoken(t_token_kind kind)
+{
+	return (kind == TK_EOF);
+}
+
+t_bool is_pipetoken(t_token_kind kind)
+{
+	return (kind == TK_PIPE);
+}

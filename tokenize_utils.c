@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 10:39:48 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/26 09:08:29 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/26 10:39:32 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_bool	startswith(const char *s, const char *op)
 	return (ft_strncmp(s, op, ft_strlen(op)));
 }
 
-static t_word_desc	*make_token(char **line, size_t len, t_token_kind kind,
+t_word_desc	*make_token(char **line, size_t len, t_token_kind kind,
 		t_token_error *e)
 {
 	t_word_desc	*desc;
@@ -73,7 +73,7 @@ t_token_list	*make_word_list(t_token_list *cur, t_word_desc *desc,
 	new = (t_token_list *)xcalloc(sizeof(t_token_list), 1);
 	if (!new)
 		return (dispose_word(desc), e->status = ST_ERR_NOMEM,
-			e->msg = MALLOC_ERROR_STR, NULL);
+			e->msg = MALLOC_ERR_STR, NULL);
 	new->word = desc;
 	cur->next = new;
 	return (new);
