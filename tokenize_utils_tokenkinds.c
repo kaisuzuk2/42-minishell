@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 10:35:48 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/23 13:25:49 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/26 09:09:09 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,10 @@ t_bool	is_word(char *line)
 
 t_bool	is_operator(char *line)
 {
-	int	i;
+	int			i;
+	const char	*operators[] = {"&&", "&", "||", "|", ";;", ";", "<>", "<<-",
+			"<<", "<&", "<", ">|", ">>", ">&", ">", "(", ")"};
 
-	static char *const operators[] = {"&&", "&", "||", "|", ";;", ";", "<>" , "<<-" , "<<", "<&" ,"<", ">|", ">>", ">&" ,">", "(", ")"};
 	i = 0;
 	while (i < sizeof(operators) / sizeof(operators[0]))
 	{
@@ -45,7 +46,7 @@ t_bool	is_operator(char *line)
 	return (FALSE);
 }
 
-t_bool is_quote(char c)
+t_bool	is_quote(char c)
 {
 	return (c == '\'' || c == '\"');
 }

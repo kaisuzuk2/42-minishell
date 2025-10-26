@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/25 12:04:27 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/26 09:07:35 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@
 void				skip_shellbrank(char **line);
 void				set_token_flg(char *line, t_word_desc *desc);
 t_bool				startswith(const char *s, const char *op);
+static t_word_desc	*make_token(char **line, size_t len, t_token_kind kind,
+						t_token_error *e);
+t_token_list		*make_word_list(t_token_list *cur, t_word_desc *desc,
+						t_token_error *e);
 
 // tokenize_utils_tokenkinds.c
 t_bool				is_shellbrank(char c);
@@ -24,44 +28,16 @@ char				*is_metacharacter(char c);
 t_bool				is_operator(char *line);
 t_bool				is_quote(char c);
 
-static t_word_desc	*make_token(char **line, size_t len, t_token_kind kind,
-		t_token_error *e)
-{
-	t_word_desc	*desc;
-	char		*word;
-
-	desc = (t_word_desc *)xcalloc(sizeof(t_word_desc), 1);
-	if (!desc)
-		return (e->status = ST_ERR_NOMEM, NULL);
-	desc->flag = W_NOEXPAND;
-	if (!line)
-		word = NULL;
-	else
-	{
-		set_token_flg(*line, desc);
-		word = (char *)xmalloc(sizeof(char) * (len + 1));
-		if (!word)
-			return (free(desc), e->status = ST_ERR_NOMEM, NULL);
-		ft_memcpy(word, *line, len);
-		word[len] = '\0';
-		*line += len;
-	}
-	desc->word = word;
-	desc->kind = kind;
-	return (desc);
-}
-
-// 見つからなかったときの-1をdefineに設定
 static t_word_desc	*make_operator_token(char **line_p, char *line,
 		t_token_error *e)
 {
-	int			i;
-	int const	operators_table[] = {TK_LESS_LESS, TK_LESS, TK_GREAT_GREAT,
-			TK_GREAT, TK_PIPE};
+	int					i;
+	const t_token_kind	operators_table[] = {TK_LESS_LESS, TK_LESS,
+			TK_GREAT_GREAT, TK_GREAT, TK_PIPE};
+	const char			*operators[] = {"<<", "<", ">>", ">", "|"};
+	const char			*unsupport_operators[] = {"&&", "&", "||", ";;", ";",
+					"<>", "<<-", "<&", ">|", ">&", "(", ")"};
 
-	char *const operators[] = {"<<", "<", ">>", ">", "|"};
-	char *const unsupport_operators[] = {"&&", "&", "||", ";;", ";", "<>",
-		"<<-", "<&", ">|", ">&", "(", ")"};
 	i = 0;
 	while (i < sizeof(unsupport_operators) / sizeof(unsupport_operators[0]))
 	{
@@ -105,22 +81,6 @@ static t_word_desc	*make_word_token(char **line_p, char *line,
 		return (e->status = ST_ERR_SYNTAX, e->msg = SYNTAX_ERROR_STR,
 			e->detail = QUOTE_ERROR_STR, NULL);
 	return (make_token(line_p, len, TK_WORD, e));
-}
-
-t_token_list	*make_word_list(t_token_list *cur, t_word_desc *desc,
-		t_token_error *e)
-{
-	t_token_list	*new;
-
-	if (!desc)
-		return (NULL);
-	new = (t_token_list *)xcalloc(sizeof(t_token_list), 1);
-	if (!new)
-		return (dispose_word(desc), e->status = ST_ERR_NOMEM,
-			e->msg = MALLOC_ERROR_STR, NULL);
-	new->word = desc;
-	cur->next = new;
-	return (new);
 }
 
 static t_token_list	*make_word_list_wrapper(t_token_list *cur, char **line_p,
