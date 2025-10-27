@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/27 15:21:42 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/27 15:40:30 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ char			*make_here_document(char *here_doc_eof);
 // builtin.c
 const t_builtin_table get_builtin_table(void);
 int				execute_builtin_command(t_command *cmd,
-					t_builtin *builtin_table, const size_t table_size,  t_varlist *env);
-t_bool			is_builtin(char *command, t_builtin *builtin_table, const size_t table_size);
+					const t_builtin *builtin_table, const size_t table_size,  t_varlist *env);
+t_bool			is_builtin(char *command, const t_builtin *builtin_table, const size_t table_size);
 
 
 // builtin_echo.c

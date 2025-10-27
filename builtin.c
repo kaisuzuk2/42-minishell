@@ -6,14 +6,14 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 10:13:08 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/27 15:35:36 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/27 15:39:23 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static t_builtin_func	*find_builtin_func(const char *name,
-		t_builtin *builtin_table, const size_t table_size)
+		const t_builtin *builtin_table, const size_t table_size)
 {
 	int	i;
 
@@ -27,7 +27,7 @@ static t_builtin_func	*find_builtin_func(const char *name,
 	return (NULL);
 }
 
-t_bool	is_builtin(char *command, t_builtin *builtin_table, const size_t table_size)
+t_bool	is_builtin(char *command, const t_builtin *builtin_table, const size_t table_size)
 {
 	int	i;
 
@@ -41,7 +41,7 @@ t_bool	is_builtin(char *command, t_builtin *builtin_table, const size_t table_si
 	return (FALSE);
 }
 
-int	execute_builtin_command(t_command *cmd, t_builtin *builtin_table,
+int	execute_builtin_command(t_command *cmd, const t_builtin *builtin_table,
 		const size_t table_size, t_varlist *env)
 {
 	char *command;

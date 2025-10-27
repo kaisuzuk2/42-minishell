@@ -6,11 +6,14 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 10:39:59 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/27 13:25:25 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/27 16:21:09 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// execute_pipeline.c
+pid_t	wait_for(pid_t lastpid);
 
 t_bool	open_pipe(t_pipefd *pipefd, int *fildes)
 {

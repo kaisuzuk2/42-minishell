@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 10:31:38 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/27 15:23:15 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/27 15:42:16 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static int	shell_execve(char *command, char **arg, char **env)
 	return (i);
 }
 
-static int	execute_disk_command(t_command *cmd, t_builtin *builtin_table,
+static int	execute_disk_command(t_command *cmd, const t_builtin *builtin_table,
 		const size_t table_size, t_varlist *env)
 {
 	char	*command;
@@ -157,21 +157,3 @@ int	execute_pipeline(t_command *cmd, t_varlist *env)
 	}
 	return (wait_for(lastpid));
 }
-
-// int	execute_cmd(t_command *cmd, t_varlist *env)
-// {
-
-// 	t_builtin_func	*f;
-// 	int				exit_status;
-
-// 	if (!cmd->next && is_builtin(cmd->command->words->word->word, builtin_table,
-// 			table_size))
-// 		return (execute_builtin_command(cmd, builtin_table, table_size, env));
-// 	return (execute_pipeline(cmd, env));
-// 	exit_status = execute_pipeline(cmd, env);
-// 	if (exit_status == EXECUTION_FAILURE)
-// 	{
-// 		dispose_command(cmd);
-// 		exit(1);
-// 	}
-// }
