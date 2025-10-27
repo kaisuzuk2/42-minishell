@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 10:17:13 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/27 09:40:52 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/27 15:32:25 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,11 @@ typedef struct s_builtin
 	char *name;
 	t_builtin_func *f;
 } t_builtin;
+
+typedef struct s_builtin_table
+{
+	const t_builtin *table;
+	size_t size;
+} t_builtin_table;
 
 #endif

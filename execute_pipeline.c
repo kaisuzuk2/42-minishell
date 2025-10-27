@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 10:31:38 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/27 13:28:49 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/27 15:23:15 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@
    a shell script.
 */
 
-t_bool			do_piping(int pipe_in, int pipe_out);
-void			close_pipe(t_pipefd *pipefd);
-int				open_pipe(t_pipefd *pipefd, int *fildes);
-int				execute_pipe_internal(t_pipefd *pipefd, int *fildes);
+t_bool		do_piping(int pipe_in, int pipe_out);
+void		close_pipe(t_pipefd *pipefd);
+int			open_pipe(t_pipefd *pipefd, int *fildes);
+int			execute_pipe_internal(t_pipefd *pipefd, int *fildes);
 
 pid_t	wait_for(pid_t lastpid)
 {
@@ -76,7 +76,8 @@ static int	shell_execve(char *command, char **arg, char **env)
 	return (i);
 }
 
-static int	execute_disk_command(t_command *cmd, t_varlist *env)
+static int	execute_disk_command(t_command *cmd, t_builtin *builtin_table,
+		const size_t table_size, t_varlist *env)
 {
 	char	*command;
 	char	**arg;
@@ -85,9 +86,11 @@ static int	execute_disk_command(t_command *cmd, t_varlist *env)
 	if (cmd->command->redirects && do_redirections(cmd->command->redirects,
 			env) != 0)
 		return (EXECUTION_FAILURE);
+	if (is_builtin(cmd->command->words->word->word, builtin_table, table_size))
+		exit(execute_builtin_command(cmd, builtin_table, table_size, env));
 	command = search_for_command(cmd->command->words->word->word, env);
 	if (!command)
-		return (fatal_error("malloc", MALLOC_ERR_STR),EXECUTION_FAILURE);
+		return (fatal_error("malloc", MALLOC_ERR_STR), EXECUTION_FAILURE);
 	arg = strvec_from_word_list(cmd->command->words);
 	if (!arg)
 		return (fatal_error("malloc", MALLOC_ERR_STR), EXECUTION_FAILURE);
@@ -100,24 +103,34 @@ static int	execute_disk_command(t_command *cmd, t_varlist *env)
 static int	execute_simple_command(t_pipefd pipefd, t_command *cmd,
 		int close_fd, t_varlist *env)
 {
-	pid_t	pid;
+	pid_t			pid;
+	t_builtin_table builtin_info;
 
+	builtin_info = get_builtin_table();
+	if (pipefd.pipe_in == -1 && pipefd.pipe_out == -1
+		&& is_builtin(cmd->command->words->word->word, builtin_info.table,
+			builtin_info.size))
+		return (execute_builtin_command(cmd, builtin_info.table, builtin_info.size, env));
 	pid = fork();
 	if (pid < 0)
-		return (sys_error("fork failed"), EXECUTION_FAILURE); 
+	{
+		sys_error("fork failed");
+		exit(1);
+	}
 	if (pid == 0)
 	{
 		if (close_fd != -1)
 			close(close_fd);
 		if (!do_piping(pipefd.pipe_in, pipefd.pipe_out))
-			return (EXECUTION_FAILURE); 
-		if (execute_disk_command(cmd, env) == EXECUTION_FAILURE)
-			exit (1);
+			exit(1);
+		if (execute_disk_command(cmd, builtin_info.table, builtin_info.size,
+				env) == EXECUTION_FAILURE)
+			exit(1);
 	}
 	return (pid);
 }
 
-static int	execute_pipeline(t_command *cmd, t_varlist *env)
+int	execute_pipeline(t_command *cmd, t_varlist *env)
 {
 	int			fildes[2];
 	t_pipefd	pipefd;
@@ -145,29 +158,20 @@ static int	execute_pipeline(t_command *cmd, t_varlist *env)
 	return (wait_for(lastpid));
 }
 
-int	execute_cmd(t_command *cmd, t_varlist *env)
-{
-	const t_builtin builtin_table[] = {
-		{"cd", builtin_cd},
-		{"echo", builtin_echo},
-		{"env", builtin_env},
-		{"export", builtin_export},
-		{"pwd", builtin_pwd},
-		{"unset", builtin_unset},
-	};
-	const size_t	table_size = sizeof(builtin_table) / sizeof(builtin_table[0]);
-	t_builtin_func *f;
-	int exit_status;
-	
-	if (!cmd->next && is_builtin(cmd->command->words->word->word, builtin_table,
-			table_size))
-		return (execute_builtin_command(cmd, builtin_table, table_size,
-				env));
-	return (execute_pipeline(cmd, env));
-	exit_status = execute_pipeline(cmd, env);
-	if (exit_status == EXECUTION_FAILURE)
-	{
-		dispose_command(cmd);
-		exit (1);
-	}
-}
+// int	execute_cmd(t_command *cmd, t_varlist *env)
+// {
+
+// 	t_builtin_func	*f;
+// 	int				exit_status;
+
+// 	if (!cmd->next && is_builtin(cmd->command->words->word->word, builtin_table,
+// 			table_size))
+// 		return (execute_builtin_command(cmd, builtin_table, table_size, env));
+// 	return (execute_pipeline(cmd, env));
+// 	exit_status = execute_pipeline(cmd, env);
+// 	if (exit_status == EXECUTION_FAILURE)
+// 	{
+// 		dispose_command(cmd);
+// 		exit(1);
+// 	}
+// }

@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/27 12:09:37 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/27 15:21:42 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char			*expand_string_to_string(t_varlist *env, char *document);
 size_t			list_length(t_generic_list *list);
 
 // execute_pipeline.c
-int				execute_cmd(t_command *cmd, t_varlist *env);
+int	execute_pipeline(t_command *cmd, t_varlist *env);
 
 // findcmd.c
 char			*search_for_command(char *cmd, t_varlist *env);
@@ -57,9 +57,11 @@ int				do_redirections(t_redirect *redirect, t_varlist *env);
 char			*make_here_document(char *here_doc_eof);
 
 // builtin.c
+const t_builtin_table get_builtin_table(void);
 int				execute_builtin_command(t_command *cmd,
-					const t_builtin *builtin_table, const size_t table_size,  t_varlist *env);
-t_bool			is_builtin(char *command, const t_builtin *builtin_table, const size_t table_size);
+					t_builtin *builtin_table, const size_t table_size,  t_varlist *env);
+t_bool			is_builtin(char *command, t_builtin *builtin_table, const size_t table_size);
+
 
 // builtin_echo.c
 int				builtin_echo(t_word_list *list, t_varlist *env);
