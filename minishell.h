@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:12:50 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/25 10:07:59 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/27 13:23:10 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef int t_bool;
 #include <fcntl.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <errno.h>
 
 #include "command.h"
 #include "builtin.h"

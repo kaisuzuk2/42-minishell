@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 10:13:08 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/27 09:40:45 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/27 13:28:19 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,11 @@ int	execute_builtin_command(t_command *cmd, const t_builtin *builtin_table,
 	t_word_list *arg;
 	t_builtin_func *f;
 
-	command = cmd->words->word->word;
+	command = cmd->command->words->word->word;
 	f = NULL;
 	f = find_builtin_func(command, builtin_table, table_size);
 	if (!f)
-		return (99); // ### TODO: エラー処理
+		return (internal_error(BUILTIN_ERR_STR, command), EXECUTION_FAILURE);
 	arg = cmd->words->next;
 	return ((*f)(arg, env));
 }

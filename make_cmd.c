@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:23:18 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/26 10:14:29 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/27 12:25:21 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*heredoc_expand(t_redirect *r, size_t *lenp, t_varlist *env)
 {
-	if (r->redirectee.filename->flag != W_SQUOTE && r->redirectee.filename->flag != W_DQUOTE && ft_strchr(r->redirectee.filename->word, '$'))
+	if (!is_s_quote(r->redirectee.filename->flag) && !is_d_quote(r->redirectee.filename->flag) && ft_strchr(r->redirectee.filename->word, '$')) // ### TODO: is_hasdollar?
 		r->redirectee.filename->word = expand_string_to_string(env, r->redirectee.filename->word);
 	if (r->redirectee.filename->word)
 		*lenp = ft_strlen(r->redirectee.filename->word);

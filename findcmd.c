@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 12:29:59 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/19 13:43:52 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/27 13:11:39 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,7 @@ static t_bool	file_status(char *full_path, char **file_to_lose_on)
 			if (!*file_to_lose_on)
 				*file_to_lose_on = savestring(full_path);
 			if (!*file_to_lose_on)
-			{
-				return (FALSE); // ### TODO: エラー処理
-			}
+				return (FALSE); 
 			return (FALSE);
 		}
 	}
@@ -62,9 +60,7 @@ static char	*find_user_command_in_path(char *cmd, char **path_list,
 	{
 		full_path = join_path_element(path_list[i], cmd);
 		if (!full_path)
-		{
-			return (NULL); // ### TODO: エラー処理
-		}
+			return (NULL); 
 		if (file_status(full_path, file_to_lose_on))
 			break ;
 		else
@@ -91,9 +87,7 @@ char	*search_for_command(char *cmd, t_varlist *env)
 		return (savestring(cmd));
 	path_list = ft_split(path, ':');
 	if (!path_list)
-	{
-		return (NULL); //### TODO: エラー処理
-	}
+		return (NULL); 
 	file_to_lose_on = NULL;
 	full_path = find_user_command_in_path(cmd, path_list, &file_to_lose_on);
 	free_path(path_list);
@@ -101,5 +95,5 @@ char	*search_for_command(char *cmd, t_varlist *env)
 		return (free(file_to_lose_on), full_path);
 	if (file_to_lose_on)
 		return (file_to_lose_on);
-	return (NULL);
+	return (savestring(cmd));
 }

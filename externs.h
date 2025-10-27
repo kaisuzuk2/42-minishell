@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/27 09:34:22 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/27 12:09:37 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,12 @@ t_command		*parser(t_token_list *token);
 
 // expand.c
 t_bool			expand(t_varlist *env, t_command *command);
+
+// expand_utils.c 
+t_bool	is_hasdollar(t_word_desc *desc);
+t_bool is_d_quote(t_word_desc *desc);
+t_bool is_s_quote(t_word_desc *desc);
+char	*string_quote_removal(char *string, char quote);
 
 // subst.c
 char			*expand_string_to_string(t_varlist *env, char *document);
