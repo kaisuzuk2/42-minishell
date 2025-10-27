@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:13:31 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/26 16:09:56 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/26 18:29:56 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,6 +204,6 @@ int main(int argc, char *argv[], char *envp[])
 			continue ;
 		expand(shell_variables, parse);
 		// show_envvalue(shell_variables);
-		execute_pipeline(parse, shell_variables);
+		execute_cmd(parse, shell_variables);
 	}
 }
