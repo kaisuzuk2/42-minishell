@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 08:03:44 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/28 17:44:11 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/28 18:34:15 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ typedef struct s_shell_env
 t_shell_env		*initialize_shell_variables(char **envp);;
 
 
-// variables_alloc.c
+// variables_alloc.c ### TODO: newにしたほうがよくね？
 t_shell_var	*create_shell_var(void);
 t_varlist	*create_varlist(void);
 
