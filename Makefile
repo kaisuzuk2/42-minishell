@@ -6,7 +6,7 @@
 #    By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/07 14:10:24 by kaisuzuk          #+#    #+#              #
-#    Updated: 2025/10/28 17:46:06 by kaisuzuk         ###   ########.fr        #
+#    Updated: 2025/10/29 08:45:15 by kaisuzuk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,7 @@ SRCS	=	minishell.c \
 			expand_utils.c \
 			subst.c \
 			dispose_cmd.c \
+			dispose_env.c \
 			execute_pipeline.c \
 			execute_pipeline_utils.c \
 			findcmd.c \

@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 17:27:54 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/28 17:35:23 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/29 08:54:20 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char **get_env_arr(t_varlist *env)
 
 t_shell_var *list_getshell_var(t_varlist *env, char *key)
 {
-	while (env->next)
+	while (env)
 	{
 		if (!ft_strcmp(env->var->name, key))
 			return (env->var);
@@ -50,7 +50,7 @@ char *list_getenv(t_varlist *env, char *key)
 		return (NULL);
 	if (*key == 0)
 		return (NULL);
-	while (env->next)
+	while (env)
 	{
 		if (!ft_strcmp(env->var->name, key)) // ### TODO: strcmpでいいか確認
 			return (env->var->value);
