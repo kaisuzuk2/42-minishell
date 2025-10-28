@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 12:31:16 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/16 12:31:26 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/28 15:09:18 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,6 @@ char	*savestring(char *str)
 
 	res = ft_strdup(str);
 	if (!res)
-		return (NULL);
+		return (fatal_error("malloc", MALLOC_ERR_STR), NULL);
 	return (res);
 }

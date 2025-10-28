@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 08:02:57 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/28 14:39:11 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/28 17:00:56 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,11 +149,11 @@ t_bool add_variable_item(t_varlist *env, char *exportstr)
 {
 	while (env->next)
 		env = env->next;
-	if (!set_variable_name(env->var, exportstr));
+	if (!set_variable_name(env->var, exportstr))
 		return (FALSE);
 	if (!set_variable_value(env->var, exportstr))
 		return (FALSE);
-	if (!set_variable_exportstr(env->var, exportstr));
+	if (!set_variable_exportstr(env->var, exportstr))
 		return (FALSE);
 	set_variable_attributes(env->var);	
 	env->next = create_varlist();
@@ -188,12 +188,40 @@ t_varlist	*set_variable_item(t_varlist *head, char **envp)
 		cur->next = create_varlist();
 		if (!cur->next)
 			return (NULL); // ### TODO: エラー処理
+		cur->next->var = create_shell_var();
+		if (!cur->next->var)
+			return (NULL);
 		cur = cur->next;
 		i++;
 	}
 	return (head);
 }
 
+static t_bool init_pwd(t_shell_env *shell_env)
+{
+	char *pwd;
+
+	pwd = list_getenv(shell_env->env, "PWD");
+	if (!pwd)
+	{
+		shell_env->tcwd = getcwd(NULL, 0);
+		if (!shell_env->tcwd)
+			return (sys_error("getcwd failed"), FALSE);
+		pwd = ft_strjoin("PWD=", shell_env->tcwd);
+		if (!pwd)
+			return (fatal_error("malloc", MALLOC_ERR_STR), FALSE);
+		add_variable_item(shell_env->env, pwd); // ### TODO: エラー処理
+		return (TRUE);
+	}
+	shell_env->tcwd = savestring(pwd);
+	if (!shell_env->tcwd)
+		return (FALSE);
+	return (TRUE);
+
+
+}
+
+// ### TODO: 全体のエラー処理
 t_shell_env	*initialize_shell_variables(char **envp)
 {
 	t_shell_env *shell_env;
@@ -207,5 +235,7 @@ t_shell_env	*initialize_shell_variables(char **envp)
 	shell_env->env = set_variable_item(shell_env->env, envp);
 	if (!shell_env->env)
 		return (NULL);
+	if (!init_pwd(shell_env))
+		return (printf("### here\n"), NULL);
 	return (shell_env);
 }
