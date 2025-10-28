@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/28 17:35:53 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/28 17:44:31 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,14 +84,7 @@ int				builtin_pwd(t_word_list *list, t_shell_env *shell_env);
 // builtin_cd.c
 int				builtin_cd(t_word_list *list, t_shell_env *shell_env);
 
-// variables.c
-t_shell_env		*initialize_shell_variables(char **envp);
-t_shell_var		*create_shell_var(void);
-t_varlist		*create_varlist(void);
-t_bool			set_variable_name(t_shell_var *map, char *env);
-t_bool			set_variable_value(t_shell_var *map, char *env);
-t_bool			set_variable_exportstr(t_shell_var *map, char *env);
-void			set_variable_attributes(t_shell_var *map);
+// variables.c ?? これなんの関数だっけ
 t_bool			bind_variable(t_varlist *env, char *key, char *value);
 
 // env_utils.c

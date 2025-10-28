@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:12:50 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/28 11:23:10 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/28 17:41:21 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef int t_bool;
 #include "variables.h"
 #include "error.h"
 #include "xmalloc.h"
+#include "variables.h"
 
 #include "ft_printf.h"
 #include "libft.h"

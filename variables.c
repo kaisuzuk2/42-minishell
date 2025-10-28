@@ -6,23 +6,13 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 08:02:57 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/28 17:37:12 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/28 17:41:23 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // ### TODO: exportフラグチェック
-
-// variables_alloc.c
-t_shell_var	*create_shell_var(void);
-t_varlist	*create_varlist(void);
-
-//variables_set.c
-t_bool	set_variable_name(t_shell_var *map, char *env);
-t_bool	set_variable_value(t_shell_var *map, char *env);
-t_bool	set_variable_exportstr(t_shell_var *map, char *env);
-void set_variable_attributes(t_shell_var *map);
 
 t_bool bind_variable(t_varlist *env, char *key, char *value)
 {

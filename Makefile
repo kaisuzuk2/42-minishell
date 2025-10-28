@@ -6,7 +6,7 @@
 #    By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/07 14:10:24 by kaisuzuk          #+#    #+#              #
-#    Updated: 2025/10/26 14:41:32 by kaisuzuk         ###   ########.fr        #
+#    Updated: 2025/10/28 17:46:06 by kaisuzuk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,6 +58,9 @@ SRCS	=	minishell.c \
 			builtin_pwd.c \
 			builtin_cd.c \
 			variables.c \
+			variables_alloc.c \
+			variables_set.c \
+			env_utils.c \
 			error.c \
 			xmalloc.c
 
