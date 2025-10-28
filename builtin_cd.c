@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 11:03:04 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/22 15:14:26 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/28 14:12:24 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,14 +175,16 @@ static int	change_to_directory(char *path)
 	return (chdir(path));
 }
 
-int builtin_cd(t_word_list *list, t_varlist *env)
+int builtin_cd(t_word_list *list, t_shell_env *shell_env)
 {
 	char *dirname;
 	int lcd_printpath;
 	char *t;
 	char *new_path;
 	int e;
+	t_varlist *env;
 
+	env = shell_env->env;
 	lcd_printpath = 0;
 	if (!list || !list->word->word[0])
 	{

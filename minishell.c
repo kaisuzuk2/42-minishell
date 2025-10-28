@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:13:31 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/27 15:03:18 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/28 13:54:58 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ void show_envvalue(t_varlist *list)
 {
 	while (list->next)
 	{
-		printf("%s=%s\n", list->list->name, list->list->value);
+		printf("%s=%s\n", list->var->name, list->var->value);
 		list = list->next;
 	}
 }
@@ -186,7 +186,7 @@ int main(int argc, char *argv[], char *envp[])
 
 	t_token_list *token;
 	t_command *parse;
-	t_varlist *shell_variables;
+	t_shell_env *shell_variables;
 
 	shell_variables = initialize_shell_variables(envp);
 	while (1)
@@ -202,7 +202,7 @@ int main(int argc, char *argv[], char *envp[])
 		parse = parser(token);
 		if (!parse)
 			continue ;
-		expand(shell_variables, parse);
+		expand(shell_variables->env, parse);
 		// show_envvalue(shell_variables);
 		execute_pipeline(parse, shell_variables);
 	}

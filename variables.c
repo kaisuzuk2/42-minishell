@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 08:02:57 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/26 12:48:50 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/28 14:39:11 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char **get_env_arr(t_varlist *env)
 	i = 0;
 	while (i < len - 1)
 	{
-		res[i] = savestring(env->list->exportstr);	
+		res[i] = savestring(env->var->exportstr);	
 		env = env->next;
 		i++;
 	}
@@ -37,8 +37,8 @@ t_shell_var *list_getshell_var(t_varlist *env, char *key)
 {
 	while (env->next)
 	{
-		if (!ft_strcmp(env->list->name, key))
-			return (env->list);
+		if (!ft_strcmp(env->var->name, key))
+			return (env->var);
 		env = env->next;
 	}
 	return (NULL);
@@ -65,8 +65,8 @@ char *list_getenv(t_varlist *env, char *key)
 		return (NULL);
 	while (env->next)
 	{
-		if (!ft_strcmp(env->list->name, key)) // ### TODO: strcmpでいいか確認
-			return (env->list->value);
+		if (!ft_strcmp(env->var->name, key)) // ### TODO: strcmpでいいか確認
+			return (env->var->value);
 		env = env->next;
 	}
 	return (NULL);
@@ -149,18 +149,18 @@ t_bool add_variable_item(t_varlist *env, char *exportstr)
 {
 	while (env->next)
 		env = env->next;
-	if (!set_variable_name(env->list, exportstr));
+	if (!set_variable_name(env->var, exportstr));
 		return (FALSE);
-	if (!set_variable_value(env->list, exportstr))
+	if (!set_variable_value(env->var, exportstr))
 		return (FALSE);
-	if (!set_variable_exportstr(env->list, exportstr));
+	if (!set_variable_exportstr(env->var, exportstr));
 		return (FALSE);
-	set_variable_attributes(env->list);	
+	set_variable_attributes(env->var);	
 	env->next = create_varlist();
 	if (!env->next)
 		return (FALSE); // ### TODO: エラー処理
-	env->next->list = create_shell_var();
-	if (!env->next->list)
+	env->next->var = create_shell_var();
+	if (!env->next->var)
 		return (FALSE); // ### TODO: エラー処理
 	return (TRUE);
 }
@@ -175,16 +175,16 @@ t_varlist	*set_variable_item(t_varlist *head, char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		cur->list = create_shell_var();
-		if (!cur->list)
+		cur->var = create_shell_var();
+		if (!cur->var)
 			return (NULL); // ### TODO: エラー処理
-		if (!set_variable_value(cur->list, envp[i]))
+		if (!set_variable_value(cur->var, envp[i]))
 			return (NULL);
-		if (!set_variable_name(cur->list, envp[i]))
+		if (!set_variable_name(cur->var, envp[i]))
 			return (NULL);
-		if (!set_variable_exportstr(cur->list, envp[i]))
+		if (!set_variable_exportstr(cur->var, envp[i]))
 			return (NULL);
-		set_variable_attributes(cur->list);
+		set_variable_attributes(cur->var);
 		cur->next = create_varlist();
 		if (!cur->next)
 			return (NULL); // ### TODO: エラー処理
@@ -194,12 +194,18 @@ t_varlist	*set_variable_item(t_varlist *head, char **envp)
 	return (head);
 }
 
-t_varlist	*initialize_shell_variables(char **envp)
+t_shell_env	*initialize_shell_variables(char **envp)
 {
-	t_varlist *head;
+	t_shell_env *shell_env;
 
-	head = (t_varlist *)ft_calloc(sizeof(t_varlist), 1);
-	if (!head)
+	shell_env = (t_shell_env *)ft_calloc(sizeof(t_shell_env), 1);
+	if (!shell_env)
+		return (NULL);
+	shell_env->env = create_varlist();
+	if (!shell_env->env)
 		return (NULL);                      // ### TODO: エラー処理
-	return (set_variable_item(head, envp)); // ### TODO: エラー処理
+	shell_env->env = set_variable_item(shell_env->env, envp);
+	if (!shell_env->env)
+		return (NULL);
+	return (shell_env);
 }

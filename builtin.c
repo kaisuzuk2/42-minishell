@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 10:13:08 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/27 15:39:23 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/28 13:56:43 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_bool	is_builtin(char *command, const t_builtin *builtin_table, const size_t ta
 }
 
 int	execute_builtin_command(t_command *cmd, const t_builtin *builtin_table,
-		const size_t table_size, t_varlist *env)
+		const size_t table_size, t_shell_env *env)
 {
 	char *command;
 	t_word_list *arg;

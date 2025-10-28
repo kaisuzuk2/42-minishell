@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 11:26:48 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/20 08:33:50 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/28 14:27:32 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ static int builtin_printenv(t_varlist *env)
 	return (1);// ### TODO: 終了ステータス考える
 }
 
-int builtin_env(t_word_list *list, t_varlist *env)
+int builtin_env(t_word_list *list, t_shell_env *shell_env)
 {
 	if (list)
 		return (99); // ### TODO: エラー処理
-	return (builtin_printenv(env));
+	return (builtin_printenv(shell_env->env));
 }

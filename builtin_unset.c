@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 09:32:20 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/20 10:00:20 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/28 14:11:08 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int unbind_varlist(t_word_list *list, t_varlist *env)
 	t_varlist *t;
 
 	cur = env;
-	while (ft_strcmp(cur->next->list->name, word))// ### TODO: strcmpでいいか確認
+	while (ft_strcmp(cur->next->var->name, word))// ### TODO: strcmpでいいか確認
 	{
 		cur = cur->next;
 		if (!cur)
@@ -36,17 +36,17 @@ static int unbind_varlist(t_word_list *list, t_varlist *env)
 	}
 	t = cur->next;
 	cur->next = t->next;
-	free(t->list->name);
-	free(t->list->value);
-	free(t->list->exportstr);
-	free(t->list);
+	free(t->var->name);
+	free(t->var->value);
+	free(t->var->exportstr);
+	free(t->var);
 	free(t);
 	return (0);
 }
 
-int builtin_unset(t_word_list *list, t_varlist *env)
+int builtin_unset(t_word_list *list, t_shell_env *shell_env)
 {
 	if (!list)
 		return (0);
-	return (unbind_varlist(list,env));
+	return (unbind_varlist(list,shell_env->env));
 }
