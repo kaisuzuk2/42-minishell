@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 17:27:54 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/29 12:22:31 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/29 13:27:38 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,21 @@ static t_bool add_variable_item(t_varlist *env, char *exportstr)
 		return (FALSE);
 	set_variable_attributes(env->var);	
 	return (TRUE);
+}
+
+t_bool update_key_value(t_varlist *env, char *key, char *value)
+{
+	char *exportstr_tmp;
+	char *exportstr;
+
+	exportstr_tmp = ft_strjoin(key, "=");
+	if (!exportstr_tmp)
+		return (FALSE);
+	exportstr = ft_strjoin(exportstr_tmp, value);
+	if (!exportstr)
+		return (free(exportstr_tmp), fatal_error("malloc", MALLOC_ERR_STR), FALSE);
+	free(exportstr_tmp);
+	return (update_variable_item(env, exportstr));
 }
 
 t_bool update_variable_item(t_varlist *env, char *exportstr)

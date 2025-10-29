@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 10:31:38 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/28 14:36:22 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/29 13:39:52 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ static int	execute_disk_command(t_command *cmd, const t_builtin *builtin_table,
 	command = search_for_command(cmd->command->words->word->word, shell_env->env);
 	if (!command)
 		return (fatal_error("malloc", MALLOC_ERR_STR), EXECUTION_FAILURE);
+	if (!update_key_value(shell_env->env, "_", command))
+		return (EXECUTION_FAILURE);
 	arg = strvec_from_word_list(cmd->command->words);
 	if (!arg)
 		return (fatal_error("malloc", MALLOC_ERR_STR), EXECUTION_FAILURE);
