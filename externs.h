@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/29 13:28:18 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/29 14:46:39 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,5 +97,6 @@ t_bool			update_key_value(t_varlist *env, char *key, char *value);
 
 // dispose_env.c
 void			dispose_env(t_shell_env *shell_env);
+void dispose_shell_var(t_shell_var *var);
 
 #endif

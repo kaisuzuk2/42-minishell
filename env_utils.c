@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 17:27:54 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/29 13:27:38 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/29 14:19:20 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char **get_env_arr(t_varlist *env)
 	if (!res)
 		return (NULL);
 	i = 0;
-	while (i < len - 1)
+	while (i < len)
 	{
 		res[i] = savestring(env->var->exportstr);
 		if (!res[i])

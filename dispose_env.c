@@ -6,13 +6,13 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 18:37:37 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/29 08:46:42 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/29 14:46:16 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void dispose_shell_var(t_shell_var *var)
+void dispose_shell_var(t_shell_var *var)
 {
 	if (var->name)
 		free(var->name);
