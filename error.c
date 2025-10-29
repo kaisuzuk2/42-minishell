@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 15:38:09 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/29 12:14:53 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/29 15:54:16 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,5 @@ void	sys_error(char *err_txt)
 
 void builtin_error(char *func, char *arg, char *msg)
 {
-	ft_dprintf(STDERR_FILENO, "%s: '%s': %s");
+	ft_dprintf(STDERR_FILENO, "minishell: %s: '%s': %s\n", func, arg, msg);
 }

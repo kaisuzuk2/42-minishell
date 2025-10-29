@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 15:42:24 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/29 09:56:26 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/29 15:38:07 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # define BUILTIN_ERR_STR "internal error: builtin function is NULL pointer"
 # define NOTFOUND_STR "command not found"
 # define NOSUP_ARG_ERR "not supported options or arguments"
+# define EXPORT_ERR "not a valid identifier"
 
 void	fatal_error(char *func, char *str);
 void	parser_error(char *str);
