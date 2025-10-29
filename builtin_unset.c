@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 09:32:20 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/29 14:47:56 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/29 14:52:18 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,10 @@
 // }
 
 // ### TODO: strcmpでええかね？
-static t_varlist *unset_env(char *key, t_varlist *env)
+static t_varlist	*unset_env(char *key, t_varlist *env)
 {
-	t_varlist *t;
+	t_varlist	*t;
+	t_varlist *head;
 
 	if (!list_getshell_var(env, key))
 		return (env);
@@ -59,25 +60,26 @@ static t_varlist *unset_env(char *key, t_varlist *env)
 		free(t);
 		return (env);
 	}
+	head = env;
 	while (env)
 	{
 		if (!env->next)
-			break;
+			break ;
 		if (!ft_strcmp(env->next->var->name, key))
 		{
 			t = env->next;
 			env->next = t->next;
 			dispose_shell_var(t->var);
 			free(t);
-			return (env);
+			return (head);
 		}
 		env = env->next;
 	}
-	return (env);
+	return (head);
 }
 
-int builtin_unset(t_word_list *list, t_shell_env *shell_env)
-{	
+int	builtin_unset(t_word_list *list, t_shell_env *shell_env)
+{
 	while (list)
 	{
 		shell_env->env = unset_env(list->word->word, shell_env->env);
