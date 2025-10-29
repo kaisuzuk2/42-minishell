@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/28 18:42:59 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/29 12:10:47 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ t_bool			bind_variable(t_varlist *env, char *key, char *value);
 char			**get_env_arr(t_varlist *env);
 t_shell_var		*list_getshell_var(t_varlist *env, char *key);
 char			*list_getenv(t_varlist *env, char *key);
-t_bool			add_variable_item(t_varlist *env, char *exportstr);
+t_bool			update_variable_item(t_varlist *env, char *exportstr);
 
 // dispose_env.c
 void			dispose_env(t_shell_env *shell_env);

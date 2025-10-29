@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 08:02:57 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/29 09:00:38 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/29 12:20:00 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,29 +66,52 @@ t_varlist	*set_variable_item(char **envp)
 	return (head.next);
 }
 
-static t_bool	init_pwd(t_shell_env *shell_env)
-{
-	char	*pwd;
+// static t_bool	init_pwd(t_shell_env *shell_env)
+// {
+// 	char	*pwd;
 
-	pwd = list_getenv(shell_env->env, "PWD");
-	if (!pwd)
-	{
-		shell_env->tcwd = getcwd(NULL, 0);
-		if (!shell_env->tcwd)
-			return (sys_error("getcwd failed"), FALSE);
-		pwd = ft_strjoin("PWD=", shell_env->tcwd);
-		if (!pwd)
-			return (fatal_error("malloc", MALLOC_ERR_STR), FALSE);
-		if (!add_variable_item(shell_env->env, pwd))
-			return (FALSE);
-		add_variable_item(shell_env->env, pwd); // ### TODO: エラー処理
-		return (TRUE);
-	}
-	shell_env->tcwd = savestring(pwd);
+// 	pwd = list_getenv(shell_env->env, "PWD");
+// 	if (!pwd)
+// 	{
+// 		shell_env->tcwd = getcwd(NULL, 0);
+// 		if (!shell_env->tcwd)
+// 			return (sys_error("getcwd failed"), FALSE);
+// 		pwd = ft_strjoin("PWD=", shell_env->tcwd);
+// 		if (!pwd)
+// 			return (fatal_error("malloc", MALLOC_ERR_STR), FALSE);
+// 		if (!add_variable_item(shell_env->env, pwd))
+// 			return (FALSE);
+// 		add_variable_item(shell_env->env, pwd); // ### TODO: エラー処理
+// 		return (TRUE);
+// 	}
+// 	shell_env->tcwd = savestring(pwd);
+// 	if (!shell_env->tcwd)
+// 		return (FALSE);
+// 	return (TRUE);
+// }
+
+static t_bool init_pwd(t_shell_env *shell_env)
+{
+	char *pwd_value;
+	char *pwd;
+
+	pwd_value = getcwd(NULL, 0);
+	if (!pwd_value)
+		return (sys_error("getcwd failed"), FALSE);
+	shell_env->tcwd = savestring(pwd_value);
 	if (!shell_env->tcwd)
-		return (FALSE);
+		return (free(pwd_value), FALSE);
+	pwd = ft_strjoin("PWD=", pwd_value);
+	if (!pwd)
+		return (free(pwd_value), fatal_error("malloc", MALLOC_ERR_STR), FALSE);
+	free(pwd_value);
+	if (!update_variable_item(shell_env->env, pwd))
+		return (free(pwd), FALSE);
+	free(pwd);
 	return (TRUE);
 }
+
+
 
 t_shell_env	*initialize_shell_variables(char **envp)
 {

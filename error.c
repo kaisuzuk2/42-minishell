@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 15:38:09 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/27 12:24:15 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/29 12:14:53 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,9 @@ void	sys_error(char *err_txt)
 	e = errno;
 	ft_dprintf(STDERR_FILENO, "%s", err_txt);
 	ft_dprintf(STDERR_FILENO, ": %s\n", strerror(e));
+}
+
+void builtin_error(char *func, char *arg, char *msg)
+{
+	ft_dprintf(STDERR_FILENO, "%s: '%s': %s");
 }

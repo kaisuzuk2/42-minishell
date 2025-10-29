@@ -6,11 +6,32 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 17:31:27 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/28 17:31:58 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/29 11:52:27 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char *get_env_key(char *env)
+{
+	char *res;
+	int i;
+
+	if (!ft_strchr(env, '='))
+		return (savestring(env));
+	res = savestring(env);
+	if (!res)
+		return (NULL);
+	i = 0;
+	while (res[i])
+	{
+		if (res[i] == '=')
+			break;
+		i++;
+	}
+	res[i] = '\0';
+	return (res);
+}
 
 t_bool	set_variable_name(t_shell_var *map, char *env)
 {

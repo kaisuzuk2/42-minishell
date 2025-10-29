@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 11:03:04 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/28 14:12:24 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/29 12:15:33 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ static t_bool bindpwd(t_varlist *env, char *old_pwd, char *new_path)
 	
 	if (!list_getshell_var(env, "OLDPWD"))
 	{
-		add_variable_item(env, old_exportstr);	// ### TODO: エラー処理
+		update_variable_item(env, old_exportstr);	// ### TODO: エラー処理
 	}
 	else
 	{
@@ -155,7 +155,7 @@ static t_bool bindpwd(t_varlist *env, char *old_pwd, char *new_path)
 	
 	if (!list_getshell_var(env, "PWD"))
 	{
-		add_variable_item(env, new_exportstr);	// ### TODO: エラー処理
+		update_variable_item(env, new_exportstr);	// ### TODO: エラー処理
 	}
 	else
 	{

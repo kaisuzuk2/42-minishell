@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 17:27:54 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/29 08:59:40 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/29 12:22:31 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,22 @@ char **get_env_arr(t_varlist *env)
 	char **res;
 	int i;
 
-	res = (char **)malloc(sizeof(char *) * len);
+	res = (char **)xmalloc(sizeof(char *) * len);
 	if (!res)
 		return (NULL);
 	i = 0;
 	while (i < len - 1)
 	{
-		res[i] = savestring(env->var->exportstr);	
+		res[i] = savestring(env->var->exportstr);
+		if (!res[i])
+		{
+			while (i >= 0)
+			{
+				free(res[i]);
+				i--;
+			}
+			return (NULL);
+		}
 		env = env->next;
 		i++;
 	}
@@ -59,7 +68,7 @@ char *list_getenv(t_varlist *env, char *key)
 	return (NULL);
 }
 
-t_bool add_variable_item(t_varlist *env, char *exportstr)
+static t_bool add_variable_item(t_varlist *env, char *exportstr)
 {
 	while (env->next)
 		env = env->next;
@@ -77,5 +86,27 @@ t_bool add_variable_item(t_varlist *env, char *exportstr)
 	if (!set_variable_exportstr(env->var, exportstr))
 		return (FALSE);
 	set_variable_attributes(env->var);	
+	return (TRUE);
+}
+
+t_bool update_variable_item(t_varlist *env, char *exportstr)
+{
+	char *key;
+	t_shell_var *target;
+
+	key = get_env_key(exportstr);
+	if (!key)
+		return (FALSE);
+	target = list_getshell_var(env, key);
+	if (!target)
+		return (free(key), add_variable_item(env, exportstr));
+	free(key);
+	free(target->value);
+	free(target->exportstr);
+	set_variable_attributes(target);
+	if (!set_variable_exportstr(target, exportstr))
+		return (FALSE);
+	if (!set_variable_value(target, exportstr))
+		return (FALSE);
 	return (TRUE);
 }

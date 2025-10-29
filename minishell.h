@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:12:50 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/28 17:41:21 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/29 10:09:09 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,10 @@ extern char **environ;
 typedef int t_bool;
 #define TRUE 1
 #define FALSE 0
+
+# define EX_FATAL_ERROR 2
+# define EX_NOEXEC 126
+# define EX_NOTFOUND 127
 
 #include <unistd.h>
 #include <stdlib.h>
