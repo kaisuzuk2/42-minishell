@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 10:56:10 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/28 14:11:51 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/29 09:46:06 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,17 @@ int builtin_pwd(t_word_list *list, t_shell_env *shell_env)
 {
 	char *directory;
 
-	directory = list_getenv(shell_env->env, "PWD");
-	if (!directory || !is_same_file(".", directory, (struct stat *)0, (struct stat *)0))
+	if (shell_env->tcwd)
 	{
-		directory = getcwd(NULL, 0);
-		if (!directory)
-			return (sys_error("pwd failed"), EXECUTION_FAILURE);
-		ft_dprintf(STDOUT_FILENO, "%s\n", directory);
-		free(directory);
+		ft_dprintf(STDOUT_FILENO, "%s\n", shell_env->tcwd);
 		return (EXECUTION_SUCCESS);
 	}
+	else
+		directory = getcwd(NULL, 0);
+	if (!directory)
+		return (sys_error("getcwd failed"), EXECUTION_FAILURE);
 	ft_dprintf(STDOUT_FILENO, "%s\n", directory);
+	free(directory);
 	return (EXECUTION_SUCCESS);
+	
 }
