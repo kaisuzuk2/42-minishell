@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 15:42:24 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/29 15:38:07 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/29 17:41:01 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # define NOTFOUND_STR "command not found"
 # define NOSUP_ARG_ERR "not supported options or arguments"
 # define EXPORT_ERR "not a valid identifier"
+# define ARGNUM_ERR_STR "too many arguments"
 
 void	fatal_error(char *func, char *str);
 void	parser_error(char *str);
