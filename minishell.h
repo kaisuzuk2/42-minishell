@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:12:50 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/29 10:09:09 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/30 15:26:42 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef int t_bool;
 # define EX_FATAL_ERROR 2
 # define EX_NOEXEC 126
 # define EX_NOTFOUND 127
+// # define EX_SHERRBASE 256
 
 #include <unistd.h>
 #include <stdlib.h>

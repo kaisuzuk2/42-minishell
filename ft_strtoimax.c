@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 12:56:01 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/30 14:59:49 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/30 15:02:48 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ intmax_t ft_strtoimax(const char *nptr, char **endptr)
 	while (ft_isdigit(*s))
 	{
 		if (res < cutoff || (res == cutoff && -((*s) - '0') < cutlim))
-			// overflow
+			break;
 		res = res * 10 - ((*s) - '0');
 		s++;
 	}
