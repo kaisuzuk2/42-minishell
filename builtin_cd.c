@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 11:03:04 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/30 09:10:26 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/30 10:03:54 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,12 @@ t_bool			is_interpret_home(t_word_list *list);
 t_bool			is_interpret_oldpwd(t_word_list *list);
 t_bool			is_interpret_cd(t_word_list *list);
 t_bool			valid_cd_path(t_word_list *list);
+t_bool	is_same_file(const char *path1, const char *path2,
+		struct stat *stp1, struct stat *stp2);
 
-static t_bool	is_pathsep(char c)
-{
-	return (c == '/' || c == 0);
-}
+// buintin_cd_canonpath.c
+char *sh_canonpath(char *tmp_path);
+t_bool	is_pathsep(char c);
 
 static t_bool	is_absolute_pathname(const char *string)
 {
@@ -65,54 +66,6 @@ static char	*sh_makepath(char *path, char *dir)
 		return (free(tmp), NULL);
 	free(tmp);
 	return (res);
-}
-
-// 絶対パスの移動 ../ ./ / .. .
-// ../dir
-static char	*sh_canonpath(char *tmp_path)
-{
-	char	*t;
-	char	*p;
-	char	*q;
-	char	*base;
-
-	t = savestring(tmp_path);
-	if (!t)
-		return (NULL); // ### TODO: エラー処理
-	p = t;
-	q = t;
-	p++;
-	q++;
-	base = p;
-	while (*p)
-	{
-		if (*p == '/')
-		{
-			*q = *p;
-			q++;
-			p++;
-		}
-		while (*p && *p == '/')
-			p++;
-		if (p[0] == '.' && (p[1] == '/' || p[1] == '\0'))
-			p += 1;
-		else if (p[0] == '.' && p[1] == '.' && (p[2] == '/' || p[2] == '\0'))
-		{
-			p += 2;
-			q--;
-			if (q > base)
-				while (--q > base && !(*q == '/'))
-					;
-		}
-		else
-		{
-			*q = *p;
-			p++;
-			q++;
-		}
-	}
-	*q = '\0';
-	return (t);
 }
 
 static char	*make_absolute(char *dirname, char *cwd)
@@ -179,27 +132,6 @@ static t_bool	bindpwd(t_varlist *env, char *key, char *value)
 // 	}
 // 	return (TRUE);
 // }
-
-static t_bool	is_same_file(const char *path1, const char *path2,
-		struct stat *stp1, struct stat *stp2)
-{
-	struct stat	st1;
-	struct stat	st2;
-
-	if (!stp1)
-	{
-		if (stat(path1, &st1))
-			return (0);
-		stp1 = &st1;
-	}
-	if (!stp2)
-	{
-		if (stat(path2, &st2))
-			return (0);
-		stp2 = &st2;
-	}
-	return ((stp1->st_dev == stp2->st_dev) && (stp1->st_ino == stp2->st_ino));
-}
 
 static int	change_to_directory(char *newdir, t_shell_env *shell_env)
 {
