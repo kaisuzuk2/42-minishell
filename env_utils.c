@@ -6,11 +6,26 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 17:27:54 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/29 14:19:20 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/30 09:05:45 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_bool set_current_working_directory(t_shell_env *shell_env, char *value)
+{
+	if (shell_env->tcwd)
+		free(shell_env->tcwd);
+	shell_env->tcwd = savestring(value);
+	if (!shell_env->tcwd)
+		return (FALSE);
+	return (TRUE);
+}
+
+char *get_current_working_directory(t_shell_env *shell_env)
+{
+	return (shell_env->tcwd);
+}
 
 char **get_env_arr(t_varlist *env)
 {

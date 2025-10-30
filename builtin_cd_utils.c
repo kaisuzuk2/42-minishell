@@ -29,7 +29,7 @@ t_bool is_interpret_cd(t_word_list * list)
 
 t_bool	valid_cd_path(t_word_list *list)
 {
-	if (list->next)
+	if (list && list->next)
 		return (builtin_error("cd", NULL, ARGNUM_ERR_STR), FALSE);
 	return (TRUE);
 }

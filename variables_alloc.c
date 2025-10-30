@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 17:23:55 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/28 18:35:11 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/30 08:45:33 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,19 @@ t_varlist	*create_varlist(void)
 	if (!varlist)
 		return (NULL); 
 	return (varlist);
+}
+
+char *create_exportstr(char *key, char *value)
+{
+	char *tmp;
+	char *res;
+
+	tmp = ft_strjoin(key, "=");
+	if (!tmp)
+		return (fatal_error("malloc", MALLOC_ERR_STR), NULL);
+	res = ft_strjoin(tmp, value);
+	free(tmp);
+	if (!res)
+		return (fatal_error("malloc", MALLOC_ERR_STR), NULL);
+	return (res);
 }

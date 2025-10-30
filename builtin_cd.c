@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 11:03:04 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/29 18:02:26 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/30 09:10:26 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@
 // /foo/var && ../ && ./ && .
 
 // builtin_cd_utils.c
-t_bool	is_interpret_home(t_word_list *list);
-t_bool	is_interpret_oldpwd(t_word_list *list);
-t_bool	is_interpret_cd(t_word_list *list);
-t_bool	valid_cd_path(t_word_list *list);
+t_bool			is_interpret_home(t_word_list *list);
+t_bool			is_interpret_oldpwd(t_word_list *list);
+t_bool			is_interpret_cd(t_word_list *list);
+t_bool			valid_cd_path(t_word_list *list);
 
 static t_bool	is_pathsep(char c)
 {
@@ -122,55 +122,112 @@ static char	*make_absolute(char *dirname, char *cwd)
 	return (sh_makepath(cwd, dirname));
 }
 
-static t_bool	bindpwd(t_varlist *env, char *old_pwd, char *new_path)
+static t_bool	bindpwd(t_varlist *env, char *key, char *value)
 {
-	char		*tmp;
-	char		*old_exportstr;
-	char		*new_exportstr;
-	t_shell_var	*shell_var;
+	char	*exportstr;
 
-	tmp = ft_strjoin("OLDPWD", "=");
-	if (!tmp)
-		return (99); // ### TODO: エラー処理
-	old_exportstr = ft_strjoin(tmp, old_pwd);
-	if (!old_exportstr)
-		return (free(tmp), 99); // ### TODO: エラー処理
-	tmp = ft_strjoin("PWD", "=");
-	if (!tmp)
-		return (99); // ### TODO: エラー処理
-	new_exportstr = ft_strjoin(tmp, new_path);
-	if (!new_exportstr)
-		return (99); // ### TODO: エラー処理
-	if (!list_getshell_var(env, "OLDPWD"))
-	{
-		update_variable_item(env, old_exportstr); // ### TODO: エラー処理
-	}
-	else
-	{
-		shell_var = list_getshell_var(env, "OLDPWD");
-		free(shell_var->value);
-		free(shell_var->exportstr);
-		shell_var->value = savestring(old_pwd); // ### TODO: エラー処理
-		shell_var->exportstr = savestring(old_exportstr);
-	}
-	if (!list_getshell_var(env, "PWD"))
-	{
-		update_variable_item(env, new_exportstr); // ### TODO: エラー処理
-	}
-	else
-	{
-		shell_var = list_getshell_var(env, "PWD");
-		free(shell_var->value);
-		free(shell_var->exportstr);
-		shell_var->value = savestring(new_path); // ### TODO: エラー処理
-		shell_var->exportstr = savestring(new_exportstr);
-	}
+	exportstr = create_exportstr(key, value);
+	if (!exportstr)
+		return (FALSE);
+	if (!update_variable_item(env, exportstr))
+		return (free(exportstr), FALSE);
 	return (TRUE);
 }
 
-static int	change_to_directory(char *path)
+// static t_bool	bindpwd(t_varlist *env, char *old_pwd, char *new_path)
+// {
+// 	char		*tmp;
+// 	char		*old_exportstr;
+// 	char		*new_exportstr;
+// 	t_shell_var	*shell_var;
+
+// 	tmp = ft_strjoin("OLDPWD", "=");
+// 	if (!tmp)
+// 		return (99); // ### TODO: エラー処理
+// 	old_exportstr = ft_strjoin(tmp, old_pwd);
+// 	if (!old_exportstr)
+// 		return (free(tmp), 99); // ### TODO: エラー処理
+// 	tmp = ft_strjoin("PWD", "=");
+// 	if (!tmp)
+// 		return (99); // ### TODO: エラー処理
+// 	new_exportstr = ft_strjoin(tmp, new_path);
+// 	if (!new_exportstr)
+// 		return (99); // ### TODO: エラー処理
+// 	if (!list_getshell_var(env, "OLDPWD"))
+// 	{
+// 		update_variable_item(env, old_exportstr); // ### TODO: エラー処理
+// 	}
+// 	else
+// 	{
+// 		shell_var = list_getshell_var(env, "OLDPWD");
+// 		free(shell_var->value);
+// 		free(shell_var->exportstr);
+// 		shell_var->value = savestring(old_pwd); // ### TODO: エラー処理
+// 		shell_var->exportstr = savestring(old_exportstr);
+// 	}
+// 	if (!list_getshell_var(env, "PWD"))
+// 	{
+// 		update_variable_item(env, new_exportstr); // ### TODO: エラー処理
+// 	}
+// 	else
+// 	{
+// 		shell_var = list_getshell_var(env, "PWD");
+// 		free(shell_var->value);
+// 		free(shell_var->exportstr);
+// 		shell_var->value = savestring(new_path); // ### TODO: エラー処理
+// 		shell_var->exportstr = savestring(new_exportstr);
+// 	}
+// 	return (TRUE);
+// }
+
+static t_bool	is_same_file(const char *path1, const char *path2,
+		struct stat *stp1, struct stat *stp2)
 {
-	return (chdir(path));
+	struct stat	st1;
+	struct stat	st2;
+
+	if (!stp1)
+	{
+		if (stat(path1, &st1))
+			return (0);
+		stp1 = &st1;
+	}
+	if (!stp2)
+	{
+		if (stat(path2, &st2))
+			return (0);
+		stp2 = &st2;
+	}
+	return ((stp1->st_dev == stp2->st_dev) && (stp1->st_ino == stp2->st_ino));
+}
+
+static int	change_to_directory(char *newdir, t_shell_env *shell_env)
+{
+	char	*tcwd;
+	char	*tdir;
+	char	*t;
+
+	tcwd = NULL;
+	tcwd = get_current_working_directory(shell_env);
+	if (!tcwd || !is_same_file(tcwd, ".", (struct stat *)0, (struct stat *)0))
+		tcwd = getcwd(NULL, 0);
+	if (!tcwd)
+		return (sys_error("getcwd failed"), 0);
+	t = make_absolute(newdir, tcwd);
+	tdir = sh_canonpath(t);
+	if (!chdir(tdir))
+	{
+		if (!set_current_working_directory(shell_env, tdir))
+			return (EX_FATAL_ERROR);
+		if (!bindpwd(shell_env->env, "OLDPWD", list_getenv(shell_env->env,
+					"PWD")))
+			return (EX_FATAL_ERROR);
+		if (!bindpwd(shell_env->env, "PWD", tdir))
+			return (EX_FATAL_ERROR);
+		free(tdir);
+		return (0);
+	}
+	return (1);
 }
 
 char	*get_interpret_cd(t_word_list *list, t_varlist *env)
@@ -182,7 +239,7 @@ char	*get_interpret_cd(t_word_list *list, t_varlist *env)
 		dirname = list_getenv(env, "HOME");
 		if (!dirname)
 		{
-			builtin_error("cd", "HOME not set");
+			builtin_error("cd", NULL, "HOME not set");
 			return (NULL);
 		}
 	}
@@ -191,7 +248,7 @@ char	*get_interpret_cd(t_word_list *list, t_varlist *env)
 		dirname = list_getenv(env, "OLDPWD");
 		if (!dirname)
 		{
-			builtin_error("cd", "OLDPWD not set");
+			builtin_error("cd", NULL, "OLDPWD not set");
 			return (NULL);
 		}
 	}
@@ -201,20 +258,20 @@ char	*get_interpret_cd(t_word_list *list, t_varlist *env)
 int	builtin_cd(t_word_list *list, t_shell_env *shell_env)
 {
 	char	*dirname;
-	char *t;
+	char	*t;
 
 	if (!valid_cd_path(list))
 		return (EXIT_FAILURE);
 	if (is_interpret_cd(list))
 	{
-		dirname = get_interpret_cd(shell_env->env);
+		dirname = get_interpret_cd(list, shell_env->env);
 		if (!dirname)
 			return (EXIT_FAILURE);
 	}
 	else
 		dirname = list->word->word;
-	t = make_absolute(dirname, )
-	
+	change_to_directory(dirname, shell_env);
+	return (0);
 }
 
 // int builtin_cd(t_word_list *list, t_shell_env *shell_env)

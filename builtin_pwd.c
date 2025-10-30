@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 10:56:10 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/29 09:46:06 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/30 07:43:00 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,26 +20,6 @@
 		if success print getcwd value
 		else print $PWD or the_current_working_directory value (Possibly deleted directory)
 */
-
-static t_bool is_same_file(const char *path1, const char *path2, struct stat *stp1, struct stat *stp2)
-{
-	struct stat st1;
-	struct stat st2;
-
-	if (!stp1)
-	{
-		if (stat(path1, &st1))
-			return (0);
-		stp1 = &st1;
-	}
-	if (!stp2)
-	{
-		if (stat(path2, &st2))
-			return (0);
-		stp2 = &st2;
-	}
-	return ((stp1->st_dev == stp2->st_dev) && (stp1->st_ino == stp2->st_ino));
-}
 
 int builtin_pwd(t_word_list *list, t_shell_env *shell_env)
 {
