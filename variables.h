@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 08:03:44 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/30 08:57:01 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/30 11:37:05 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_shell_env
 {
 	t_varlist *env;
 	char *tcwd;
+	int last_status;
 } t_shell_env;
 
 // variables.c
