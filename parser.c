@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 13:13:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/26 15:47:24 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/30 17:25:42 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,6 @@ t_redirect			*connect_redirection(t_command *command,
 // parser_error.c
 void				set_parse_error(t_token_status status, const char *msg,
 						const char *detail, t_token_error *e);
-int					parse_error(t_token_error *e, t_token_list *token,
-						t_command *command);
-
 // parser_is_tokenkind.c
 t_bool				is_redirect(t_token_kind kind);
 t_bool				is_wordtoken(t_token_kind kind);
@@ -132,7 +129,7 @@ static t_command	*add_command(t_command *cur, t_token_list **token_p,
 	return (cur);
 }
 
-t_command	*parser(t_token_list *token)
+t_command	*parser(t_token_list *token, t_shell_env *shell_env)
 {
 	t_token_error	e;
 	t_command		*head;
@@ -142,6 +139,7 @@ t_command	*parser(t_token_list *token)
 	if (!head)
 	{
 		dispose_token_words(token);
+		dispose_env(shell_env);
 		exit(1);
 	}
 	cur = head;
@@ -149,7 +147,7 @@ t_command	*parser(t_token_list *token)
 	{
 		memset(&e, 0, sizeof(e));
 		cur = add_command(cur, &token, token, &e);
-		if (parse_error(&e, token, head))
+		if (handle_parse_error(&e, token, head, shell_env))
 			return (NULL);
 	}
 	return (head);

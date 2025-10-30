@@ -6,11 +6,21 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 17:27:54 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/30 09:05:45 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/30 16:19:10 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void set_last_status(int s, t_shell_env *env)
+{
+	env->last_status = s;
+}
+
+int get_last_status(t_shell_env *env)
+{
+	return (env->last_status);
+}
 
 t_bool set_current_working_directory(t_shell_env *shell_env, char *value)
 {

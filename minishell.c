@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:13:31 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/28 13:54:58 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/30 17:17:03 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,10 +196,10 @@ int main(int argc, char *argv[], char *envp[])
 			break;
 		if (*line)
 			add_history(line);
-		token = tokenize(line);
+		token = tokenize(line, shell_variables);
 		if (!token)
 			continue ;
-		parse = parser(token);
+		parse = parser(token, shell_variables);
 		if (!parse)
 			continue ;
 		expand(shell_variables->env, parse);

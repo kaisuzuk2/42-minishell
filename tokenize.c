@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/26 10:39:58 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/30 17:26:54 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ static t_token_list	*make_word_list_wrapper(t_token_list *cur, char **line_p,
 	return (list);
 }
 
-t_token_list	*append_token(char *line)
+t_token_list	*append_token(char *line, t_shell_env *shell_env)
 {
 	t_token_list	head;
 	t_token_list	*cur;
@@ -119,32 +119,27 @@ t_token_list	*append_token(char *line)
 		if (!*line || *line == '#')
 			return (head.next);
 		cur = make_word_list_wrapper(cur, &line, line, &e);
-		if (e.status != ST_OK)
-		{
-			dispose_token_words(head.next);
-			if (e.status == ST_ERR_NOMEM)
-				exit(1);
-			else
-				return (parser_operator_error(e.msg, e.detail), NULL);
-		}
+		if (handle_parse_error(&e, head.next, NULL, shell_env))
+			return (NULL);
 	}
 	return (head.next);
 }
 
-t_token_list	*tokenize(char *line)
+t_token_list	*tokenize(char *line, t_shell_env *shell_env)
 {
 	t_token_list	*list;
 	t_token_list	*t;
 	t_word_desc		*eof;
 	t_token_error	e;
 
-	list = append_token(line);
+	list = append_token(line, shell_env);
 	if (!list)
 		return (NULL);
 	eof = make_token(NULL, 0, TK_EOF, &e);
 	if (!eof)
 	{
 		dispose_token_words(list);
+		dispose_env(shell_env);
 		exit(1);
 	}
 	t = list;
@@ -154,6 +149,7 @@ t_token_list	*tokenize(char *line)
 	if (!t)
 	{
 		dispose_token_words(list);
+		dispose_env(shell_env);
 		exit(1);
 	}
 	return (list);

@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/30 16:09:04 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/30 17:26:13 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,14 @@
 # include "variables.h"
 
 // tokenize.c
-t_token_list	*tokenize(char *line);
+t_token_list	*tokenize(char *line, t_shell_env *shell_env);
 
 // parser.c
-t_command		*parser(t_token_list *token);
+t_command		*parser(t_token_list *token, t_shell_env *shell_env);
+
+// parser_error.c
+int					handle_parse_error(t_token_error *e, t_token_list *token, t_command *command, t_shell_env *shell_env);
+
 
 // expand.c
 t_bool			expand(t_varlist *env, t_command *command);
@@ -96,6 +100,8 @@ t_bool			update_variable_item(t_varlist *env, char *exportstr);
 t_bool			update_key_value(t_varlist *env, char *key, char *value);
 char *get_current_working_directory(t_shell_env *shell_env);
 t_bool set_current_working_directory(t_shell_env *shell_env, char *value);
+void set_last_status(int s, t_shell_env *env);
+int get_last_status(t_shell_env *env);
 
 // dispose_env.c
 void			dispose_env(t_shell_env *shell_env);
