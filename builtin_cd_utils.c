@@ -14,7 +14,11 @@
 
 t_bool is_interpret_home(t_word_list *list)
 {
-	return (!list || !list->word->word);
+	if (!list && !list->word->word)
+		return (TRUE);
+	if (list->word->word[0] == '~' && list->word->word[1] == '\0')
+		return (TRUE);
+	return (FALSE);
 }
 
 t_bool is_interpret_oldpwd(t_word_list *list)

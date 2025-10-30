@@ -6,15 +6,11 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 09:15:07 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/30 10:09:15 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/30 10:11:12 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-
-// 絶対パスの移動 ../ ./ / .. .
-// ../dir
 
 static void skip_slashes(char **p)
 {
@@ -70,49 +66,3 @@ char *sh_canonpath(char *tmp_path)
 	*q = '\0';
 	return (base);
 }
-
-// static char	*sh_canonpath(char *tmp_path)
-// {
-// 	char	*t;
-// 	char	*p;
-// 	char	*q;
-// 	char	*base;
-
-// 	t = savestring(tmp_path);
-// 	if (!t)
-// 		return (NULL); // ### TODO: エラー処理
-// 	p = t;
-// 	q = t;
-// 	p++;
-// 	q++;
-// 	base = p;
-// 	while (*p)
-// 	{
-// 		if (*p == '/')
-// 		{
-// 			*q = *p;
-// 			q++;
-// 			p++;
-// 		}
-// 		while (*p && *p == '/')
-// 			p++;
-// 		if (p[0] == '.' && (p[1] == '/' || p[1] == '\0'))
-// 			p += 1;
-// 		else if (p[0] == '.' && p[1] == '.' && (p[2] == '/' || p[2] == '\0'))
-// 		{
-// 			p += 2;
-// 			q--;
-// 			if (q > base)
-// 				while (--q > base && !(*q == '/'))
-// 					;
-// 		}
-// 		else
-// 		{
-// 			*q = *p;
-// 			p++;
-// 			q++;
-// 		}
-// 	}
-// 	*q = '\0';
-// 	return (t);
-// }

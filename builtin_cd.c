@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 11:03:04 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/30 10:03:54 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/30 10:14:22 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,52 +86,6 @@ static t_bool	bindpwd(t_varlist *env, char *key, char *value)
 		return (free(exportstr), FALSE);
 	return (TRUE);
 }
-
-// static t_bool	bindpwd(t_varlist *env, char *old_pwd, char *new_path)
-// {
-// 	char		*tmp;
-// 	char		*old_exportstr;
-// 	char		*new_exportstr;
-// 	t_shell_var	*shell_var;
-
-// 	tmp = ft_strjoin("OLDPWD", "=");
-// 	if (!tmp)
-// 		return (99); // ### TODO: エラー処理
-// 	old_exportstr = ft_strjoin(tmp, old_pwd);
-// 	if (!old_exportstr)
-// 		return (free(tmp), 99); // ### TODO: エラー処理
-// 	tmp = ft_strjoin("PWD", "=");
-// 	if (!tmp)
-// 		return (99); // ### TODO: エラー処理
-// 	new_exportstr = ft_strjoin(tmp, new_path);
-// 	if (!new_exportstr)
-// 		return (99); // ### TODO: エラー処理
-// 	if (!list_getshell_var(env, "OLDPWD"))
-// 	{
-// 		update_variable_item(env, old_exportstr); // ### TODO: エラー処理
-// 	}
-// 	else
-// 	{
-// 		shell_var = list_getshell_var(env, "OLDPWD");
-// 		free(shell_var->value);
-// 		free(shell_var->exportstr);
-// 		shell_var->value = savestring(old_pwd); // ### TODO: エラー処理
-// 		shell_var->exportstr = savestring(old_exportstr);
-// 	}
-// 	if (!list_getshell_var(env, "PWD"))
-// 	{
-// 		update_variable_item(env, new_exportstr); // ### TODO: エラー処理
-// 	}
-// 	else
-// 	{
-// 		shell_var = list_getshell_var(env, "PWD");
-// 		free(shell_var->value);
-// 		free(shell_var->exportstr);
-// 		shell_var->value = savestring(new_path); // ### TODO: エラー処理
-// 		shell_var->exportstr = savestring(new_exportstr);
-// 	}
-// 	return (TRUE);
-// }
 
 static int	change_to_directory(char *newdir, t_shell_env *shell_env)
 {
