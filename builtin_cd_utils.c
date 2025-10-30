@@ -52,6 +52,19 @@ t_bool	is_same_file(const char *path1, const char *path2,
 	return ((stp1->st_dev == stp2->st_dev) && (stp1->st_ino == stp2->st_ino));
 }
 
+t_bool	is_absolute_pathname(const char *string)
+{
+	if (string == 0 || *string == '\0')
+		return (FALSE);
+	if (*string == '/')
+		return (TRUE);
+	if (string[0] == '.' && is_pathsep(string[1]))
+		return (TRUE);
+	if (string[0] == '.' && string[1] == '.' && is_pathsep(string[2]))
+		return (TRUE);
+	return (FALSE);
+}
+
 t_bool	valid_cd_path(t_word_list *list)
 {
 	if (list && list->next)

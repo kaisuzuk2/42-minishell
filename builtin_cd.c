@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 11:03:04 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/30 10:14:22 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/30 11:02:33 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,25 +29,13 @@ t_bool			is_interpret_home(t_word_list *list);
 t_bool			is_interpret_oldpwd(t_word_list *list);
 t_bool			is_interpret_cd(t_word_list *list);
 t_bool			valid_cd_path(t_word_list *list);
-t_bool	is_same_file(const char *path1, const char *path2,
-		struct stat *stp1, struct stat *stp2);
+t_bool			is_same_file(const char *path1, const char *path2,
+					struct stat *stp1, struct stat *stp2);
+t_bool			is_absolute_pathname(const char *string);
 
 // buintin_cd_canonpath.c
-char *sh_canonpath(char *tmp_path);
-t_bool	is_pathsep(char c);
-
-static t_bool	is_absolute_pathname(const char *string)
-{
-	if (string == 0 || *string == '\0')
-		return (FALSE);
-	if (*string == '/')
-		return (TRUE);
-	if (string[0] == '.' && is_pathsep(string[1]))
-		return (TRUE);
-	if (string[0] == '.' && string[1] == '.' && is_pathsep(string[2]))
-		return (TRUE);
-	return (FALSE);
-}
+char			*sh_canonpath(char *tmp_path);
+t_bool			is_pathsep(char c);
 
 // ###TODO: チルダ展開する
 // シンボリックリンクを解決しないからgetcwd使うとおかしくなる
@@ -113,6 +101,7 @@ static int	change_to_directory(char *newdir, t_shell_env *shell_env)
 		free(tdir);
 		return (0);
 	}
+	sys_error("cd");
 	return (1);
 }
 
@@ -145,6 +134,9 @@ int	builtin_cd(t_word_list *list, t_shell_env *shell_env)
 {
 	char	*dirname;
 	char	*t;
+	char	**cdpath;
+	int i;
+	char *newpath;
 
 	if (!valid_cd_path(list))
 		return (EXIT_FAILURE);
@@ -156,6 +148,22 @@ int	builtin_cd(t_word_list *list, t_shell_env *shell_env)
 	}
 	else
 		dirname = list->word->word;
+	if (!is_absolute_pathname(dirname) && list_getenv("CDPATH"))
+	{
+		i = 0;
+		cdpath = ft_split(list_getenv("CDPATH", ':'));
+		if (!cdpath)
+			return (EX_FATAL_ERROR);
+		while (cdpath[i])
+		{
+			newpath = sh_makepath(cdpath[i], dirname);
+			if (!newpath)
+				return (EX_FATAL_ERROR);
+			if (!change_to_directory(newpath, shell_env))
+				return (0);
+			i++;
+		}
+	}
 	change_to_directory(dirname, shell_env);
 	return (0);
 }

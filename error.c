@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 15:38:09 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/29 17:39:58 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/30 10:42:27 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	sys_error(char *err_txt)
 	int	e;
 
 	e = errno;
-	ft_dprintf(STDERR_FILENO, "%s", err_txt);
+	ft_dprintf(STDERR_FILENO, "minishell: %s", err_txt);
 	ft_dprintf(STDERR_FILENO, ": %s\n", strerror(e));
 }
 
