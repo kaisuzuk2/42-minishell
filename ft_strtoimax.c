@@ -6,19 +6,19 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 12:56:01 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/30 15:02:48 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/30 16:14:09 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void skip_space(char **str)
+static void skip_space(const unsigned char **str)
 {
 	while (ft_isspace(**str))
-		(*str)++
+		(*str)++;
 }
 
-static t_bool is_negative(char **str)
+static t_bool is_negative(const unsigned char **str)
 {
 	t_bool res;
 
@@ -31,7 +31,7 @@ static t_bool is_negative(char **str)
 	return (res);
 }
 
-static void set_overflow_num(int *cutoff, int *cutlim, t_bool negative)
+static void set_overflow_num(intmax_t *cutoff, intmax_t *cutlim, t_bool negative)
 {
 	if (negative)
 	{
@@ -67,8 +67,8 @@ intmax_t ft_strtoimax(const char *nptr, char **endptr)
 	if (!negative)
 		res = -res;
 	if (!res && *nptr != '0')
-		*endptr = nptr;
+		*endptr = (char *)nptr;
 	else
-		*endptr = s;
+		*endptr = (char *)s;
 	return (res);
 }

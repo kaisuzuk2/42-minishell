@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 15:22:14 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/30 15:26:51 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/30 16:10:12 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,5 @@ static int	exit_or_logout(t_word_list *list, t_shell_env *shell_env)
 int	builtin_exit(t_word_list *list, t_shell_env *shell_env)
 {
 	ft_dprintf(STDERR_FILENO, "exit\n");
-	return (exit_or_logout(list));
+	return (exit_or_logout(list, shell_env));
 }

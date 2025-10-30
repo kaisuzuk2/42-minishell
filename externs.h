@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/30 09:01:23 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/30 16:09:04 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ int				builtin_echo(t_word_list *list, t_shell_env *shell_env);
 // builtin_env.c
 int				builtin_env(t_word_list *list, t_shell_env *shell_env);
 
-// builtin_export.c
-int				builtin_export(t_word_list *list, t_shell_env *shell_env);
+// builtin_exit.c
+int				builtin_exit(t_word_list *list, t_shell_env *shell_env);
 
 // builtin_export.c
 int				builtin_export(t_word_list *list, t_shell_env *shell_env);

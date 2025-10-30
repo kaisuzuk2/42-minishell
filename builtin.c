@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 10:13:08 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/28 13:56:43 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/30 16:08:06 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ t_builtin_table get_builtin_table(void)
 		{"cd", builtin_cd},
 		{"echo", builtin_echo},
 		{"env", builtin_env},
+		{"exit", builtin_exit}, 
 		{"export", builtin_export},
 		{"pwd", builtin_pwd},
 		{"unset", builtin_unset},

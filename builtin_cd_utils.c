@@ -12,6 +12,11 @@
 
 #include "minishell.h"
 
+t_bool	is_pathsep(char c)
+{
+	return (c == '/' || c == 0);
+}
+
 t_bool is_interpret_home(t_word_list *list)
 {
 	if (!list && !list->word->word)

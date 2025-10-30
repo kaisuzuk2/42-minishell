@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 11:03:04 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/30 11:02:33 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/30 16:06:12 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,10 +148,10 @@ int	builtin_cd(t_word_list *list, t_shell_env *shell_env)
 	}
 	else
 		dirname = list->word->word;
-	if (!is_absolute_pathname(dirname) && list_getenv("CDPATH"))
+	if (!is_absolute_pathname(dirname) && list_getenv(shell_env->env, "CDPATH"))
 	{
 		i = 0;
-		cdpath = ft_split(list_getenv("CDPATH", ':'));
+		cdpath = ft_split(list_getenv(shell_env->env, "CDPATH"), ':');
 		if (!cdpath)
 			return (EX_FATAL_ERROR);
 		while (cdpath[i])

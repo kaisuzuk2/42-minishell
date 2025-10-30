@@ -6,21 +6,19 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 09:15:07 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/30 10:11:12 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/30 16:06:59 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// builtin_cd_utils.c
+t_bool	is_pathsep(char c);
+
 static void skip_slashes(char **p)
 {
 	while (**p == '/')
 		(*p)++;
-}
-
-t_bool	is_pathsep(char c)
-{
-	return (c == '/' || c == 0);
 }
 
 static void remove_parent(char **q, char *base)
