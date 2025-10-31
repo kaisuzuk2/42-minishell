@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 08:02:57 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/29 12:20:00 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/31 09:32:35 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,5 +131,6 @@ t_shell_env	*initialize_shell_variables(char **envp)
 		dispose_env(shell_env);
 		exit(1);
 	}
+	set_last_status(EXECUTION_SUCCESS, shell_env);
 	return (shell_env);
 }

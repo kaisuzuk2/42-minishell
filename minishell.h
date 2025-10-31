@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:12:50 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/31 09:18:04 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/31 09:32:27 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,6 @@ extern char **environ;
 typedef int t_bool;
 #define TRUE 1
 #define FALSE 0
-
-#define EX_SYNTAX_ERROR 2
-# define EX_FATAL_ERROR 2
-# define EX_NOEXEC 126
-# define EX_NOTFOUND 127
-// # define EX_SHERRBASE 256
 
 #include <unistd.h>
 #include <stdlib.h>
@@ -60,6 +54,12 @@ typedef int t_bool;
 
 # define EXECUTION_FAILURE 1
 # define EXECUTION_SUCCESS 0
+
+#define EX_SYNTAX_ERROR 2
+# define EX_FATAL_ERROR 2
+# define EX_NOEXEC 126
+# define EX_NOTFOUND 127
+// # define EX_SHERRBASE 256
 
 typedef struct s_pipefd
 {
