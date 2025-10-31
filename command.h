@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 10:53:00 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/31 09:09:57 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/31 09:39:04 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 
 typedef struct s_glist
 {
-	struct s_glist *next;
-} t_generic_list;
+	struct s_glist		*next;
+}						t_generic_list;
 
 /* **************************************************************** */
 /*										*/
@@ -34,17 +34,17 @@ typedef struct s_glist
 // error chech
 typedef enum e_token_status
 {
-	ST_OK, 
+	ST_OK,
 	ST_ERR_SYNTAX,
 	ST_ERR_NOMEM
-} t_token_status;
+}						t_token_status;
 
 typedef struct s_token_error
 {
-	t_token_status  status;
-	const char *msg;
-	const char *detail;
-} t_token_error;
+	t_token_status		status;
+	const char			*msg;
+	const char			*detail;
+}						t_token_error;
 
 typedef enum e_token_kind
 {
@@ -105,11 +105,11 @@ typedef union
 
 // parser.c set for redirect by table
 typedef struct s_redirect_info
-{	
-	t_token_kind kind;
-	t_instruction instruction;
-	int flag;
-} t_redirect_info;
+{
+	t_token_kind		kind;
+	t_instruction		instruction;
+	int					flag;
+}						t_redirect_info;
 
 typedef struct s_redirect
 {
@@ -123,6 +123,7 @@ typedef struct s_redirect
 
 typedef struct s_command
 {
+	struct s_command	*head;
 	t_command_type		type;
 	// command args : <ls -l> <cat -e>
 	struct s_command	*command;

@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 13:13:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/31 09:10:56 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/31 09:40:25 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,15 +137,17 @@ t_command	*parser(t_token_list *token, t_shell_env *shell_env)
 	{
 		dispose_token_words(token);
 		dispose_env(shell_env);
-		exit(1);
+		exit(EX_FATAL_ERROR);
 	}
 	cur = head;
+	cur->head = head;
 	while (token && !is_eoftoken(token->word->kind))
 	{
 		memset(&e, 0, sizeof(e));
 		cur = add_command(cur, &token, token, &e);
 		if (handle_parse_error(&e, token, head, shell_env))
 			return (NULL);
+		cur->head = head;
 	}
 	return (head);
 }
