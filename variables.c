@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 08:02:57 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/31 09:32:35 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/31 10:40:15 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ static t_bool	set_variable_item_internal(t_shell_var *var, char *envp_str)
 	return (TRUE);
 }
 
-// 先頭のポインタを返す
 t_varlist	*set_variable_item(char **envp)
 {
 	t_varlist	head;
@@ -53,7 +52,7 @@ t_varlist	*set_variable_item(char **envp)
 	while (envp[i])
 	{
 		cur->next = create_varlist();
-		if (!cur->var)
+		if (!cur->next)
 			return (dispose_varlist(head.next), NULL);
 		cur = cur->next;
 		cur->var = create_shell_var();

@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/31 09:11:16 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/31 11:03:24 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void				set_parse_error(t_token_status status, const char *msg,
 						const char *detail, t_token_error *e);
 
 // expand.c
-t_bool			expand(t_varlist *env, t_command *command);
+t_bool			expand(t_varlist *env, t_command *command, t_shell_env *shell_env);
 
 // expand_utils.c
 t_bool			is_hasdollar(t_word_desc *desc);
@@ -107,5 +107,6 @@ int get_last_status(t_shell_env *env);
 // dispose_env.c
 void			dispose_env(t_shell_env *shell_env);
 void dispose_shell_var(t_shell_var *var);
+void dispose_char_arr(char **arr);
 
 #endif

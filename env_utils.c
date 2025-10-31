@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 17:27:54 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/30 16:19:10 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/31 10:41:54 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char **get_env_arr(t_varlist *env)
 	char **res;
 	int i;
 
-	res = (char **)xmalloc(sizeof(char *) * len);
+	res = (char **)xmalloc(sizeof(char *) * (len + 1));
 	if (!res)
 		return (NULL);
 	i = 0;

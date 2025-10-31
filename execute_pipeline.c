@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 10:31:38 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/29 13:39:52 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/31 11:50:27 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static int	shell_execve(char *command, char **arg, char **env)
 	// 	execve(re_args[0], re_args, envp);
 	// 	i = errno;
 	// }
-	return (i);
+	return (EXECUTION_FAILURE);
 }
 
 static int	execute_disk_command(t_command *cmd, const t_builtin *builtin_table,
@@ -87,26 +87,26 @@ static int	execute_disk_command(t_command *cmd, const t_builtin *builtin_table,
 			shell_env->env) != 0)
 		return (EXECUTION_FAILURE);
 	if (is_builtin(cmd->command->words->word->word, builtin_table, table_size))
-		exit(execute_builtin_command(cmd, builtin_table, table_size, shell_env));
+		return (execute_builtin_command(cmd, builtin_table, table_size, shell_env));
 	command = search_for_command(cmd->command->words->word->word, shell_env->env);
 	if (!command)
-		return (fatal_error("malloc", MALLOC_ERR_STR), EXECUTION_FAILURE);
+		return (fatal_error("malloc", MALLOC_ERR_STR), EX_FATAL_ERROR);
 	if (!update_key_value(shell_env->env, "_", command))
-		return (EXECUTION_FAILURE);
+		return (free(command), EX_FATAL_ERROR);
 	arg = strvec_from_word_list(cmd->command->words);
-	if (!arg)
-		return (fatal_error("malloc", MALLOC_ERR_STR), EXECUTION_FAILURE);
 	envarr = get_env_arr(shell_env->env);
-	if (!envarr)
-		return (fatal_error("malloc", MALLOC_ERR_STR), EXECUTION_FAILURE);
-	exit(shell_execve(command, arg, envarr));
+	if (!envarr || !arg)
+		return (free(command), dispose_char_arr(envarr), dispose_char_arr(arg), fatal_error("malloc", MALLOC_ERR_STR), EX_FATAL_ERROR);
+	shell_execve(command, arg, envarr);
+	return (free(command), dispose_char_arr(envarr), dispose_char_arr(arg), EXECUTION_FAILURE);
 }
 
-static int	execute_simple_command(t_pipefd pipefd, t_command *cmd,
+static pid_t	execute_simple_command(t_pipefd pipefd, t_command *cmd,
 		int close_fd, t_shell_env *shell_env)
 {
 	pid_t			pid;
 	t_builtin_table builtin_info;
+	int status;
 
 	builtin_info = get_builtin_table();
 	if (pipefd.pipe_in == -1 && pipefd.pipe_out == -1
@@ -117,17 +117,31 @@ static int	execute_simple_command(t_pipefd pipefd, t_command *cmd,
 	if (pid < 0)
 	{
 		sys_error("fork failed");
-		exit(1);
+		dispose_command(cmd->head);
+		dispose_env(shell_env);
+		exit(EXECUTION_FAILURE);
 	}
 	if (pid == 0)
 	{
 		if (close_fd != -1)
 			close(close_fd);
 		if (!do_piping(pipefd.pipe_in, pipefd.pipe_out))
-			exit(1);
+		{
+			dispose_command(cmd->head);
+			dispose_env(shell_env);
+			exit(EXECUTION_FAILURE);
+		}
 		if (execute_disk_command(cmd, builtin_info.table, builtin_info.size,
 				shell_env) == EXECUTION_FAILURE)
-			exit(1);
+		{
+			dispose_command(cmd->head);
+			dispose_env(shell_env);
+			exit(EXECUTION_FAILURE);
+		}
+		status = execute_disk_command(cmd, builtin_info.table, builtin_info.size, shell_env);
+		dispose_command(cmd->head);
+		dispose_env(shell_env);
+		exit(status);
 	}
 	return (pid);
 }

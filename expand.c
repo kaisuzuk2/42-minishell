@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 14:05:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/27 12:08:47 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/31 11:06:16 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static t_bool	expand_var_token(t_varlist *env, t_word_list *list)
 	return (TRUE);
 }
 
-t_bool expand(t_varlist *env, t_command *command)
+t_bool expand(t_varlist *env, t_command *command, t_shell_env *shell_env)
 {
 	t_command *cur;
 
@@ -85,6 +85,7 @@ t_bool expand(t_varlist *env, t_command *command)
 		if (!cur->command || !expand_var_token(env, cur->command->words))
 		{
 			dispose_command(command);
+			dispose_env(shell_env);
 			fatal_error("malloc", MALLOC_ERR_STR);
 			exit(1);
 		}

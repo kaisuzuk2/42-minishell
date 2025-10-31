@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 10:13:08 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/30 16:08:06 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/31 10:14:20 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,22 +41,6 @@ t_bool	is_builtin(char *command, const t_builtin *builtin_table, const size_t ta
 	return (FALSE);
 }
 
-int	execute_builtin_command(t_command *cmd, const t_builtin *builtin_table,
-		const size_t table_size, t_shell_env *env)
-{
-	char *command;
-	t_word_list *arg;
-	t_builtin_func *f;
-
-	command = cmd->command->words->word->word;
-	f = NULL;
-	f = find_builtin_func(command, builtin_table, table_size);
-	if (!f)
-		return (internal_error(BUILTIN_ERR_STR, command), EXECUTION_FAILURE);
-	arg = cmd->command->words->next;
-	return ((*f)(arg, env));
-}
-
 t_builtin_table get_builtin_table(void)
 {
 	t_builtin_table info;
@@ -73,5 +57,20 @@ t_builtin_table get_builtin_table(void)
 	info.table = builtin_table;
 	info.size = sizeof(builtin_table) / sizeof(builtin_table[0]);
 	return (info);
+}
 
+int	execute_builtin_command(t_command *cmd, const t_builtin *builtin_table,
+		const size_t table_size, t_shell_env *env)
+{
+	char *command;
+	t_word_list *arg;
+	t_builtin_func *f;
+
+	command = cmd->command->words->word->word;
+	f = NULL;
+	f = find_builtin_func(command, builtin_table, table_size);
+	if (!f)
+		return (internal_error(BUILTIN_ERR_STR, command), EXECUTION_FAILURE);
+	arg = cmd->command->words->next;
+	return ((*f)(arg, env));
 }

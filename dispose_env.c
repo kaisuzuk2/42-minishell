@@ -6,11 +6,25 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 18:37:37 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/29 14:46:16 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/31 10:51:59 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void dispose_char_arr(char **arr)
+{
+	int i;
+
+	i = 0;
+	if (!arr)
+		return ;
+	while (arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+}
 
 void dispose_shell_var(t_shell_var *var)
 {
