@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 09:40:15 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/30 17:24:09 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/31 09:23:15 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,12 @@ int	handle_parse_error(t_token_error *e, t_token_list *token, t_command *command
 		parser_operator_error(e->msg, e->detail);
 	dispose_token_words(token);
 	dispose_command(command);
-	dispose_env(shell_env);
 	if (e->status == ST_ERR_NOMEM)
-		exit(1);
+	{
+		dispose_env(shell_env);
+		exit(EX_FATAL_ERROR);
+	}
+	set_last_status(EX_SYNTAX_ERROR, shell_env);
 	return (1);
 }
 

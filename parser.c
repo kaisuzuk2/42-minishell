@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 13:13:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/30 17:25:42 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/31 09:10:56 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,6 @@ t_bool				is_redirect(t_token_kind kind);
 t_redirect			*connect_redirection(t_command *command,
 						t_token_list **token);
 
-// parser_error.c
-void				set_parse_error(t_token_status status, const char *msg,
-						const char *detail, t_token_error *e);
 // parser_is_tokenkind.c
 t_bool				is_redirect(t_token_kind kind);
 t_bool				is_wordtoken(t_token_kind kind);

@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/30 17:26:54 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/10/31 09:24:53 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,7 @@ static t_word_desc	*make_operator_token(char **line_p, char *line,
 	while (i < sizeof(unsupport_operators) / sizeof(unsupport_operators[0]))
 	{
 		if (!startswith(line, unsupport_operators[i]))
-			return (e->status = ST_ERR_SYNTAX, e->msg = NOSUP_STR,
-				e->detail = unsupport_operators[i], NULL);
+			return (set_parse_error(ST_ERR_SYNTAX, NOSUP_STR, unsupport_operators[i], e), NULL);
 		i++;
 	}
 	i = 0;
@@ -78,10 +77,7 @@ static t_word_desc	*make_word_token(char **line_p, char *line,
 		len++;
 	}
 	if (quote)
-	{
-		return (e->status = ST_ERR_SYNTAX, e->msg = SYNTAX_ERR_STR,
-			e->detail = QUOTE_ERR_STR, NULL);
-	}
+		return (set_parse_error(ST_ERR_SYNTAX, SYNTAX_ERR_STR, QUOTE_ERR_STR, e), NULL);
 	return (make_token(line_p, len, TK_WORD, e));
 }
 
@@ -99,7 +95,7 @@ static t_token_list	*make_word_list_wrapper(t_token_list *cur, char **line_p,
 		return (NULL);
 	list = make_word_list(cur, token, e);
 	if (!list)
-		return (e->status = ST_ERR_NOMEM, NULL);
+		return (set_parse_error(ST_ERR_NOMEM, NULL, NULL, e), NULL);
 	return (list);
 }
 
@@ -135,22 +131,19 @@ t_token_list	*tokenize(char *line, t_shell_env *shell_env)
 	list = append_token(line, shell_env);
 	if (!list)
 		return (NULL);
+	memset(&e, 0, sizeof(e));
 	eof = make_token(NULL, 0, TK_EOF, &e);
-	if (!eof)
-	{
-		dispose_token_words(list);
-		dispose_env(shell_env);
-		exit(1);
-	}
+	if (handle_parse_error(&e, list, NULL, shell_env))
+		return (NULL);
 	t = list;
 	while (t->next)
 		t = t->next;
+	memset(&e, 0, sizeof(e));
 	t = make_word_list(t, eof, &e);
-	if (!t)
+	if (handle_parse_error(&e, list, NULL, shell_env))
 	{
-		dispose_token_words(list);
-		dispose_env(shell_env);
-		exit(1);
+		dispose_word(eof);
+		return (NULL);
 	}
 	return (list);
 }
