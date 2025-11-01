@@ -6,13 +6,29 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 13:09:16 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/26 13:12:18 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/01 11:04:13 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // envkey is alnum or underbar
+static t_bool	is_special_parameters(char c)
+{
+	const char	*special_parameters = "?";
+
+	return (ft_strchr(special_parameters, c) != 0);
+}
+
+char	*get_special_value(t_shell_env *shell_env, char *s)
+{
+	char	*res;
+
+	if (s[0] == '?' && s[1] == '\0')
+		res = ft_itoa(get_last_status(shell_env));
+	return (res);
+}
+
 static int	get_varlen(char *str)
 {
 	int	res;
@@ -20,7 +36,9 @@ static int	get_varlen(char *str)
 	res = 0;
 	while (*str)
 	{
-		if (!(ft_isalnum(*str)) && !(*str == '_')) 
+		if (is_special_parameters(*str))
+			return (1);
+		if (!(ft_isalnum(*str)) && !(*str == '_'))
 			break ;
 		res++;
 		str++;
@@ -28,7 +46,7 @@ static int	get_varlen(char *str)
 	return (res);
 }
 
-static char	*get_varvalue(t_varlist *env, char *doll_ptr)
+static char	*get_varvalue(t_shell_env *shell_env, char *doll_ptr)
 {
 	char	*varname;
 	char	*varvalue;
@@ -37,7 +55,10 @@ static char	*get_varvalue(t_varlist *env, char *doll_ptr)
 	varname = ft_substr(doll_ptr + 1, 0, get_varlen(doll_ptr + 1));
 	if (!varname)
 		return (NULL);
-	varvalue = list_getenv(env, varname);
+	if (is_special_parameters(*varname))
+		varvalue = get_special_value(shell_env, varname);
+	else
+		varvalue = list_getenv(shell_env->env, varname);
 	free(varname);
 	if (!varvalue)
 		return ("");
@@ -72,13 +93,12 @@ static char	*append_remainder(char *document, char *remainder)
 	return (res);
 }
 
-
-char	*expand_string_to_string(t_varlist *env, char *document)
+char	*expand_string_to_string(char *document, t_shell_env *shell_env)
 {
-	char	*res;
-	char	*res_tmp;
-	char	*document_ptr;
-	char	*varvalue;
+	char *res;
+	char *res_tmp;
+	char *document_ptr;
+	char *varvalue;
 
 	res = ft_strdup("");
 	if (!res)
@@ -86,12 +106,12 @@ char	*expand_string_to_string(t_varlist *env, char *document)
 	document_ptr = document;
 	while (ft_strchr(document_ptr, '$'))
 	{
-		varvalue = get_varvalue(env, ft_strchr(document_ptr, '$'));
+		varvalue = get_varvalue(shell_env, ft_strchr(document_ptr, '$'));
 		if (!varvalue)
 			return (NULL);
 		res = join_string_until_varvalue(res, &document_ptr);
 		if (!res)
-			return (NULL); 
+			return (NULL);
 		res_tmp = ft_strjoin(res, varvalue);
 		free(res);
 		if (!res_tmp)

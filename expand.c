@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 14:05:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/31 11:06:16 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/01 10:14:52 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ char	*string_quote_removal(char *string, char quote);
 // ### TODO: ~と?の展開
 
 
-static t_bool expand_dollar(t_varlist *env, t_word_desc *desc)
+static t_bool expand_dollar(t_word_desc *desc, t_shell_env *shell_env)
 {
-	desc->word = expand_string_to_string(env, desc->word);
+	desc->word = expand_string_to_string(desc->word, shell_env);
 	if (!desc->word)
 		return (FALSE);
 	return (TRUE);
@@ -39,7 +39,7 @@ static t_bool	expand_squote(t_word_desc *desc)
 	return (TRUE);
 }
 
-static t_bool	expand_dquote(t_varlist *env, t_word_desc *desc)
+static t_bool	expand_dquote(t_word_desc *desc, t_shell_env *shell_env)
 {
 	char	*rm_char;
 	char	*res;
@@ -49,10 +49,10 @@ static t_bool	expand_dquote(t_varlist *env, t_word_desc *desc)
 		return (FALSE);
 	free(desc->word);
 	desc->word = rm_char;
-	return (expand_dollar(env, desc));
+	return (expand_dollar(desc, shell_env));
 }
 
-static t_bool	expand_var_token(t_varlist *env, t_word_list *list)
+static t_bool	expand_var_token(t_word_list *list, t_shell_env *shell_env)
 {
 	t_bool	t;
 	char	*res;
@@ -65,9 +65,9 @@ static t_bool	expand_var_token(t_varlist *env, t_word_list *list)
 		if (is_s_quote(list->word))
 			t = expand_squote(list->word);
 		else if (is_d_quote(list->word))
-			t = expand_dquote(env, list->word);
+			t = expand_dquote(list->word, shell_env);
 		else if (is_hasdollar(list->word))
-			t = expand_dollar(env, list->word);
+			t = expand_dollar(list->word, shell_env);
 		if (!t)
 			return (FALSE);
 		list = list->next;
@@ -75,14 +75,14 @@ static t_bool	expand_var_token(t_varlist *env, t_word_list *list)
 	return (TRUE);
 }
 
-t_bool expand(t_varlist *env, t_command *command, t_shell_env *shell_env)
+t_bool expand(t_command *command, t_shell_env *shell_env)
 {
 	t_command *cur;
 
 	cur = command;
 	while (cur)
 	{
-		if (!cur->command || !expand_var_token(env, cur->command->words))
+		if (!cur->command || !expand_var_token(cur->command->words, shell_env))
 		{
 			dispose_command(command);
 			dispose_env(shell_env);

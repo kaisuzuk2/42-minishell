@@ -6,23 +6,11 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 11:03:04 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/30 16:06:12 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/01 09:30:29 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// 引数なし = home error = HOME not set
-// 引数多すぎ = 移動なし error = too many arguments
-// -だけ = oldpwdに移動 error = OLDPWD not set
-
-// lcd_printpath = $CDPATHのパスに移動したとき・-で移動したとき
-// $CDPATHとは
-
-// OLDPWDはexportされていない
-// oldpwd削除しても再度変数が作成されて値が設定される
-
-// /foo/var && ../ && ./ && .
 
 // builtin_cd_utils.c
 t_bool			is_interpret_home(t_word_list *list);
@@ -37,8 +25,6 @@ t_bool			is_absolute_pathname(const char *string);
 char			*sh_canonpath(char *tmp_path);
 t_bool			is_pathsep(char c);
 
-// ###TODO: チルダ展開する
-// シンボリックリンクを解決しないからgetcwd使うとおかしくなる
 static char	*sh_makepath(char *path, char *dir)
 {
 	char	*tmp;
@@ -167,72 +153,3 @@ int	builtin_cd(t_word_list *list, t_shell_env *shell_env)
 	change_to_directory(dirname, shell_env);
 	return (0);
 }
-
-// int builtin_cd(t_word_list *list, t_shell_env *shell_env)
-// {
-// 	char *dirname;
-// 	int lcd_printpath;
-// 	char *t;
-// 	char *new_path;
-// 	int e;
-// 	t_varlist *env;
-
-// 	env = shell_env->env;
-// 	lcd_printpath = 0;
-// 	if (!list || !list->word->word[0])
-// 	{
-// 		dirname = list_getenv(env, "HOME");
-// 		if (!dirname)
-// 		{
-// 			printf("HOME not set\n"); // ### TODO: エラー処理
-// 			return (99);
-// 		}
-// 	}
-// 	else if (list->word->word[0] == '-' && list->word->word[1] == '\0')
-// 	{
-// 		dirname = list_getenv(env, "OLDPWD");
-// 		if (!dirname)
-// 		{
-// 			printf("OLDPWD not set\n"); // ### TODO: エラー処理
-// 			return (99);
-// 		}
-// 		lcd_printpath = 1;
-// 	}
-// 	else
-// 		dirname = list->word->word;
-
-// 	t = make_absolute(dirname, list_getenv(env, "PWD"));
-// 	if (!t)
-// 		return (99); // ### TODO: エラー処理
-// 	new_path = sh_canonpath(t);
-// 	free(t);
-// 	if (!new_path)
-// 		return (99); // ### TODO: エラー処理
-// 	if (!change_to_directory(new_path))
-// 	{
-// 		bindpwd(env, list_getenv(env, "PWD"), new_path);
-// 		return (0);
-// 	}
-// 	// e = errno;
-// 	return (99); // ### TODO: エラー処理
-// }
-
-// int	builtin_cd(t_word_list *list, t_varlist *env)
-// {
-// 	char *dirname;
-// 	char *current_path;
-// 	char *new_path;
-
-// 	if (list->next)
-// 	{
-// 		printf("too many arguments\n");
-// 		return (99); // ### TODO: エラー処理
-// 	}
-// 	dirname = list->word->word;
-// 	current_path = NULL;
-// 	current_path = list_getenv(env, "PWD");
-// 	new_path = sh_makepath(current_path, dirname);
-// 	printf("### %s\n", new_path);
-// 	if (!chdir(new_path))
-// 		bindpwd(env, current_path, new_path);
-// }
