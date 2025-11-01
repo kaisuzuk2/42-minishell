@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 08:37:57 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/29 16:00:36 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/01 13:28:10 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,12 @@ static int show_var_attributes(t_varlist *env)
 
 static t_bool is_valid_env_name(char *exportstr)
 {
-	if (ft_isdigit(*exportstr))
+	if (ft_isdigit(*exportstr) || (!ft_isalnum(*exportstr) && !(*exportstr == '_')))
 		return (FALSE);
 	while (*exportstr)
 	{
+		if (*exportstr == '=')
+			return (TRUE);
 		if (!ft_isalnum(*exportstr) && !(*exportstr == '_'))
 			return (FALSE);
 		exportstr++;

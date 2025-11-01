@@ -6,7 +6,7 @@
 #    By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/07 14:10:24 by kaisuzuk          #+#    #+#              #
-#    Updated: 2025/10/31 10:33:36 by kaisuzuk         ###   ########.fr        #
+#    Updated: 2025/11/01 13:21:21 by kaisuzuk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,7 @@ SRCS	=	minishell.c \
 			parser_is_tokenkind.c \
 			expand.c \
 			expand_utils.c \
+			expand_word_splitting.c \
 			subst.c \
 			dispose_cmd.c \
 			dispose_env.c \
