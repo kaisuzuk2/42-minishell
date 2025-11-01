@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 10:31:38 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/31 11:50:27 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/01 09:09:49 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,13 +126,6 @@ static pid_t	execute_simple_command(t_pipefd pipefd, t_command *cmd,
 		if (close_fd != -1)
 			close(close_fd);
 		if (!do_piping(pipefd.pipe_in, pipefd.pipe_out))
-		{
-			dispose_command(cmd->head);
-			dispose_env(shell_env);
-			exit(EXECUTION_FAILURE);
-		}
-		if (execute_disk_command(cmd, builtin_info.table, builtin_info.size,
-				shell_env) == EXECUTION_FAILURE)
 		{
 			dispose_command(cmd->head);
 			dispose_env(shell_env);

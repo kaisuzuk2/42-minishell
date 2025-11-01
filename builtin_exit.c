@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 15:22:14 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/30 16:10:12 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/01 09:28:17 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,22 @@ static intmax_t	valid_number(char *string)
 	while (ft_isspace((unsigned char)*ep))
 		ep++;
 	if (*ep != '\0')
-		return (builtin_error("exit", string, EXIT_ERR_STR), 1);
+		return (builtin_error("exit", string, EXIT_ERR_STR), -1);
 	return (value);
 }
 
 static int	get_exitstat(t_word_list *list)
 {
 	const intmax_t value = valid_number(list->word->word);
+	if (value < 0)
+		return (value);
 	return (value & 255);
 }
 
 static int	exit_or_logout(t_word_list *list, t_shell_env *shell_env)
 {
 	char	*arg;
+	int status;
 
 	if (!list)
 		return (shell_env->last_status);
@@ -48,8 +51,11 @@ static int	exit_or_logout(t_word_list *list, t_shell_env *shell_env)
 		list = list->next;
 	if (!list)
 		return (shell_env->last_status);
+	status = get_exitstat(list);
+	if (status < 0)
+		return (2);
 	if (list->next)
-		return (builtin_error("exit", NULL, ARGNUM_ERR_STR), 1);
+		return (builtin_error("exit", NULL, ARGNUM_ERR_STR), 256);
 	return (get_exitstat(list));
 }
 
