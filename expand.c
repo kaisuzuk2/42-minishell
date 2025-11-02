@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 14:05:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/01 13:39:22 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/02 11:02:19 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@ char	*string_quote_removal(char *string, char quote);
 
 // expand_word_splitting.c
 char	**command_split(char const *s);
+
+
+// subst.c
+char *expand_string_width_quote(char *document, t_shell_env *shell_env);
 
 
 // ### TODO: ~と?の展開
@@ -101,14 +105,15 @@ static t_bool	expand_var_token(t_word_list *list, t_shell_env *shell_env)
 	while (list)
 	{
 		t = TRUE;
-		if (is_s_quote(list->word))
-			t = expand_squote(list->word);
-		else if (is_d_quote(list->word))
-			t = expand_dquote(list->word, shell_env);
-		else if (is_hasdollar(list->word))
-			t = word_splitting(list, shell_env);
-		if (!t)
-			return (FALSE);
+		// if (is_s_quote(list->word))
+		// 	t = expand_squote(list->word);
+		// else if (is_d_quote(list->word))
+		// 	t = expand_dquote(list->word, shell_env);
+		// else if (is_hasdollar(list->word))
+		// 	t = word_splitting(list, shell_env);
+		// if (!t)
+		// 	return (FALSE);
+		list->word->word = expand_string_width_quote(list->word->word, shell_env);
 		list = list->next;
 	}
 	return (TRUE);

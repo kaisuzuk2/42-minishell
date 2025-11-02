@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/31 09:24:53 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/01 14:29:32 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ static t_word_desc	*make_operator_token(char **line_p, char *line,
 	return (e->status = ST_ERR_SYNTAX, NULL);
 }
 
+// ### TODO: 文中のクォートも取り除く
 static t_word_desc	*make_word_token(char **line_p, char *line,
 		t_token_error *e)
 {

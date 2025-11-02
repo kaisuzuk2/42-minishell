@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 10:53:00 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/31 09:39:04 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/01 15:31:47 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 // ### TODO: フラグの内容を精査する　使いすべきものを確認する
 # define W_NOEXPAND 0x01
 # define W_SQUOTE 0x02
-# define W_DQUOTE 0x03
-# define W_HASDOLLAR 0x04
+# define W_DQUOTE 0x04
+# define W_HASDOLLAR 0x08
 
 typedef struct s_glist
 {

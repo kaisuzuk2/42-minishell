@@ -6,13 +6,16 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 08:37:57 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/01 13:28:10 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/01 14:29:34 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // ### TODO: 設定がすでにされている場合のケース
+// +=のケース
+
+// ### TODO: クォートは除去してから入れる
 
 static int show_var_attributes(t_varlist *env)
 {
@@ -38,7 +41,7 @@ static t_bool is_valid_env_name(char *exportstr)
 		return (FALSE);
 	while (*exportstr)
 	{
-		if (*exportstr == '=')
+		if (*exportstr == '=' || (*exportstr == '+' && exportstr[1] == '=') )
 			return (TRUE);
 		if (!ft_isalnum(*exportstr) && !(*exportstr == '_'))
 			return (FALSE);

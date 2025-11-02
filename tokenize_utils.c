@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 10:39:48 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/31 09:29:15 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/01 17:04:16 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,42 @@ void	skip_shellbrank(char **line)
 		(*line)++;
 }
 
-void	set_token_flg(char *line, t_word_desc *desc)
+// void	set_token_flg(char *line, t_word_desc *desc)
+// {
+// 	if (ft_strchr(line, '$'))
+// 		desc->flag = W_HASDOLLAR;
+// 	if (ft_strchr(line, '\''))
+// 		desc->flag = W_SQUOTE;
+// 	else if (ft_strchr(line, '\"'))
+// 		desc->flag = W_DQUOTE;
+// }
+
+void set_token_flg(char *line, t_word_desc *desc)
 {
+	int i;
+	int flg;
+
 	if (ft_strchr(line, '$'))
 		desc->flag = W_HASDOLLAR;
-	if (*line == '\'')
-		desc->flag = W_SQUOTE;
-	else if (*line == '\"')
-		desc->flag = W_DQUOTE;
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] == '\'')
+		{
+			desc->flag |= W_SQUOTE;
+			i++;
+			while (line[i] && line[i] != '\'')
+				i++;
+		}
+		else if (line[i] == '\"')
+		{
+			desc->flag |= W_DQUOTE;
+			i++;
+			while (line[i] && line[i] != '\"')
+				i++;
+		}
+		i++;
+	}	
 }
 
 t_bool	startswith(const char *s, const char *op)
