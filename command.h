@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 10:53:00 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/01 15:31:47 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/04 10:06:14 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ typedef struct s_word_desc
 {
 	t_token_kind		kind;
 	char				*word;
-	int					flag;
+	// int					flag;
+	t_bool flag;
 }						t_word_desc;
 
 typedef struct s_token_list

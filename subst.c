@@ -6,13 +6,16 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 13:09:16 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/02 11:38:26 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/04 11:59:40 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+char	**command_split(char const *s)
+
 // envkey is alnum or underbar
+
 static t_bool	is_special_parameters(char c)
 {
 	const char	*special_parameters = "?";
@@ -87,10 +90,11 @@ static char	*join_string_until_varvalue_and_quote(char *res, char **document)
 	char	*doll_ptr;
 	char	*tmp;
 	char	*res_tmp;
-	int i;
+	int		i;
 
 	i = 0;
-	while ((*document)[i] && (*document)[i] != '$' && (*document)[i] != '\'' && (*document)[i] != '\"')
+	while ((*document)[i] && (*document)[i] != '$' && (*document)[i] != '\''
+		&& (*document)[i] != '\"')
 		i++;
 	tmp = ft_substr(*document, 0, i);
 	if (!tmp)
@@ -115,10 +119,10 @@ static char	*append_remainder(char *document, char *remainder)
 
 char	*expand_string_to_string(char *document, t_shell_env *shell_env)
 {
-	char *res;
-	char *res_tmp;
-	char *document_ptr;
-	char *varvalue;
+	char	*res;
+	char	*res_tmp;
+	char	*document_ptr;
+	char	*varvalue;
 
 	res = ft_strdup("");
 	if (!res)
@@ -142,59 +146,110 @@ char	*expand_string_to_string(char *document, t_shell_env *shell_env)
 	return (free(document), res);
 }
 
-static char *expand_quote_and_value(char **document_p, char *document, char c, t_shell_env *shell_env)
+static char	*expand_quote_and_value(char **document_p, char *document,
+		t_shell_env *shell_env)
 {
-	int i;
-	char *trim;
-	char *tmp;
-	char *doc;
-	char *val;
+	int		i;
+	char	*trim;
+	char	*tmp;
+	char	*doc;
+	char	*val;
+	char	quote;
 
-	i = 1;
-	while (document[i] != c)
+	i = 0;
+	quote = document[i++];
+	while (document[i] != quote)
 		i++;
 	i++;
 	tmp = ft_substr(document, 0, i);
 	*document_p = &document[i];
-	trim = string_quote_removal(tmp, c);
+	trim = string_quote_removal(tmp, quote);
 	if (c == '\"' && ft_strchr(trim, '$'))
 	{
 		i = 0;
 		while (trim[i] != '$')
 			i++;
 		doc = ft_substr(trim, 0, i);
-		val =  get_varvalue(shell_env, &trim[i]);
-		return (ft_strjoin(doc, val));		
+		val = get_varvalue(shell_env, &trim[i]);
+		return (ft_strjoin(doc, val));
 	}
 	return (trim);
 }
 
-char *expand_string_width_quote(char *document, t_shell_env *shell_env)
-{
-	char *res;
-	int i;
-	int varlen;
+// char *expand_string_width_quote(char *document, t_shell_env *shell_env)
+// {
+// 	char *res;
+// 	int i;
+// 	int varlen;
 
-	res = ft_strdup("");
-	if (!res)
-		return (NULL);
-	while (*document)
-	{
-		if (*document == '\'')
-		{
-			res = ft_strjoin(res, expand_quote_and_value(&document, document, '\'', shell_env));
-		}
-		else if (*document == '\"')
-		{
-			res = ft_strjoin(res, expand_quote_and_value(&document, document, '\"', shell_env));
-		}
-		else if (*document == '$')
-		{
-			varlen = get_varlen(document);
-			res = get_varvalue(shell_env, &document[1]);
-		}
-		else
-			res = join_string_until_varvalue_and_quote(res, &document);
-	}
-	return (res);
+// 	res = ft_strdup("");
+// 	if (!res)
+// 		return (NULL);
+// 	while (*document)
+// 	{
+// 		if (*document == '\'')
+// 		{
+// 			res = ft_strjoin(res, expand_quote_and_value(&document, document,
+						// '\'', shell_env));
+// 		}
+// 		else if (*document == '\"')
+// 		{
+// 			res = ft_strjoin(res, expand_quote_and_value(&document, document,
+						// '\"', shell_env));
+// 		}
+// 		else if (*document == '$')
+// 		{
+// 			varlen = get_varlen(&document[1]);
+// 			res = ft_strjoin(res, get_varvalue(shell_env, document));
+// 			document += varlen + 1;
+// 		}
+// 		else
+// 			res = join_string_until_varvalue_and_quote(res, &document);
+// 	}
+// 	return (res);
+// }
+
+
+// t_bool expand_string_width_quote(t_word_list **list_p, t_word_list *list, t_shell_env *shell_env)
+// {
+// 	char *res;
+// 	int i;
+// 	int varlen;
+// 	char *tmp_varvalue;
+// 	char *document;
+
+// 	document = list->word->word;
+// 	res = ft_strdup("");
+// 	if (!res)
+// 		return (NULL);
+// 	while (*document)
+// 	{
+// 		if (*document == '\'')
+// 		{
+// 			res = ft_strjoin(res, expand_quote_and_value(&document, document,
+// 						'\'', shell_env));
+// 		}
+// 		else if (*document == '\"')
+// 		{
+// 			res = ft_strjoin(res, expand_quote_and_value(&document, document,
+// 						'\"', shell_env));
+// 		}
+// 		else if (*document == '$')
+// 		{
+// 			varlen = get_varlen(&document[1]);
+// 			tmp_varvalue = get_varvalue(shell_env, document);
+// 			res = ft_strjoin(res, get_varvalue(shell_env, document));
+// 			document += varlen + 1;
+// 		}
+// 		else
+// 			res = join_string_until_varvalue_and_quote(res, &document);
+// 	}
+// 	return (res);
+// }
+
+
+t_bool expand_string_width_quote(t_word_list **list_p, t_word_list *list, t_shell_env *shell_env)
+{
+	t_word_list *next;
+	
 }

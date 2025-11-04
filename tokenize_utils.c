@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 10:39:48 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/01 17:04:16 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/04 10:56:34 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,32 +31,47 @@ void	skip_shellbrank(char **line)
 // 		desc->flag = W_DQUOTE;
 // }
 
+// void set_token_flg(char *line, t_word_desc *desc)
+// {
+// 	int i;
+// 	int flg;
+
+// 	if (ft_strchr(line, '$'))
+// 		desc->flag = W_HASDOLLAR;
+// 	i = 0;
+// 	while (line[i])
+// 	{
+// 		if (line[i] == '\'')
+// 		{
+// 			desc->flag |= W_SQUOTE;
+// 			i++;
+// 			while (line[i] && line[i] != '\'')
+// 				i++;
+// 		}
+// 		else if (line[i] == '\"')
+// 		{
+// 			desc->flag |= W_DQUOTE;
+// 			i++;
+// 			while (line[i] && line[i] != '\"')
+// 				i++;
+// 		}
+// 		i++;
+// 	}	
+// }
+
+// $
+// ""
+// ''
 void set_token_flg(char *line, t_word_desc *desc)
 {
-	int i;
-	int flg;
-
+	desc->flag = FALSE;
+	
+	if (ft_strchr(line, '\''))
+		desc->flag = TRUE;
+	if (ft_strchr(line, '\"'))
+		desc->flag = TRUE;
 	if (ft_strchr(line, '$'))
-		desc->flag = W_HASDOLLAR;
-	i = 0;
-	while (line[i])
-	{
-		if (line[i] == '\'')
-		{
-			desc->flag |= W_SQUOTE;
-			i++;
-			while (line[i] && line[i] != '\'')
-				i++;
-		}
-		else if (line[i] == '\"')
-		{
-			desc->flag |= W_DQUOTE;
-			i++;
-			while (line[i] && line[i] != '\"')
-				i++;
-		}
-		i++;
-	}	
+		desc->flag = TRUE;
 }
 
 t_bool	startswith(const char *s, const char *op)
