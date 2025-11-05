@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 14:05:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/04 11:00:51 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/05 12:55:31 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ char	**command_split(char const *s);
 
 
 // subst.c
-char *expand_string_width_quote(t_word_list **list_p, t_word_list *list, t_shell_env *shell_env);
+t_bool expand_string_with_quote(t_word_list **list_p, t_word_list *list, t_shell_env *shell_env);
+char	*join_string_until_varvalue(char *res, char **document);
 
 
 // ### TODO: ~と?の展開
@@ -119,17 +120,13 @@ char *expand_string_width_quote(t_word_list **list_p, t_word_list *list, t_shell
 // 	return (TRUE);
 // }
 
-
-
 static t_bool expand_var_token(t_word_list *list, t_shell_env *shell_env)
 {
+
 	while (list)
 	{
-		if (!list->word->flag)
-			list = list->next;
-		else
-			if (!expand_string_width_quote(&list, list, shell_env))
-				return (FALSE);
+		expand_string_with_quote(&list, list, shell_env);
+		list = list->next;
 	}
 	return (TRUE);
 }

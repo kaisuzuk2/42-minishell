@@ -6,13 +6,13 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 13:09:16 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/04 11:59:40 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/05 12:59:25 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**command_split(char const *s)
+char	**command_split(char const *s);
 
 // envkey is alnum or underbar
 
@@ -164,7 +164,7 @@ static char	*expand_quote_and_value(char **document_p, char *document,
 	tmp = ft_substr(document, 0, i);
 	*document_p = &document[i];
 	trim = string_quote_removal(tmp, quote);
-	if (c == '\"' && ft_strchr(trim, '$'))
+	if (quote == '\"' && ft_strchr(trim, '$'))
 	{
 		i = 0;
 		while (trim[i] != '$')
@@ -176,7 +176,7 @@ static char	*expand_quote_and_value(char **document_p, char *document,
 	return (trim);
 }
 
-// char *expand_string_width_quote(char *document, t_shell_env *shell_env)
+// char *expand_string_with_quote(char *document, t_shell_env *shell_env)
 // {
 // 	char *res;
 // 	int i;
@@ -190,66 +190,81 @@ static char	*expand_quote_and_value(char **document_p, char *document,
 // 		if (*document == '\'')
 // 		{
 // 			res = ft_strjoin(res, expand_quote_and_value(&document, document,
-						// '\'', shell_env));
+// 						 shell_env));
 // 		}
 // 		else if (*document == '\"')
 // 		{
 // 			res = ft_strjoin(res, expand_quote_and_value(&document, document,
-						// '\"', shell_env));
-// 		}
-// 		else if (*document == '$')
-// 		{
-// 			varlen = get_varlen(&document[1]);
-// 			res = ft_strjoin(res, get_varvalue(shell_env, document));
-// 			document += varlen + 1;
+// 						 shell_env));
 // 		}
 // 		else
-// 			res = join_string_until_varvalue_and_quote(res, &document);
+// 			res = join_string_until_quote(res, &document);
 // 	}
 // 	return (res);
 // }
 
-
-// t_bool expand_string_width_quote(t_word_list **list_p, t_word_list *list, t_shell_env *shell_env)
-// {
-// 	char *res;
-// 	int i;
-// 	int varlen;
-// 	char *tmp_varvalue;
-// 	char *document;
-
-// 	document = list->word->word;
-// 	res = ft_strdup("");
-// 	if (!res)
-// 		return (NULL);
-// 	while (*document)
-// 	{
-// 		if (*document == '\'')
-// 		{
-// 			res = ft_strjoin(res, expand_quote_and_value(&document, document,
-// 						'\'', shell_env));
-// 		}
-// 		else if (*document == '\"')
-// 		{
-// 			res = ft_strjoin(res, expand_quote_and_value(&document, document,
-// 						'\"', shell_env));
-// 		}
-// 		else if (*document == '$')
-// 		{
-// 			varlen = get_varlen(&document[1]);
-// 			tmp_varvalue = get_varvalue(shell_env, document);
-// 			res = ft_strjoin(res, get_varvalue(shell_env, document));
-// 			document += varlen + 1;
-// 		}
-// 		else
-// 			res = join_string_until_varvalue_and_quote(res, &document);
-// 	}
-// 	return (res);
-// }
-
-
-t_bool expand_string_width_quote(t_word_list **list_p, t_word_list *list, t_shell_env *shell_env)
+t_bool word_splitting(t_word_list **list_p, t_word_list *list, char **document_p, t_shell_env *shell_env)
 {
+	char **ifs_split;
+	int varlen;
+	char *value;
 	t_word_list *next;
-	
+	int i;
+	char *tmp;
+
+	varlen = get_varlen(&(*document_p)[1]);
+	value = get_varvalue(shell_env, *document_p);
+	*document_p += (varlen + 1);
+	ifs_split = command_split(value);
+	next = list->next;
+	i = 0;
+	list->word->word = ft_strjoin(list->word->word, ifs_split[i++]);
+	while (ifs_split[i])
+	{
+		list->next = (t_word_list *)xcalloc(sizeof(t_word_list), 1);
+		list = list->next;
+		list->word =  (t_word_desc *)xcalloc(sizeof(t_word_desc), 1);
+		list->word->word = savestring(ifs_split[i]);
+		list->word->kind = TK_WORD;
+		i++;
+	}
+	list->next = next;
+	(*list_p) = list;
+	return (TRUE);
 }
+
+t_bool expand_string_with_quote(t_word_list **list_p, t_word_list *list, t_shell_env *shell_env)
+{
+	int i;
+	int varlen;
+	char *document;
+
+	document = ft_strdup((*list_p)->word->word);
+	free((*list_p)->word->word);
+	(*list_p)->word->word = ft_strdup("");
+	if (!(*list_p)->word->word)
+		return (FALSE);
+	if (!document)
+		return (FALSE);
+	while (*document)
+	{
+		if (*document == '\'' || *document == '\"')
+		{
+			(*list_p)->word->word = ft_strjoin((*list_p)->word->word, expand_quote_and_value(&document, document, shell_env));
+			if (!(*list_p)->word->word)
+				return (FALSE);
+		}
+		else if (*document == '$')
+		{
+			word_splitting(list_p, list, &document, shell_env);
+		}
+		else
+		{
+			(*list_p)->word->word = join_string_until_varvalue_and_quote((*list_p)->word->word, &document);
+			if (!(*list_p)->word->word)
+				return (FALSE);
+		}
+	}
+	return (TRUE);
+}
+
