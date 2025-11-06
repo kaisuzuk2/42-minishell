@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:13:31 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/01 10:14:17 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/06 12:51:17 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 // tmp code ↓
 
+#include "minishell.h"
+#include <bsd/string.h>
+#include <limits.h>
 #include <stdio.h>
 #include <sys/types.h>
-#include <limits.h>
-#include <bsd/string.h>
-#include "minishell.h"
 
 // void fatal_error(const char *msg)  __attribute__((noreturn));
 
@@ -27,7 +27,6 @@
 // 	dprintf(STDERR_FILENO, "fatal Error: %s\n", msg);
 // 	exit(1);
 // }
-
 
 // char *search_path(const char *filename)
 // {
@@ -62,7 +61,6 @@
 // 	return (NULL);
 // }
 
-
 // int interpret(char *line)
 // {
 // 	extern char **environ;
@@ -85,11 +83,11 @@
 // 	}
 // }
 
-void show_token_and_redir(t_command *command)
+void	show_token_and_redir(t_command *command)
 {
-	t_word_list *list;
-	t_redirect *redir;
-	
+	t_word_list	*list;
+	t_redirect	*redir;
+
 	if (!command)
 		return ;
 	list = command->words;
@@ -102,13 +100,14 @@ void show_token_and_redir(t_command *command)
 	redir = command->redirects;
 	while (redir)
 	{
-		printf("redirect %d - %s :", redir->redirector.dest, redir->redirectee.filename->word);
+		printf("redirect %d - %s :", redir->redirector.dest,
+			redir->redirectee.filename->word);
 		redir = redir->next;
 	}
 	printf("\n");
 }
 
-void show_parse_list(t_command *command)
+void	show_parse_list(t_command *command)
 {
 	while (command)
 	{
@@ -117,7 +116,7 @@ void show_parse_list(t_command *command)
 	}
 }
 
-void show_envvalue(t_varlist *list)
+void	show_envvalue(t_varlist *list)
 {
 	while (list->next)
 	{
@@ -126,7 +125,7 @@ void show_envvalue(t_varlist *list)
 	}
 }
 
-void show_token_list(t_token_list *token)
+void	show_token_list(t_token_list *token)
 {
 	if (token == NULL)
 		return ;
@@ -148,7 +147,7 @@ parse test
 // 	t_token_list *token;
 // 	t_command *parse;
 // 	t_varlist *env;
-	
+
 // 	env = initialize_shell_variables(envp);
 // 	parse = NULL;
 // 	token = NULL;
@@ -158,7 +157,7 @@ parse test
 // 		line = readline("minishell$ ");
 
 // 		if (!line)
-// 			break;
+// 			break ;
 // 		if (*line)
 // 			add_history(line);
 // 		token = tokenize(line);
@@ -180,20 +179,23 @@ parse test
 // 	dispose_command(parse);
 // }
 
-int main(int argc, char *argv[], char *envp[])
+int	main(int argc, char *argv[], char *envp[])
 {
-	char *line;
+	char			*line;
+	t_token_list	*token;
+	t_command		*parse;
+	t_shell_env		*shell_variables;
 
-	t_token_list *token;
-	t_command *parse;
-	t_shell_env *shell_variables;
-
+	enter_prompt_mode();
 	shell_variables = initialize_shell_variables(envp);
 	while (1)
 	{
 		line = readline("minishell$ ");
 		if (!line)
-			break;
+		{
+			ft_dprintf(STDOUT_FILENO, "exit\n");
+			break ;
+		}
 		if (*line)
 			add_history(line);
 		token = tokenize(line, shell_variables);
@@ -205,7 +207,9 @@ int main(int argc, char *argv[], char *envp[])
 			continue ;
 		expand(parse, shell_variables);
 		// show_envvalue(shell_variables);
-		set_last_status(execute_pipeline(parse, shell_variables), shell_variables);
+		set_last_status(execute_pipeline(parse, shell_variables),
+			shell_variables);
 		dispose_command(parse);
 	}
+	return (0);
 }
