@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 11:48:27 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/07 11:12:12 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/07 14:09:58 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,27 @@ t_redirect	*make_redirection(t_token_list **token, t_token_error *e)
 	return (redirect);
 }
 
+// t_redirect	*connect_redirection(t_command *command, t_token_list **token_p, t_token_error *e)
+// {
+// 	t_redirect	*new;
+// 	t_redirect	*cur;
+
+// 	new = make_redirection(token_p, e);
+// 	if (!new)
+// 		return (NULL);
+// 	if (!command->redirects)
+// 		command->redirects = new;
+// 	else
+// 	{
+// 		cur = command->redirects;
+// 		while (cur->next)
+// 			cur = cur->next;
+// 		cur->next = new;
+// 	}
+// 	return (new);
+// }
+
+
 t_redirect	*connect_redirection(t_command *command, t_token_list **token_p, t_token_error *e)
 {
 	t_redirect	*new;
@@ -85,8 +106,22 @@ t_redirect	*connect_redirection(t_command *command, t_token_list **token_p, t_to
 	else
 	{
 		cur = command->redirects;
+		if (cur->instruction == r_reading_until && new->instruction == r_reading_until)
+		{
+			dispose_redirects(cur);
+			command->redirects = new;
+			return (new);
+		}
 		while (cur->next)
+		{
+			if (cur->next->instruction == r_reading_until && new->instruction == r_reading_until)
+			{
+				dispose_redirects(cur->next);
+				cur->next = new;
+				break;
+			}
 			cur = cur->next;
+		}
 		cur->next = new;
 	}
 	return (new);
