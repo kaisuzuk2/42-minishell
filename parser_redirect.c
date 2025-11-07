@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 11:48:27 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/26 10:50:05 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/07 11:12:12 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,15 @@
 // parser_utils.c
 t_word_desc		*tokendup(t_word_desc *desc);
 
-static t_bool	set_heredoc(t_redirect *redir, t_word_desc *desc)
+static t_bool	set_heredoc(t_redirect *redir, t_word_desc *desc, t_token_error *e)
 {
 	redir->here_doc_eof = savestring(desc->word);
 	if (!redir->here_doc_eof)
-		return (FALSE);
+		return (set_parse_error(ST_ERR_NOMEM, NULL, NULL, e), FALSE);
 	redir->redirectee.filename = (t_word_desc *)xmalloc(sizeof(t_word_desc));
 	if (!redir->redirectee.filename)
-		return (FALSE);
-	redir->redirectee.filename->word = make_here_document(redir->here_doc_eof);
+		return (set_parse_error(ST_ERR_NOMEM, NULL, NULL, e), FALSE);
+	redir->redirectee.filename->word = make_here_document(redir->here_doc_eof, e);
 	if (!redir->redirectee.filename->word)
 		return (FALSE);
 	redir->redirectee.filename->flag = desc->flag;
@@ -31,19 +31,19 @@ static t_bool	set_heredoc(t_redirect *redir, t_word_desc *desc)
 }
 
 t_bool	set_redirect(t_redirect *redir, t_redirect_info info,
-		t_token_list *token)
+		t_token_list *token, t_token_error *e)
 {
 	redir->instruction = info.instruction;
 	if (info.instruction == r_reading_until)
-		return (set_heredoc(redir, token->word));
+		return (set_heredoc(redir, token->word, e));
 	redir->redirectee.filename = tokendup(token->word);
 	if (!redir->redirectee.filename)
-		return (FALSE);
+		return (set_parse_error(ST_ERR_NOMEM, NULL, NULL, e), FALSE);
 	redir->flags = info.flag;
 	return (TRUE);
 }
 
-t_redirect	*make_redirection(t_token_list **token)
+t_redirect	*make_redirection(t_token_list **token, t_token_error *e)
 {
 	const t_redirect_info	redirect_info_table[] = {
 	{TK_LESS, r_input_direction, O_RDONLY},
@@ -56,13 +56,13 @@ t_redirect	*make_redirection(t_token_list **token)
 
 	redirect = (t_redirect *)xcalloc(sizeof(t_redirect), 1);
 	if (!redirect)
-		return (NULL);
+		return (set_parse_error(ST_ERR_NOMEM, NULL, NULL, e), NULL);
 	i = 0;
 	while (i < sizeof(redirect_info_table) / sizeof(redirect_info_table[0]))
 	{
 		if ((*token)->word->kind == redirect_info_table[i].kind)
 		{
-			if (!set_redirect(redirect, redirect_info_table[i], (*token)->next))
+			if (!set_redirect(redirect, redirect_info_table[i], (*token)->next, e))
 				return (NULL);
 			break ;
 		}
@@ -72,12 +72,12 @@ t_redirect	*make_redirection(t_token_list **token)
 	return (redirect);
 }
 
-t_redirect	*connect_redirection(t_command *command, t_token_list **token_p)
+t_redirect	*connect_redirection(t_command *command, t_token_list **token_p, t_token_error *e)
 {
 	t_redirect	*new;
 	t_redirect	*cur;
 
-	new = make_redirection(token_p);
+	new = make_redirection(token_p, e);
 	if (!new)
 		return (NULL);
 	if (!command->redirects)

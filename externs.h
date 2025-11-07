@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/01 10:18:53 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/07 11:12:45 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int				ft_mkstemp(char **template);
 int				do_redirections(t_redirect *redirect, t_varlist *env);
 
 // make_cmd.c
-char			*make_here_document(char *here_doc_eof);
+char			*make_here_document(char *here_doc_eof, t_token_error *e);
 
 // builtin.c
 t_builtin_table	get_builtin_table(void);

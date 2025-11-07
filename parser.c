@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 13:13:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/31 10:57:19 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/07 11:18:20 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_word_desc			*tokendup(t_word_desc *desc);
 t_command			*new_command(t_command_type type);
 t_bool				is_redirect(t_token_kind kind);
 t_redirect			*connect_redirection(t_command *command,
-						t_token_list **token);
+						t_token_list **token, t_token_error *e);
 
 // parser_is_tokenkind.c
 t_bool				is_redirect(t_token_kind kind);
@@ -68,12 +68,8 @@ static t_command	*make_simple_command(t_token_list **token_p,
 			if (!append_command_words(command, &token, token))
 				set_parse_error(ST_ERR_NOMEM, NULL, NULL, e);
 		}
-		else if (is_redirect(token->word->kind)
-			&& is_wordtoken(token->next->word->kind))
-		{
-			if (!connect_redirection(command, &token))
-				set_parse_error(ST_ERR_NOMEM, NULL, NULL, e);
-		}
+		else if (is_redirect(token->word->kind))
+			connect_redirection(command, &token, e);
 		else
 			set_parse_error(ST_ERR_SYNTAX, PARSE_ERR_STR, token->word->word, e);
 		if (e->status != ST_OK)
@@ -120,7 +116,11 @@ static t_command	*add_command(t_command *cur, t_token_list **token_p,
 		return (NULL);
 	}
 	if (is_wordtoken(token->word->kind))
+	{
 		cur->command = make_simple_command(token_p, token, e);
+		if (!cur->command)
+			return (NULL);
+	}
 	else if (is_pipetoken(token->word->kind))
 		return (make_connection_command(cur, token_p, CM_CONNECTION, e));
 	return (cur);

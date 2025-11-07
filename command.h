@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 10:53:00 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/04 10:06:14 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/07 11:01:35 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ typedef enum e_token_status
 {
 	ST_OK,
 	ST_ERR_SYNTAX,
-	ST_ERR_NOMEM
+	ST_ERR_NOMEM,
+	ST_SIGNAL,
 }						t_token_status;
 
 typedef struct s_token_error
