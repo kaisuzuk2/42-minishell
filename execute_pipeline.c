@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 10:31:38 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/07 12:59:36 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/07 13:11:52 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,11 @@ static void print_signal_end(int last_status)
 {
 	if (last_status == SIGINT)
 		ft_dprintf(STDOUT_FILENO, "\n");
-	else if (last_status == SIGQUIT)
+}
+
+static void print_core_dumped(int last_status)
+{
+	if (last_status == SIGQUIT)
 		ft_dprintf(STDOUT_FILENO, "Quit (core dumped)\n");
 }
 
@@ -61,7 +65,7 @@ pid_t	wait_for(pid_t lastpid)
 	if (lastpid < 0)
 		return (EXECUTION_FAILURE);
 	if (WIFSIGNALED(last_status))
-		return (128 + WTERMSIG(last_status));
+		return (print_core_dumped(WTERMSIG(last_status)), 128 + WTERMSIG(last_status));
 	if (WIFEXITED(last_status))
 		return (WEXITSTATUS(last_status));
 	else
