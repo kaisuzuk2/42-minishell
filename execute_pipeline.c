@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 10:31:38 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/07 12:52:34 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/07 12:59:36 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,20 +41,27 @@ pid_t	wait_for(pid_t lastpid)
 	int		status;
 	int		last_status;
 	pid_t	wpid;
+	t_bool sig_flg;
 
+	sig_flg = FALSE;
 	last_status = -1;
 	while (1)
 	{
 		wpid = waitpid(-1, &status, 0);
 		if (wpid < 0)
 			break ;
+		if (!sig_flg && WIFSIGNALED(status))
+		{
+			print_signal_end(WTERMSIG(status));
+			sig_flg = TRUE;
+		}
 		if (wpid == lastpid)
 			last_status = status;
 	}
 	if (lastpid < 0)
 		return (EXECUTION_FAILURE);
 	if (WIFSIGNALED(last_status))
-		return (print_signal_end(WTERMSIG(last_status)), 128 + WTERMSIG(last_status));
+		return (128 + WTERMSIG(last_status));
 	if (WIFEXITED(last_status))
 		return (WEXITSTATUS(last_status));
 	else
@@ -156,6 +163,7 @@ int	execute_pipeline(t_command *cmd, t_shell_env *shell_env)
 	t_pipefd	pipefd;
 	pid_t		lastpid;
 	t_command	*cur_cmd;
+	int res;
 
 	cur_cmd = cmd;
 	pipefd.pipe_in = -1;
@@ -176,5 +184,7 @@ int	execute_pipeline(t_command *cmd, t_shell_env *shell_env)
 		cur_cmd = cur_cmd->next;
 	}
 	set_signal_for_parent();
-	return (wait_for(lastpid));
+	res = wait_for(lastpid);
+	enter_prompt_mode();
+	return (res);
 }
