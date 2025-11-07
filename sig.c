@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 09:10:07 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/07 10:27:33 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/07 12:37:01 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,10 @@ void	reset_signals_for_child(void)
 {
 	set_handler(SIGINT, SIG_DFL, 0);
 	set_handler(SIGQUIT, SIG_DFL, 0);
+}
+
+void set_signal_for_parent(void)
+{
+	set_handler(SIGINT, SIG_IGN, 0);
+	set_handler(SIGQUIT, SIG_IGN, 0);
 }
