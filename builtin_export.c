@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 08:37:57 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/01 14:29:34 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/08 09:17:38 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,39 @@ static t_bool is_valid_env_name(char *exportstr)
 	return (TRUE);
 }
 
+static t_bool update_export(t_shell_env *shell_env, char *exportstr)
+{
+	char *key;
+	t_shell_var *key_env;
+	char *new_exportstr;
+	char *value;
+	t_bool res;
+	
+	if (!ft_strchr(exportstr, '+'))
+		return (update_variable_item(shell_env, exportstr));
+	key = get_env_key(exportstr);
+	if (!key)
+		return (FALSE);
+	value = get_env_value(exportstr);
+	if (!value)
+		return (free(key), FALSE);
+	printf("### %s, %s\n", key, value);
+	key_env = list_getshell_var(shell_env->env, key);
+	if (!key_env)
+		return (free(key), free(value), FALSE);
+	new_exportstr = ft_strjoin(key_env->exportstr, value);
+	if (!new_exportstr)
+		return (free(key), free(value), FALSE);
+	res = update_variable_item(shell_env->env, new_exportstr);
+	return (free(key), free(value), free(new_exportstr), res);
+}
+
 int builtin_export(t_word_list *list, t_shell_env *shell_env)
 {
-	t_varlist *env;
 	t_bool flg;
 
 	if (!list)
-		return (show_var_attributes(env));
+		return (show_var_attributes(shell_env->env));
 	flg = TRUE;
 	while (list)
 	{
@@ -67,7 +93,7 @@ int builtin_export(t_word_list *list, t_shell_env *shell_env)
 			list = list->next;
 			continue ;
 		}
-		if (update_variable_item(shell_env->env, list->word->word))
+		if (!update_export(shell_env->env, list->word->word))
 			return (EX_FATAL_ERROR);
 		list = list->next;
 	}
