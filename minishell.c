@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:13:31 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/08 11:25:29 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/08 14:58:51 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,6 +199,12 @@ int	main(int argc, char *argv[], char *envp[])
 			ft_dprintf(STDOUT_FILENO, "exit\n");
 			dispose_env(shell_variables);
 			break ;
+		}
+		if (*line == '\0' && g_signal_state == SIGSTATE_INT)
+		{
+			set_last_status(130, shell_variables);
+			g_signal_state = SIGSTATE_NONE;
+			continue ;
 		}
 		if (*line)
 			add_history(line);

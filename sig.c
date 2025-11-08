@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 09:10:07 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/07 12:37:01 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/08 14:58:39 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int	signal_prompt_hook(void)
 {
 	if (g_signal_state == SIGSTATE_INT)
 	{
-		g_signal_state = SIGSTATE_NONE;
 		rl_replace_line("", 0);
 		rl_done = 1;
 	}
