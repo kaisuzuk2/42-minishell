@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 13:09:16 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/05 12:59:25 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/08 11:21:58 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,7 @@ static char	*expand_quote_and_value(char **document_p, char *document,
 	char	*doc;
 	char	*val;
 	char	quote;
+	char *res;
 
 	i = 0;
 	quote = document[i++];
@@ -162,16 +163,28 @@ static char	*expand_quote_and_value(char **document_p, char *document,
 		i++;
 	i++;
 	tmp = ft_substr(document, 0, i);
+	if (!tmp)
+		return (NULL);
 	*document_p = &document[i];
 	trim = string_quote_removal(tmp, quote);
+	if (!trim)
+		return (free(tmp), NULL);
+	free(tmp);
 	if (quote == '\"' && ft_strchr(trim, '$'))
 	{
 		i = 0;
 		while (trim[i] != '$')
 			i++;
 		doc = ft_substr(trim, 0, i);
+		if (!doc)
+			return (free(trim), NULL);
 		val = get_varvalue(shell_env, &trim[i]);
 		return (ft_strjoin(doc, val));
+		res = ft_strjoin(doc, val);
+		free(doc);
+		if (!res)
+			return (NULL);	
+		return (res);
 	}
 	return (trim);
 }
@@ -238,14 +251,16 @@ t_bool expand_string_with_quote(t_word_list **list_p, t_word_list *list, t_shell
 	int i;
 	int varlen;
 	char *document;
+	char *document_p;
 
 	document = ft_strdup((*list_p)->word->word);
+	if (!document)
+		return (FALSE);
+	document_p = document;
 	free((*list_p)->word->word);
 	(*list_p)->word->word = ft_strdup("");
 	if (!(*list_p)->word->word)
-		return (FALSE);
-	if (!document)
-		return (FALSE);
+		return (free(document), FALSE);
 	while (*document)
 	{
 		if (*document == '\'' || *document == '\"')
@@ -265,6 +280,7 @@ t_bool expand_string_with_quote(t_word_list **list_p, t_word_list *list, t_shell
 				return (FALSE);
 		}
 	}
+	free(document_p);
 	return (TRUE);
 }
 

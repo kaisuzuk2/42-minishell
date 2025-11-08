@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:12:50 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/06 11:13:21 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/08 10:39:51 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ extern char **environ;
 #   define HEREDOC_PIPESIZE 4096
 #  endif
 # endif
+
+# define CTLESC '\001'
 
 typedef int t_bool;
 #define TRUE 1

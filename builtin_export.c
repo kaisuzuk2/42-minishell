@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 08:37:57 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/08 09:17:38 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/08 13:43:29 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ static t_bool update_export(t_shell_env *shell_env, char *exportstr)
 	value = get_env_value(exportstr);
 	if (!value)
 		return (free(key), FALSE);
-	printf("### %s, %s\n", key, value);
 	key_env = list_getshell_var(shell_env->env, key);
 	if (!key_env)
 		return (free(key), free(value), FALSE);

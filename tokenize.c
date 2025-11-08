@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/01 14:29:32 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/08 12:39:41 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 void				skip_shellbrank(char **line);
 void				set_token_flg(char *line, t_word_desc *desc);
 t_bool				startswith(const char *s, const char *op);
-t_word_desc	*make_token(char **line, size_t len, t_token_kind kind,
+t_word_desc			*make_token(char **line, size_t len, t_token_kind kind,
 						t_token_error *e);
 t_token_list		*make_word_list(t_token_list *cur, t_word_desc *desc,
 						t_token_error *e);
@@ -42,7 +42,8 @@ static t_word_desc	*make_operator_token(char **line_p, char *line,
 	while (i < sizeof(unsupport_operators) / sizeof(unsupport_operators[0]))
 	{
 		if (!startswith(line, unsupport_operators[i]))
-			return (set_parse_error(ST_ERR_SYNTAX, NOSUP_STR, unsupport_operators[i], e), NULL);
+			return (set_parse_error(ST_ERR_SYNTAX, NOSUP_STR,
+					unsupport_operators[i], e), NULL);
 		i++;
 	}
 	i = 0;
@@ -78,7 +79,8 @@ static t_word_desc	*make_word_token(char **line_p, char *line,
 		len++;
 	}
 	if (quote)
-		return (set_parse_error(ST_ERR_SYNTAX, SYNTAX_ERR_STR, QUOTE_ERR_STR, e), NULL);
+		return (set_parse_error(ST_ERR_SYNTAX, SYNTAX_ERR_STR, QUOTE_ERR_STR,
+				e), NULL);
 	return (make_token(line_p, len, TK_WORD, e));
 }
 
@@ -95,8 +97,8 @@ static t_token_list	*make_word_list_wrapper(t_token_list *cur, char **line_p,
 	if (e->status != ST_OK)
 		return (NULL);
 	list = make_word_list(cur, token, e);
-	if (!list)
-		return (set_parse_error(ST_ERR_NOMEM, NULL, NULL, e), NULL);
+	if (e->status != ST_OK)
+		return (NULL);
 	return (list);
 }
 

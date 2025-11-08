@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 13:13:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/07 11:18:20 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/08 13:02:40 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,11 +131,13 @@ t_command	*parser(t_token_list *token, t_shell_env *shell_env)
 	t_token_error	e;
 	t_command		*head;
 	t_command		*cur;
+	t_token_list *token_p;
 
+	token_p = token;
 	head = new_command(CM_CONNECTION);
 	if (!head)
 	{
-		dispose_token_words(token);
+		dispose_token_words(token_p);
 		dispose_env(shell_env);
 		exit(EX_FATAL_ERROR);
 	}
@@ -149,5 +151,6 @@ t_command	*parser(t_token_list *token, t_shell_env *shell_env)
 			return (NULL);
 		cur->head = head;
 	}
+	dispose_token_words(token_p);
 	return (head);
 }

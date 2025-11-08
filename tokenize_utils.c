@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 10:39:48 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/04 10:56:34 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/08 12:38:49 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ t_token_list	*make_word_list(t_token_list *cur, t_word_desc *desc,
 	t_token_list	*new;
 
 	if (!desc)
-		return (NULL);
+		return (set_parse_error(ST_ERR_NOMEM, NULL, NULL, e), NULL);
 	new = (t_token_list *)xcalloc(sizeof(t_token_list), 1);
 	if (!new)
 		return (dispose_word(desc), set_parse_error(ST_ERR_NOMEM, NULL, NULL, e), NULL);

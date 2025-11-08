@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:35:25 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/17 08:17:49 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/08 13:16:36 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,17 @@ char	**strvec_from_word_list(t_word_list *list)
 	i = 0;
 	while (i < count)
 	{
-		arr[i] = list->word->word;
+		arr[i] = savestring(list->word->word);
+		if (!arr[i])
+		{
+			while (i >= 0)
+			{
+				free(arr[i]);
+				i--;
+			}
+			free(arr);
+			return (NULL);
+		}
 		list = list->next;
 		i++;
 	}

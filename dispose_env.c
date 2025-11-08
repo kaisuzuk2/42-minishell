@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 18:37:37 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/31 10:51:59 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/08 13:40:10 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void dispose_char_arr(char **arr)
 		free(arr[i]);
 		i++;
 	}
+	free(arr);
 }
 
 void dispose_shell_var(t_shell_var *var)
