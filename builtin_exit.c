@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 15:22:14 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/01 09:28:17 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/08 14:45:42 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,24 +19,20 @@ static t_bool	is_option(char *opt, char c)
 {
 	return (opt[0] == '-' && opt[2] == '\0' && opt[1] == c);
 }
-
-static intmax_t	valid_number(char *string)
+// exit -1
+static intmax_t	get_exitstat(t_word_list *list)
 {
 	char			*ep;
-	const intmax_t	value = ft_strtoimax(string, &ep);
+	char *string;
+	intmax_t value;
+
+	string = list->word->word;
+	value = ft_strtoimax(string, &ep);
 
 	while (ft_isspace((unsigned char)*ep))
 		ep++;
 	if (*ep != '\0')
 		return (builtin_error("exit", string, EXIT_ERR_STR), -1);
-	return (value);
-}
-
-static int	get_exitstat(t_word_list *list)
-{
-	const intmax_t value = valid_number(list->word->word);
-	if (value < 0)
-		return (value);
 	return (value & 255);
 }
 
