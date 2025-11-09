@@ -128,7 +128,10 @@ static pid_t	execute_simple_command(t_pipefd pipefd, t_command *cmd,
 	pid_t			pid;
 	t_builtin_table builtin_info;
 	int status;
-
+	
+	if (cmd->command->redirects && do_redirections(cmd->command->redirects,
+			shell_env) != 0)
+		return (EXECUTION_FAILURE);
 	builtin_info = get_builtin_table();
 	if (pipefd.pipe_in == -1 && pipefd.pipe_out == -1
 		&& is_builtin(cmd->command->words->word->word, builtin_info.table,
