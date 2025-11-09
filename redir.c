@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-char		*heredoc_expand(t_redirect *r, size_t *lenp, t_varlist *env);
+char		*heredoc_expand(t_redirect *r, size_t *lenp, t_shell_env *shell_env);
 
 int	sh_mktmpfd(const char *nameroot, char **filename)
 {
@@ -52,14 +52,14 @@ static int	here_document_to_file(t_redirect *r)
 
 // malloc, pipe, open error		:	EXECUTION_FAILUE
 // success						:	fd
-static int	here_document_to_fd(t_redirect *r, t_varlist *env)
+static int	here_document_to_fd(t_redirect *r, t_shell_env *shell_env)
 {
 	int		herepipe[2];
 	size_t	document_len;
 	int		fd;
 
 	document_len = 0;
-	if (r->redirectee.filename->word && !heredoc_expand(r, &document_len, env))
+	if (r->redirectee.filename->word && !heredoc_expand(r, &document_len, shell_env))
 		return (fatal_error("malloc", MALLOC_ERR_STR), EXECUTION_FAILURE); 
 	if (document_len == 0)
 	{
@@ -110,7 +110,7 @@ static int	do_redirection_internal(t_redirect *r)
 	return (EXECUTION_SUCCESS);
 }
 
-int	do_redirections(t_redirect *redir, t_varlist *env)
+int	do_redirections(t_redirect *redir, t_shell_env *shell_env)
 {
 	int here_fd;
 
@@ -121,7 +121,7 @@ int	do_redirections(t_redirect *redir, t_varlist *env)
 			return (EXECUTION_FAILURE);
 	if (redir->instruction == r_reading_until)
 	{
-		here_fd = here_document_to_fd(redir, env);
+		here_fd = here_document_to_fd(redir, shell_env);
 		if (here_fd == EXECUTION_FAILURE)
 			return (EXECUTION_FAILURE);
 		if (dup2(here_fd, STDIN_FILENO) < 0)

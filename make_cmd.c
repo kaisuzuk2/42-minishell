@@ -12,14 +12,12 @@
 
 #include "minishell.h"
 
-char	*heredoc_expand(t_redirect *r, size_t *lenp, t_varlist *env)
+char	*heredoc_expand(t_redirect *r, size_t *lenp, t_shell_env *shell_env)
 {
 	if (!is_s_quote(r->redirectee.filename)
 		&& !is_d_quote(r->redirectee.filename)
 		&& ft_strchr(r->redirectee.filename->word, '$'))
-		// ### TODO: is_hasdollar?
-		r->redirectee.filename->word = expand_string_to_string(env,
-				r->redirectee.filename->word);
+		r->redirectee.filename->word = expand_string_to_string(r->redirectee.filename->word, shell_env);
 	if (r->redirectee.filename->word)
 		*lenp = ft_strlen(r->redirectee.filename->word);
 	return (r->redirectee.filename->word);

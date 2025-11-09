@@ -105,7 +105,7 @@ static int	execute_disk_command(t_command *cmd, const t_builtin *builtin_table,
 	char	**envarr;
 
 	if (cmd->command->redirects && do_redirections(cmd->command->redirects,
-			shell_env->env) != 0)
+			shell_env) != 0)
 		return (EXECUTION_FAILURE);
 	if (is_builtin(cmd->command->words->word->word, builtin_table, table_size))
 		return (execute_builtin_command(cmd, builtin_table, table_size, shell_env));

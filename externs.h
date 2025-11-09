@@ -56,7 +56,7 @@ char			**strvec_from_word_list(t_word_list *list);
 int				ft_mkstemp(char **template);
 
 // redir.c
-int				do_redirections(t_redirect *redirect, t_varlist *env);
+int				do_redirections(t_redirect *redirect, t_shell_env *shell_env);
 
 // make_cmd.c
 char			*make_here_document(char *here_doc_eof, t_token_error *e);
