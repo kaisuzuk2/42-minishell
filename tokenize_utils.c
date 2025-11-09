@@ -6,14 +6,11 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 10:39:48 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/08 12:38:49 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/09 14:24:43 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// tokenize_utils_tokenkinds.c
-t_bool				is_shellbrank(char c);
 
 void	skip_shellbrank(char **line)
 {
@@ -21,10 +18,9 @@ void	skip_shellbrank(char **line)
 		(*line)++;
 }
 
-void set_token_flg(char *line, t_word_desc *desc)
+static void	set_token_flg(char *line, t_word_desc *desc)
 {
 	desc->flag = 0;
-	
 	if (ft_strchr(line, SINGLE_QUOTE_CHAR))
 		desc->flag |= W_SQUOTE;
 	if (ft_strchr(line, DOUBLE_QUOTE_CHAR))
@@ -55,7 +51,8 @@ t_word_desc	*make_token(char **line, size_t len, t_token_kind kind,
 		set_token_flg(*line, desc);
 		word = (char *)xmalloc(sizeof(char) * (len + 1));
 		if (!word)
-			return (free(desc), set_parse_error(ST_ERR_NOMEM, NULL, NULL, e), NULL);
+			return (free(desc), set_parse_error(ST_ERR_NOMEM, NULL, NULL, e),
+				NULL);
 		ft_memcpy(word, *line, len);
 		word[len] = '\0';
 		*line += len;
@@ -74,7 +71,8 @@ t_token_list	*make_word_list(t_token_list *cur, t_word_desc *desc,
 		return (set_parse_error(ST_ERR_NOMEM, NULL, NULL, e), NULL);
 	new = (t_token_list *)xcalloc(sizeof(t_token_list), 1);
 	if (!new)
-		return (dispose_word(desc), set_parse_error(ST_ERR_NOMEM, NULL, NULL, e), NULL);
+		return (dispose_word(desc), set_parse_error(ST_ERR_NOMEM, NULL, NULL,
+				e), NULL);
 	new->word = desc;
 	cur->next = new;
 	return (new);

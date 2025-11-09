@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/09 12:02:18 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/09 14:28:54 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,33 @@ typedef struct s_pipefd
 }						t_pipefd;
 
 
+/* **************************************************************** */
+/*										*/
+/*			 tokenize					*/
+/*										*/
+/* **************************************************************** */
+
 // tokenize.c
 t_token_list	*tokenize(char *line, t_shell_env *shell_env);
 
+// tokenize_utils.c
+t_bool	startswith(const char *s, const char *op);
+
+// token_utils_tokenkinds.c
+t_bool	is_shellbrank(char c);
+
+
+/* **************************************************************** */
+/*										*/
+/*			 parser					*/
+/*										*/
+/* **************************************************************** */
+
 // parser.c
 t_command		*parser(t_token_list *token, t_shell_env *shell_env);
+
+// parser_utils.c
+t_word_desc	*tokendup(t_word_desc *desc);
 
 // parser_error.c
 int					handle_parse_error(t_token_error *e, t_token_list *token, t_command *command, t_shell_env *shell_env);

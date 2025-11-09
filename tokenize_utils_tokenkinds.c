@@ -6,14 +6,11 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 10:35:48 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/26 09:09:09 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/09 14:25:07 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// tokenize_utils.c
-t_bool	startswith(const char *s, const char *op);
 
 t_bool	is_shellbrank(char c)
 {
@@ -34,7 +31,7 @@ t_bool	is_operator(char *line)
 {
 	int			i;
 	const char	*operators[] = {"&&", "&", "||", "|", ";;", ";", "<>", "<<-",
-			"<<", "<&", "<", ">|", ">>", ">&", ">", "(", ")"};
+		"<<", "<&", "<", ">|", ">>", ">&", ">", "(", ")"};
 
 	i = 0;
 	while (i < sizeof(operators) / sizeof(operators[0]))

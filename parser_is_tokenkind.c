@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 09:43:21 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/26 09:44:13 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/09 14:30:44 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,17 @@ t_bool	is_redirect(t_token_kind kind)
 		|| kind == TK_LESS);
 }
 
-t_bool is_wordtoken(t_token_kind kind)
+t_bool	is_wordtoken(t_token_kind kind)
 {
 	return (kind == TK_WORD);
 }
 
-t_bool is_eoftoken(t_token_kind kind)
+t_bool	is_eoftoken(t_token_kind kind)
 {
 	return (kind == TK_EOF);
 }
 
-t_bool is_pipetoken(t_token_kind kind)
+t_bool	is_pipetoken(t_token_kind kind)
 {
 	return (kind == TK_PIPE);
 }

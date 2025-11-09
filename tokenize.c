@@ -6,37 +6,43 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/08 12:39:41 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/09 14:24:18 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// // tokenize_utils_tokenkinds.c
+// t_bool				is_shellbrank(char c);
+// t_bool				is_word(char *line);
+// char				*is_metacharacter(char c);
+// t_bool				is_operator(char *line);
+// t_bool				is_quote(char c);
+
 // tokenize_utils.c
-void				skip_shellbrank(char **line);
-void				set_token_flg(char *line, t_word_desc *desc);
-t_bool				startswith(const char *s, const char *op);
-t_word_desc			*make_token(char **line, size_t len, t_token_kind kind,
-						t_token_error *e);
-t_token_list		*make_word_list(t_token_list *cur, t_word_desc *desc,
-						t_token_error *e);
+void	skip_shellbrank(char **line);
+t_word_desc	*make_token(char **line, size_t len, t_token_kind kind,
+		t_token_error *e);
+t_token_list	*make_word_list(t_token_list *cur, t_word_desc *desc,
+		t_token_error *e);
 
 // tokenize_utils_tokenkinds.c
-t_bool				is_shellbrank(char c);
-t_bool				is_word(char *line);
-char				*is_metacharacter(char c);
-t_bool				is_operator(char *line);
-t_bool				is_quote(char c);
+char	*is_metacharacter(char c);
+t_bool	is_word(char *line);
+t_bool	is_operator(char *line);
+t_bool	is_quote(char c);
+
+
 
 static t_word_desc	*make_operator_token(char **line_p, char *line,
 		t_token_error *e)
 {
 	int					i;
 	const t_token_kind	operators_table[] = {TK_LESS_LESS, TK_LESS,
-			TK_GREAT_GREAT, TK_GREAT, TK_PIPE};
+		TK_GREAT_GREAT, TK_GREAT, TK_PIPE};
 	const char			*operators[] = {"<<", "<", ">>", ">", "|"};
 	const char			*unsupport_operators[] = {"&&", "&", "||", ";;", ";",
-					"<>", "<<-", "<&", ">|", ">&", "(", ")"};
+		"<>", "<<-", "<&", ">|", ">&", "(", ")"};
 
 	i = 0;
 	while (i < sizeof(unsupport_operators) / sizeof(unsupport_operators[0]))

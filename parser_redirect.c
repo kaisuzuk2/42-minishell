@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 11:48:27 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/07 14:09:58 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/09 15:06:09 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,10 @@
 // parser_utils.c
 t_word_desc		*tokendup(t_word_desc *desc);
 
-char *quote_removal_delimiter(char *delimiter);
+char			*quote_removal_delimiter(char *delimiter);
 
-static t_bool	set_heredoc(t_redirect *redir, t_word_desc *desc, t_token_error *e)
+static t_bool	set_heredoc(t_redirect *redir, t_word_desc *desc,
+		t_token_error *e)
 {
 	redir->here_doc_eof = quote_removal_delimiter(desc->word);
 	if (!redir->here_doc_eof)
@@ -25,7 +26,8 @@ static t_bool	set_heredoc(t_redirect *redir, t_word_desc *desc, t_token_error *e
 	redir->redirectee.filename = (t_word_desc *)xmalloc(sizeof(t_word_desc));
 	if (!redir->redirectee.filename)
 		return (set_parse_error(ST_ERR_NOMEM, NULL, NULL, e), FALSE);
-	redir->redirectee.filename->word = make_here_document(redir->here_doc_eof, e);
+	redir->redirectee.filename->word = make_here_document(redir->here_doc_eof,
+			e);
 	if (!redir->redirectee.filename->word)
 		return (FALSE);
 	redir->redirectee.filename->flag = desc->flag;
@@ -47,7 +49,7 @@ t_bool	set_redirect(t_redirect *redir, t_redirect_info info,
 
 t_redirect	*make_redirection(t_token_list **token, t_token_error *e)
 {
-	const t_redirect_info	redirect_info_table[] = {
+	const t_redirect_info	redir_table[] = {
 	{TK_LESS, r_input_direction, O_RDONLY},
 	{TK_LESS_LESS, r_reading_until, 0},
 	{TK_GREAT, r_output_direction, O_WRONLY | O_CREAT | O_TRUNC},
@@ -60,11 +62,11 @@ t_redirect	*make_redirection(t_token_list **token, t_token_error *e)
 	if (!redirect)
 		return (set_parse_error(ST_ERR_NOMEM, NULL, NULL, e), NULL);
 	i = 0;
-	while (i < sizeof(redirect_info_table) / sizeof(redirect_info_table[0]))
+	while (i < sizeof(redir_table) / sizeof(redir_table[0]))
 	{
-		if ((*token)->word->kind == redirect_info_table[i].kind)
+		if ((*token)->word->kind == redir_table[i].kind)
 		{
-			if (!set_redirect(redirect, redirect_info_table[i], (*token)->next, e))
+			if (!set_redirect(redirect, redir_table[i], (*token)->next, e))
 				return (NULL);
 			break ;
 		}
@@ -74,7 +76,8 @@ t_redirect	*make_redirection(t_token_list **token, t_token_error *e)
 	return (redirect);
 }
 
-// t_redirect	*connect_redirection(t_command *command, t_token_list **token_p, t_token_error *e)
+// t_redirect	*connect_redirection(t_command *command, t_token_list **token_p,
+// 		t_token_error *e)
 // {
 // 	t_redirect	*new;
 // 	t_redirect	*cur;
@@ -87,15 +90,32 @@ t_redirect	*make_redirection(t_token_list **token, t_token_error *e)
 // 	else
 // 	{
 // 		cur = command->redirects;
+// 		if (cur->instruction == r_reading_until
+// 			&& new->instruction == r_reading_until)
+// 		{
+// 			dispose_redirects(cur);
+// 			command->redirects = new;
+// 			return (new);
+// 		}
 // 		while (cur->next)
+// 		{
+// 			if (cur->next->instruction == r_reading_until
+// 				&& new->instruction == r_reading_until)
+// 			{
+// 				dispose_redirects(cur->next);
+// 				cur->next = new;
+// 				break ;
+// 			}
 // 			cur = cur->next;
+// 		}
 // 		cur->next = new;
 // 	}
 // 	return (new);
 // }
 
 
-t_redirect	*connect_redirection(t_command *command, t_token_list **token_p, t_token_error *e)
+t_redirect	*connect_redirection(t_command *command, t_token_list **token_p,
+		t_token_error *e)
 {
 	t_redirect	*new;
 	t_redirect	*cur;
@@ -108,22 +128,8 @@ t_redirect	*connect_redirection(t_command *command, t_token_list **token_p, t_to
 	else
 	{
 		cur = command->redirects;
-		if (cur->instruction == r_reading_until && new->instruction == r_reading_until)
-		{
-			dispose_redirects(cur);
-			command->redirects = new;
-			return (new);
-		}
 		while (cur->next)
-		{
-			if (cur->next->instruction == r_reading_until && new->instruction == r_reading_until)
-			{
-				dispose_redirects(cur->next);
-				cur->next = new;
-				break;
-			}
 			cur = cur->next;
-		}
 		cur->next = new;
 	}
 	return (new);
