@@ -48,5 +48,5 @@ t_bool	is_operator(char *line)
 
 t_bool	is_quote(char c)
 {
-	return (c == '\'' || c == '\"');
+	return (c == SINGLE_QUOTE_CHAR || c == DOUBLE_QUOTE_CHAR);
 }

@@ -54,6 +54,7 @@ typedef int t_bool;
 
 # define SINGLE_QUOTE_CHAR '\''
 # define DOUBLE_QUOTE_CHAR '\"'
+# define DOLLAR_CHAR '$'
 
 # define EXECUTION_FAILURE 1
 # define EXECUTION_SUCCESS 0

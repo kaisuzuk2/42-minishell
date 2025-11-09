@@ -64,14 +64,14 @@ void	skip_shellbrank(char **line)
 // ''
 void set_token_flg(char *line, t_word_desc *desc)
 {
-	desc->flag = FALSE;
+	desc->flag = 0;
 	
-	if (ft_strchr(line, '\''))
-		desc->flag = TRUE;
-	if (ft_strchr(line, '\"'))
-		desc->flag = TRUE;
-	if (ft_strchr(line, '$'))
-		desc->flag = TRUE;
+	if (ft_strchr(line, SINGLE_QUOTE_CHAR))
+		desc->flag |= W_SQUOTE;
+	if (ft_strchr(line, DOUBLE_QUOTE_CHAR))
+		desc->flag |= W_DQUOTE;
+	if (ft_strchr(line, DOLLAR_CHAR))
+		desc->flag |= W_HASDOLLAR;
 }
 
 t_bool	startswith(const char *s, const char *op)

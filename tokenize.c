@@ -57,7 +57,6 @@ static t_word_desc	*make_operator_token(char **line_p, char *line,
 	return (e->status = ST_ERR_SYNTAX, NULL);
 }
 
-// ### TODO: 文中のクォートも取り除く
 static t_word_desc	*make_word_token(char **line_p, char *line,
 		t_token_error *e)
 {

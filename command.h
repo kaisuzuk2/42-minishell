@@ -15,10 +15,9 @@
 
 /* Possible values for the `flags' field of a WORD_DESC. */
 // ### TODO: フラグの内容を精査する　使いすべきものを確認する
-# define W_NOEXPAND 0x01
-# define W_SQUOTE 0x02
-# define W_DQUOTE 0x04
-# define W_HASDOLLAR 0x08
+# define W_SQUOTE 0x01
+# define W_DQUOTE 0x02
+# define W_HASDOLLAR 0x04
 
 typedef struct s_glist
 {
