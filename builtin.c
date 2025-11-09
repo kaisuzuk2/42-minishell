@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 10:13:08 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/09 12:43:47 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/09 12:49:05 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ t_bool  save_stdfd(int *fd_arr)
 	fd_arr[STDOUT_FILENO] = dup(STDOUT_FILENO);
 	fd_arr[STDERR_FILENO] = dup(STDERR_FILENO);
 	i = 0;
-	while (i < 3)
+	while (i < STDFD_SIZE)
 	{
 		if (fd_arr[i] < 0)
 			return (sys_error("dup2 failed"), FALSE);
@@ -103,7 +103,7 @@ void close_stdfd(int *fd_arr)
 	int i;
 
 	i = 0;
-	while (i < 3)
+	while (i < STDFD_SIZE)
 	{
 		close(fd_arr[i]);
 		i++;

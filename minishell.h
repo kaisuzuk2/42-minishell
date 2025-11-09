@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:12:50 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/09 12:02:14 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/09 12:48:38 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ extern char **environ;
 #  endif
 # endif
 
-# define CTLESC '\001'
+# define STDFD_SIZE 3
 
 typedef int t_bool;
 #define TRUE 1
