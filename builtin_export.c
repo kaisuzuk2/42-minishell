@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 08:37:57 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/08 13:43:29 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/09 12:53:45 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static t_bool is_valid_env_name(char *exportstr)
 	return (TRUE);
 }
 
-static t_bool update_export(t_shell_env *shell_env, char *exportstr)
+static t_bool update_export(t_varlist *env, char *exportstr)
 {
 	char *key;
 	t_shell_var *key_env;
@@ -59,20 +59,20 @@ static t_bool update_export(t_shell_env *shell_env, char *exportstr)
 	t_bool res;
 	
 	if (!ft_strchr(exportstr, '+'))
-		return (update_variable_item(shell_env, exportstr));
+		return (update_variable_item(env, exportstr));
 	key = get_env_key(exportstr);
 	if (!key)
 		return (FALSE);
 	value = get_env_value(exportstr);
 	if (!value)
 		return (free(key), FALSE);
-	key_env = list_getshell_var(shell_env->env, key);
+	key_env = list_getshell_var(env, key);
 	if (!key_env)
 		return (free(key), free(value), FALSE);
 	new_exportstr = ft_strjoin(key_env->exportstr, value);
 	if (!new_exportstr)
 		return (free(key), free(value), FALSE);
-	res = update_variable_item(shell_env->env, new_exportstr);
+	res = update_variable_item(env, new_exportstr);
 	return (free(key), free(value), free(new_exportstr), res);
 }
 
