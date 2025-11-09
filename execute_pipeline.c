@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 10:31:38 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/09 16:36:42 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/09 16:43:01 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,18 @@
    a shell script.
 */
 
-t_bool		do_piping(int pipe_in, int pipe_out);
-void		close_pipe(t_pipefd *pipefd);
-int			open_pipe(t_pipefd *pipefd, int *fildes);
-int			execute_pipe_internal(t_pipefd *pipefd, int *fildes);
+t_bool			do_piping(int pipe_in, int pipe_out);
+void			close_pipe(t_pipefd *pipefd);
+int				open_pipe(t_pipefd *pipefd, int *fildes);
+int				execute_pipe_internal(t_pipefd *pipefd, int *fildes);
 
-static void print_signal_end(int last_status)
+static void	print_signal_end(int last_status)
 {
 	if (last_status == SIGINT)
 		ft_dprintf(STDOUT_FILENO, "\n");
 }
 
-static void print_core_dumped(int last_status)
+static void	print_core_dumped(int last_status)
 {
 	if (last_status == SIGQUIT)
 		ft_dprintf(STDOUT_FILENO, "Quit (core dumped)\n");
@@ -45,7 +45,7 @@ pid_t	wait_for(pid_t lastpid)
 	int		status;
 	int		last_status;
 	pid_t	wpid;
-	t_bool sig_flg;
+	t_bool	sig_flg;
 
 	sig_flg = FALSE;
 	last_status = -1;
@@ -65,7 +65,8 @@ pid_t	wait_for(pid_t lastpid)
 	if (lastpid < 0)
 		return (EXECUTION_FAILURE);
 	if (WIFSIGNALED(last_status))
-		return (print_core_dumped(WTERMSIG(last_status)), 128 + WTERMSIG(last_status));
+		return (print_core_dumped(WTERMSIG(last_status)), 128
+			+ WTERMSIG(last_status));
 	if (WIFEXITED(last_status))
 		return (WEXITSTATUS(last_status));
 	else
@@ -86,20 +87,23 @@ static int	shell_execve(char *command, char **arg, char **env)
 	return (EXECUTION_FAILURE);
 }
 
-static int	execute_disk_command(t_command *cmd, t_pipefd pipefd,  t_shell_env *shell_env)
+static int	execute_disk_command(t_command *cmd, t_pipefd pipefd,
+		t_shell_env *shell_env)
 {
-	char	*command;
-	char	**arg;
-	char	**envarr;
-	t_builtin_table builtin_info;
+	char			*command;
+	char			**arg;
+	char			**envarr;
+	t_builtin_table	builtin_info;
 
 	if (cmd->command->redirects && do_redirections(cmd->command->redirects,
 			shell_env) != 0)
 		return (EXECUTION_FAILURE);
 	builtin_info = get_builtin_table();
-	if (is_builtin(cmd->command->words->word->word, builtin_info.table, builtin_info.size))
+	if (is_builtin(cmd->command->words->word->word, builtin_info.table,
+			builtin_info.size))
 		return (execute_builtin_command(cmd, pipefd, shell_env));
-	command = search_for_command(cmd->command->words->word->word, shell_env->env);
+	command = search_for_command(cmd->command->words->word->word,
+			shell_env->env);
 	if (!command)
 		return (fatal_error("malloc", MALLOC_ERR_STR), EX_FATAL_ERROR);
 	if (!update_key_value(shell_env->env, "_", command))
@@ -107,18 +111,39 @@ static int	execute_disk_command(t_command *cmd, t_pipefd pipefd,  t_shell_env *s
 	arg = strvec_from_word_list(cmd->command->words);
 	envarr = get_env_arr(shell_env->env);
 	if (!envarr || !arg)
-		return (free(command), dispose_char_arr(envarr), dispose_char_arr(arg), fatal_error("malloc", MALLOC_ERR_STR), EX_FATAL_ERROR);
+		return (free(command), dispose_char_arr(envarr), dispose_char_arr(arg),
+			fatal_error("malloc", MALLOC_ERR_STR), EX_FATAL_ERROR);
 	shell_execve(command, arg, envarr);
-	return (free(command), dispose_char_arr(envarr), dispose_char_arr(arg), EXECUTION_FAILURE);
+	return (free(command), dispose_char_arr(envarr), dispose_char_arr(arg),
+		EXECUTION_FAILURE);
+}
+
+static int	execute_simple_command_internal(t_command *cmd, t_pipefd pipefd,
+		int close_fd, t_shell_env *shell_env)
+{
+	int status; 
+	
+	reset_signals_for_child();
+	if (close_fd != -1)
+		close(close_fd);
+	if (!do_piping(pipefd.pipe_in, pipefd.pipe_out))
+	{
+		dispose_command(cmd->head);
+		dispose_env(shell_env);
+		exit(EXECUTION_FAILURE);
+	}
+	status = execute_disk_command(cmd, pipefd, shell_env);
+	dispose_command(cmd->head);
+	dispose_env(shell_env);
+	exit(status);
 }
 
 static pid_t	execute_simple_command(t_pipefd pipefd, t_command *cmd,
 		int close_fd, t_shell_env *shell_env)
 {
 	pid_t			pid;
-	t_builtin_table builtin_info;
-	int status;
-	
+	t_builtin_table	builtin_info;
+
 	builtin_info = get_builtin_table();
 	if (pipefd.pipe_in == -1 && pipefd.pipe_out == -1
 		&& is_builtin(cmd->command->words->word->word, builtin_info.table,
@@ -133,21 +158,7 @@ static pid_t	execute_simple_command(t_pipefd pipefd, t_command *cmd,
 		exit(EXECUTION_FAILURE);
 	}
 	if (pid == 0)
-	{
-		reset_signals_for_child();
-		if (close_fd != -1)
-			close(close_fd);
-		if (!do_piping(pipefd.pipe_in, pipefd.pipe_out))
-		{
-			dispose_command(cmd->head);
-			dispose_env(shell_env);
-			exit(EXECUTION_FAILURE);
-		}
-		status = execute_disk_command(cmd, pipefd, shell_env);
-		dispose_command(cmd->head);
-		dispose_env(shell_env);
-		exit(status);
-	}
+		exit(execute_simple_command_internal(cmd, pipefd, close_fd, shell_env));
 	return (pid);
 }
 
@@ -157,7 +168,7 @@ int	execute_pipeline(t_command *cmd, t_shell_env *shell_env)
 	t_pipefd	pipefd;
 	pid_t		lastpid;
 	t_command	*cur_cmd;
-	int res;
+	int			res;
 
 	cur_cmd = cmd;
 	pipefd.pipe_in = -1;
@@ -165,7 +176,7 @@ int	execute_pipeline(t_command *cmd, t_shell_env *shell_env)
 	{
 		pipefd.pipe_out = -1;
 		if (cur_cmd->next && !execute_pipe_internal(&pipefd, fildes))
-				return (EXECUTION_FAILURE);
+			return (EXECUTION_FAILURE);
 		else if (!cur_cmd->next)
 			fildes[0] = -1;
 		lastpid = execute_simple_command(pipefd, cur_cmd, fildes[0], shell_env);
