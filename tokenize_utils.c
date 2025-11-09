@@ -21,47 +21,6 @@ void	skip_shellbrank(char **line)
 		(*line)++;
 }
 
-// void	set_token_flg(char *line, t_word_desc *desc)
-// {
-// 	if (ft_strchr(line, '$'))
-// 		desc->flag = W_HASDOLLAR;
-// 	if (ft_strchr(line, '\''))
-// 		desc->flag = W_SQUOTE;
-// 	else if (ft_strchr(line, '\"'))
-// 		desc->flag = W_DQUOTE;
-// }
-
-// void set_token_flg(char *line, t_word_desc *desc)
-// {
-// 	int i;
-// 	int flg;
-
-// 	if (ft_strchr(line, '$'))
-// 		desc->flag = W_HASDOLLAR;
-// 	i = 0;
-// 	while (line[i])
-// 	{
-// 		if (line[i] == '\'')
-// 		{
-// 			desc->flag |= W_SQUOTE;
-// 			i++;
-// 			while (line[i] && line[i] != '\'')
-// 				i++;
-// 		}
-// 		else if (line[i] == '\"')
-// 		{
-// 			desc->flag |= W_DQUOTE;
-// 			i++;
-// 			while (line[i] && line[i] != '\"')
-// 				i++;
-// 		}
-// 		i++;
-// 	}	
-// }
-
-// $
-// ""
-// ''
 void set_token_flg(char *line, t_word_desc *desc)
 {
 	desc->flag = 0;
@@ -88,7 +47,7 @@ t_word_desc	*make_token(char **line, size_t len, t_token_kind kind,
 	desc = (t_word_desc *)xcalloc(sizeof(t_word_desc), 1);
 	if (!desc)
 		return (set_parse_error(ST_ERR_NOMEM, NULL, NULL, e), NULL);
-	desc->flag = W_NOEXPAND;
+	desc->flag = 0;
 	if (!line)
 		word = NULL;
 	else

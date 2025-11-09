@@ -15,9 +15,11 @@
 // parser_utils.c
 t_word_desc		*tokendup(t_word_desc *desc);
 
+char *quote_removal_delimiter(char *delimiter);
+
 static t_bool	set_heredoc(t_redirect *redir, t_word_desc *desc, t_token_error *e)
 {
-	redir->here_doc_eof = savestring(desc->word);
+	redir->here_doc_eof = quote_removal_delimiter(desc->word);
 	if (!redir->here_doc_eof)
 		return (set_parse_error(ST_ERR_NOMEM, NULL, NULL, e), FALSE);
 	redir->redirectee.filename = (t_word_desc *)xmalloc(sizeof(t_word_desc));
