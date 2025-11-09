@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 10:31:38 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/09 15:20:28 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/09 16:36:42 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,21 +79,10 @@ static int	shell_execve(char *command, char **arg, char **env)
 
 	execve(command, arg, env);
 	i = errno;
-	if (i != ENOEXEC)
-	{
-		if (i == ENOENT)
-			fatal_error(command, NOTFOUND_STR);
-	}
+	if (i == ENOENT)
+		fatal_error(command, NOTFOUND_STR);
 	else
 		internal_error(command, strerror(i));
-	// if (i == ENOEXEC)
-	// {
-	// 	re_args[0] = "/bin/bash";
-	// 	re_args[1] = command;
-	// 	re_args[2] = NULL;
-	// 	execve(re_args[0], re_args, envp);
-	// 	i = errno;
-	// }
 	return (EXECUTION_FAILURE);
 }
 
@@ -175,12 +164,9 @@ int	execute_pipeline(t_command *cmd, t_shell_env *shell_env)
 	while (cur_cmd)
 	{
 		pipefd.pipe_out = -1;
-		if (cur_cmd->next)
-		{
-			if (!execute_pipe_internal(&pipefd, fildes))
+		if (cur_cmd->next && !execute_pipe_internal(&pipefd, fildes))
 				return (EXECUTION_FAILURE);
-		}
-		else
+		else if (!cur_cmd->next)
 			fildes[0] = -1;
 		lastpid = execute_simple_command(pipefd, cur_cmd, fildes[0], shell_env);
 		close_pipe(&pipefd);
