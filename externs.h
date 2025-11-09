@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/07 11:12:45 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/09 12:02:18 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,13 @@
 
 # include "command.h"
 # include "variables.h"
+
+typedef struct s_pipefd
+{
+	int					pipe_in;
+	int					pipe_out;
+}						t_pipefd;
+
 
 // tokenize.c
 t_token_list	*tokenize(char *line, t_shell_env *shell_env);
@@ -64,7 +71,7 @@ char			*make_here_document(char *here_doc_eof, t_token_error *e);
 // builtin.c
 t_builtin_table	get_builtin_table(void);
 int				execute_builtin_command(t_command *cmd,
-					const t_builtin *builtin_table, const size_t table_size,
+					t_pipefd pipefd,
 					t_shell_env *env);
 t_bool			is_builtin(char *command, const t_builtin *builtin_table,
 					const size_t table_size);

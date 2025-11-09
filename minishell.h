@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:12:50 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/08 10:39:51 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/09 12:02:14 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,6 @@ typedef int t_bool;
 # define EX_NOEXEC 126
 # define EX_NOTFOUND 127
 // # define EX_SHERRBASE 256
-
-typedef struct s_pipefd
-{
-	int					pipe_in;
-	int					pipe_out;
-}						t_pipefd;
 
 
 #endif

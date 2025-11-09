@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 10:31:38 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/08 13:01:24 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/09 12:44:59 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,18 +97,19 @@ static int	shell_execve(char *command, char **arg, char **env)
 	return (EXECUTION_FAILURE);
 }
 
-static int	execute_disk_command(t_command *cmd, const t_builtin *builtin_table,
-		const size_t table_size, t_shell_env *shell_env)
+static int	execute_disk_command(t_command *cmd, t_pipefd pipefd,  t_shell_env *shell_env)
 {
 	char	*command;
 	char	**arg;
 	char	**envarr;
+	t_builtin_table builtin_info;
 
 	if (cmd->command->redirects && do_redirections(cmd->command->redirects,
 			shell_env) != 0)
 		return (EXECUTION_FAILURE);
-	if (is_builtin(cmd->command->words->word->word, builtin_table, table_size))
-		return (execute_builtin_command(cmd, builtin_table, table_size, shell_env));
+	builtin_info = get_builtin_table();
+	if (is_builtin(cmd->command->words->word->word, builtin_info.table, builtin_info.size))
+		return (execute_builtin_command(cmd, pipefd, shell_env));
 	command = search_for_command(cmd->command->words->word->word, shell_env->env);
 	if (!command)
 		return (fatal_error("malloc", MALLOC_ERR_STR), EX_FATAL_ERROR);
@@ -129,14 +130,11 @@ static pid_t	execute_simple_command(t_pipefd pipefd, t_command *cmd,
 	t_builtin_table builtin_info;
 	int status;
 	
-	if (cmd->command->redirects && do_redirections(cmd->command->redirects,
-			shell_env) != 0)
-		return (EXECUTION_FAILURE);
 	builtin_info = get_builtin_table();
 	if (pipefd.pipe_in == -1 && pipefd.pipe_out == -1
 		&& is_builtin(cmd->command->words->word->word, builtin_info.table,
 			builtin_info.size))
-		return (execute_builtin_command(cmd, builtin_info.table, builtin_info.size, shell_env));
+		return (execute_builtin_command(cmd, pipefd, shell_env));
 	pid = fork();
 	if (pid < 0)
 	{
@@ -156,7 +154,7 @@ static pid_t	execute_simple_command(t_pipefd pipefd, t_command *cmd,
 			dispose_env(shell_env);
 			exit(EXECUTION_FAILURE);
 		}
-		status = execute_disk_command(cmd, builtin_info.table, builtin_info.size, shell_env);
+		status = execute_disk_command(cmd, pipefd, shell_env);
 		dispose_command(cmd->head);
 		dispose_env(shell_env);
 		exit(status);
