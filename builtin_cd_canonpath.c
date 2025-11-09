@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 09:15:07 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/30 16:06:59 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/09 14:02:08 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,33 @@ static void remove_parent(char **q, char *base)
 	if (*q > base)
 	{
 		(*q)--;
-		while (*(q) > base && *(*q - 1) != '/')
+		while ((*q) > base && *(*q - 1) != '/')
+			(*q)--;
+		while ((*q) > (base + 1) && *(*q - 1) == '/')
 			(*q)--;
 	}
 }
 
 static t_bool is_abst_path(char **p, char **q, char *base)
 {
-	if ((*p)[0] == '.' && (*p)[1] == '/' && (*p)[2] == '\0')
-		return ((*p)++, TRUE);
+	if ((*p)[0] == '.' && is_pathsep((*p)[1]))
+	{
+		(*p)++;
+		if (is_pathsep(**p))
+			(*p)++;
+		return (TRUE);
+	}
 	if ((*p)[0] == '.' && (*p)[1] == '.' && is_pathsep((*p)[2]))
-		return ((*p) += 2, remove_parent(q, base), TRUE);
+		return ((*p) += 3, remove_parent(q, base), TRUE);
 	return (FALSE);
+}
+
+static void trim_last_slash(char **q, char *base)
+{
+	if (ft_strlen(base) <= 1)
+		return ;
+	while ((*q) > (base + 1) && *(*q - 1) == '/')
+		(*q)--;
 }
 
 char *sh_canonpath(char *tmp_path)
@@ -61,6 +76,7 @@ char *sh_canonpath(char *tmp_path)
 		if (!is_abst_path(&p, &q, base) && *p)
 			*q++ = *p++;
 	}
+	trim_last_slash(&q, base);
 	*q = '\0';
 	return (base);
 }
