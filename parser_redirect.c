@@ -6,15 +6,13 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 11:48:27 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/09 15:06:09 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/09 15:26:03 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// parser_utils.c
-t_word_desc		*tokendup(t_word_desc *desc);
-
+// expand_utils.c
 char			*quote_removal_delimiter(char *delimiter);
 
 static t_bool	set_heredoc(t_redirect *redir, t_word_desc *desc,
@@ -34,7 +32,7 @@ static t_bool	set_heredoc(t_redirect *redir, t_word_desc *desc,
 	return (TRUE);
 }
 
-t_bool	set_redirect(t_redirect *redir, t_redirect_info info,
+static t_bool	set_redirect(t_redirect *redir, t_redirect_info info,
 		t_token_list *token, t_token_error *e)
 {
 	redir->instruction = info.instruction;
@@ -47,7 +45,7 @@ t_bool	set_redirect(t_redirect *redir, t_redirect_info info,
 	return (TRUE);
 }
 
-t_redirect	*make_redirection(t_token_list **token, t_token_error *e)
+static t_redirect	*make_redirection(t_token_list **token, t_token_error *e)
 {
 	const t_redirect_info	redir_table[] = {
 	{TK_LESS, r_input_direction, O_RDONLY},
@@ -75,44 +73,6 @@ t_redirect	*make_redirection(t_token_list **token, t_token_error *e)
 	*token = (*token)->next->next;
 	return (redirect);
 }
-
-// t_redirect	*connect_redirection(t_command *command, t_token_list **token_p,
-// 		t_token_error *e)
-// {
-// 	t_redirect	*new;
-// 	t_redirect	*cur;
-
-// 	new = make_redirection(token_p, e);
-// 	if (!new)
-// 		return (NULL);
-// 	if (!command->redirects)
-// 		command->redirects = new;
-// 	else
-// 	{
-// 		cur = command->redirects;
-// 		if (cur->instruction == r_reading_until
-// 			&& new->instruction == r_reading_until)
-// 		{
-// 			dispose_redirects(cur);
-// 			command->redirects = new;
-// 			return (new);
-// 		}
-// 		while (cur->next)
-// 		{
-// 			if (cur->next->instruction == r_reading_until
-// 				&& new->instruction == r_reading_until)
-// 			{
-// 				dispose_redirects(cur->next);
-// 				cur->next = new;
-// 				break ;
-// 			}
-// 			cur = cur->next;
-// 		}
-// 		cur->next = new;
-// 	}
-// 	return (new);
-// }
-
 
 t_redirect	*connect_redirection(t_command *command, t_token_list **token_p,
 		t_token_error *e)

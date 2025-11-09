@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/09 14:28:54 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/09 15:28:26 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_bool	is_shellbrank(char c);
 
 /* **************************************************************** */
 /*										*/
-/*			 parser					*/
+/*			 parse					*/
 /*										*/
 /* **************************************************************** */
 
@@ -55,6 +55,16 @@ t_word_desc	*tokendup(t_word_desc *desc);
 int					handle_parse_error(t_token_error *e, t_token_list *token, t_command *command, t_shell_env *shell_env);
 void				set_parse_error(t_token_status status, const char *msg,
 						const char *detail, t_token_error *e);
+
+
+
+/* **************************************************************** */
+/*										*/
+/*			 expand					*/
+/*										*/
+/* **************************************************************** */
+
+
 
 // expand.c
 t_bool			expand(t_command *command, t_shell_env *shell_env);

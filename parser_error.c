@@ -6,19 +6,18 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 09:40:15 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/07 11:11:55 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/09 15:27:23 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // ### TODO: ポインタじゃないほうがいいのでは
-int	handle_parse_error(t_token_error *e, t_token_list *token, t_command *command, t_shell_env *shell_env)
+int	handle_parse_error(t_token_error *e, t_token_list *token,
+		t_command *command, t_shell_env *shell_env)
 {
 	if (e->status == ST_OK)
 		return (0);
-	if (e->status == ST_ERR_SYNTAX)
-		parser_operator_error(e->msg, e->detail);
 	dispose_token_words(token);
 	dispose_command(command);
 	if (e->status == ST_ERR_NOMEM)
@@ -26,6 +25,8 @@ int	handle_parse_error(t_token_error *e, t_token_list *token, t_command *command
 		dispose_env(shell_env);
 		exit(EX_FATAL_ERROR);
 	}
+	if (e->status == ST_ERR_SYNTAX)
+		parser_operator_error(e->msg, e->detail);
 	else if (e->status == ST_SIGNAL)
 		set_last_status(130, shell_env);
 	else

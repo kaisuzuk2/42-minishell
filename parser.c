@@ -6,22 +6,11 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 13:13:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/09 14:31:18 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/09 15:27:35 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// // parser_redirect.c
-// t_bool				set_redirect(t_redirect *redir, t_redirect_info info,
-// 						t_token_list *token, t_token_error *e);
-
-// // parser_utils.c
-// t_word_desc			*tokendup(t_word_desc *desc);
-// t_command			*new_command(t_command_type type);
-// t_bool				is_redirect(t_token_kind kind);
-// t_redirect			*connect_redirection(t_command *command,
-// 						t_token_list **token, t_token_error *e);
 
 // parser_utils.c
 t_command	*new_command(t_command_type type);
@@ -33,6 +22,8 @@ t_bool				is_eoftoken(t_token_kind kind);
 t_bool				is_pipetoken(t_token_kind kind);
 
 // parser_redirect.c
+t_redirect	*connect_redirection(t_command *command, t_token_list **token_p,
+		t_token_error *e);
 
 
 
