@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 13:09:16 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/10 11:28:00 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/10 12:32:30 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ static char	*get_varvalue(t_shell_env *shell_env, char *doll_ptr)
 {
 	char	*varname;
 	char	*varvalue;
+	char *tmp_varvalue;
 
 	varvalue = NULL;
 	varname = ft_substr(doll_ptr + 1, 0, get_varlen(doll_ptr + 1));
@@ -73,10 +74,14 @@ static char	*get_varvalue(t_shell_env *shell_env, char *doll_ptr)
 	if (is_special_parameters(*varname))
 		varvalue = get_special_value(shell_env, varname);
 	else
-		varvalue = list_getenv(shell_env->env, varname);
+	{
+		tmp_varvalue = list_getenv(shell_env->env, varname);
+		if (!tmp_varvalue)
+			varvalue = ft_strdup("");
+		else
+			varvalue = savestring(tmp_varvalue);		
+	}
 	free(varname);
-	if (!varvalue)
-		return (ft_strdup(""));
 	return (varvalue);
 }
 
@@ -111,9 +116,7 @@ static char	*join_string_until_varvalue_and_quote(char *res, char **document)
 	tmp = ft_substr(*document, 0, i);
 	if (!tmp)
 		return (free(res), NULL);
-	res_tmp = ft_strjoin(res, tmp);
-	free(res);
-	free(tmp);
+	res_tmp = join_and_free(res, tmp);
 	*document = &(*document)[i];
 	return (res_tmp);
 }
@@ -202,6 +205,8 @@ static char	*expand_quote_and_value(char **document_p, char *document,
 	if (!doc)
 		return (free(rm_quote_doc), NULL);
 	val = get_varvalue(shell_env, &rm_quote_doc[i]);
+	if (!get_varvalue)
+		return (free(rm_quote_doc), free(doc), NULL);
 	free(rm_quote_doc);
 	return (join_and_free(doc, val));
 }
@@ -285,7 +290,8 @@ static t_bool	word_splitting_internal(t_word_list **list_p, t_word_list *list,
 
 	next = list->next;
 	i = 0;
-	list->word->word = join_and_free(list->word->word, savestring(ifs_split[i++]));
+	list->word->word = join_and_free(list->word->word,
+			savestring(ifs_split[i++]));
 	while (ifs_split[i])
 	{
 		new = (t_word_list *)xcalloc(sizeof(t_word_list), 1);
@@ -315,7 +321,10 @@ t_bool	word_splitting(t_word_list **list_p, t_word_list *list,
 
 	varlen = get_varlen(&(*document_p)[1]);
 	value = get_varvalue(shell_env, *document_p);
+	if (!value)
+		return (FALSE);
 	ifs_split = command_split(value);
+	free(value);
 	if (!ifs_split)
 		return (FALSE);
 	next = list->next;
@@ -323,6 +332,7 @@ t_bool	word_splitting(t_word_list **list_p, t_word_list *list,
 		return (dispose_char_arr(ifs_split), FALSE);
 	dispose_char_arr(ifs_split);
 	(*document_p) += (varlen + 1);
+	return (TRUE);
 }
 
 // t_bool	word_splitting(t_word_list **list_p, t_word_list *list,
@@ -357,30 +367,63 @@ t_bool	word_splitting(t_word_list **list_p, t_word_list *list,
 // 	return (TRUE);
 // }
 
+// static t_bool	expand_and_word_splitting_internal(char *document,
+// 		t_word_list **list_p, t_word_list *list, t_shell_env *shell_env)
+// {
+// 	char	*document_p;
+
+// 	document_p = document;
+// 	while (*document)
+// 	{
+// 		if (*document == SINGLE_QUOTE_CHAR || *document == DOUBLE_QUOTE_CHAR)
+// 		{
+// 			(*list_p)->word->word = join_and_free((*list_p)->word->word,
+// 					expand_quote_and_value(&document, document, shell_env));
+// 			if (!(*list_p)->word->word)
+// 				return (FALSE);
+// 		}
+// 		else if (*document == DOLLAR_CHAR)
+// 		{
+// 			if (!word_splitting(list_p, list, &document, shell_env))
+// 				return (FALSE);
+// 		}
+// 		else
+// 		{
+// 			(*list_p)->word->word = join_string_until_varvalue_and_quote((*list_p)->word->word,
+// 					&document);
+// 			if (!(*list_p)->word->word)
+// 				return (FALSE);
+// 		}
+// 	}
+// 	free(document_p);
+// 	return (TRUE);
+// }
+
 static t_bool	expand_and_word_splitting_internal(char *document,
 		t_word_list **list_p, t_word_list *list, t_shell_env *shell_env)
 {
 	char	*document_p;
+	char	*tmp;
 
 	document_p = document;
 	while (*document)
 	{
-		if (*document == SINGLE_QUOTE_CHAR || *document == DOUBLE_QUOTE_CHAR)
+		if (*document == SINGLE_QUOTE_CHAR || *document == DOUBLE_QUOTE_CHAR
+			|| *document != DOLLAR_CHAR)
 		{
-			(*list_p)->word->word = join_and_free((*list_p)->word->word,
-					expand_quote_and_value(&document, document, shell_env));
-			if (!(*list_p)->word->word)
-				return (FALSE);
-		}
-		else if (*document == DOLLAR_CHAR)
-			word_splitting(list_p, list, &document, shell_env);
-		else
-		{
-			(*list_p)->word->word = join_string_until_varvalue_and_quote((*list_p)->word->word,
+			if (*document == SINGLE_QUOTE_CHAR
+				|| *document == DOUBLE_QUOTE_CHAR)
+				tmp = join_and_free((*list_p)->word->word,
+						expand_quote_and_value(&document, document, shell_env));
+			else
+				tmp = join_string_until_varvalue_and_quote((*list_p)->word->word,
 					&document);
-			if (!(*list_p)->word->word)
+			if (!tmp)
 				return (FALSE);
+			(*list_p)->word->word = tmp;
 		}
+		else if (!word_splitting(list_p, list, &document, shell_env))
+			return (FALSE);
 	}
 	free(document_p);
 	return (TRUE);
@@ -402,5 +445,4 @@ t_bool	expand_and_word_splitting(t_word_list **list_p, t_word_list *list,
 		return (free(document), FALSE);
 	return (expand_and_word_splitting_internal(document, list_p, list,
 			shell_env));
-	return (TRUE);
 }
