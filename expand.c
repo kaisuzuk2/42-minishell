@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 14:05:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/09 15:35:22 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/10 10:46:11 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	**command_split(char const *s);
 
 
 // subst.c
-t_bool expand_string_with_quote(t_word_list **list_p, t_word_list *list, t_shell_env *shell_env);
+t_bool expand_and_word_splitting(t_word_list **list_p, t_word_list *list, t_shell_env *shell_env);
 char	*join_string_until_varvalue(char *res, char **document);
 
 
@@ -31,7 +31,7 @@ static t_bool expand_var_token(t_word_list *list, t_shell_env *shell_env)
 
 	while (list)
 	{
-		expand_string_with_quote(&list, list, shell_env);
+		expand_and_word_splitting(&list, list, shell_env);
 		list = list->next;
 	}
 	return (TRUE);
