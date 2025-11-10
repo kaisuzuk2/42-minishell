@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:13:31 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/08 14:58:51 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/10 16:03:07 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@
 #include <limits.h>
 #include <stdio.h>
 #include <sys/types.h>
-
-char	*minishell_input(char *readline_input);
 
 // void fatal_error(const char *msg)  __attribute__((noreturn));
 
@@ -181,6 +179,8 @@ parse test
 // 	dispose_command(parse);
 // }
 
+void initialize_readline(void);
+
 int	main(int argc, char *argv[], char *envp[])
 {
 	char			*line;
@@ -191,12 +191,14 @@ int	main(int argc, char *argv[], char *envp[])
 
 	enter_prompt_mode();
 	shell_variables = initialize_shell_variables(envp);
+	initialize_readline();
 	while (1)
 	{
-		line = readline("minishell$ ");
+		// line = readline("minishell$ ");
+		line = readline(NULL);
 		if (!line)
 		{
-			ft_dprintf(STDOUT_FILENO, "exit\n");
+			// ft_dprintf(STDOUT_FILENO, "exit\n");
 			dispose_env(shell_variables);
 			break ;
 		}
