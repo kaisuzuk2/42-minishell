@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 13:09:16 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/10 12:32:30 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/10 13:28:39 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,76 +211,6 @@ static char	*expand_quote_and_value(char **document_p, char *document,
 	return (join_and_free(doc, val));
 }
 
-// static char	*expand_quote_and_value(char **document_p, char *document,
-// 		t_shell_env *shell_env)
-// {
-// 	int		i;
-// 	char	*trim;
-// 	char	*tmp;
-// 	char	*doc;
-// 	char	*val;
-// 	char	quote;
-// 	char *res;
-
-// 	i = 0;
-// 	quote = document[i++];
-// 	while (document[i] != quote)
-// 		i++;
-// 	i++;
-// 	tmp = ft_substr(document, 0, i);
-// 	if (!tmp)
-// 		return (NULL);
-// 	*document_p = &document[i];
-// 	trim = string_quote_removal(tmp, quote);
-// 	if (!trim)
-// 		return (free(tmp), NULL);
-// 	free(tmp);
-// 	if (quote == '\"' && ft_strchr(trim, '$'))
-// 	{
-// 		i = 0;
-// 		while (trim[i] != '$')
-// 			i++;
-// 		doc = ft_substr(trim, 0, i);
-// 		if (!doc)
-// 			return (free(trim), NULL);
-// 		val = get_varvalue(shell_env, &trim[i]);
-// 		return (ft_strjoin(doc, val));
-// 		res = ft_strjoin(doc, val);
-// 		free(doc);
-// 		if (!res)
-// 			return (NULL);
-// 		return (res);
-// 	}
-// 	return (trim);
-// }
-
-// char *expand_string_with_quote(char *document, t_shell_env *shell_env)
-// {
-// 	char *res;
-// 	int i;
-// 	int varlen;
-
-// 	res = ft_strdup("");
-// 	if (!res)
-// 		return (NULL);
-// 	while (*document)
-// 	{
-// 		if (*document == '\'')
-// 		{
-// 			res = ft_strjoin(res, expand_quote_and_value(&document, document,
-// 							shell_env));
-// 		}
-// 		else if (*document == '\"')
-// 		{
-// 			res = ft_strjoin(res, expand_quote_and_value(&document, document,
-// 							shell_env));
-// 		}
-// 		else
-// 			res = join_string_until_quote(res, &document);
-// 	}
-// 	return (res);
-// }
-
 static t_bool	word_splitting_internal(t_word_list **list_p, t_word_list *list,
 		char **ifs_split)
 {
@@ -334,70 +264,6 @@ t_bool	word_splitting(t_word_list **list_p, t_word_list *list,
 	(*document_p) += (varlen + 1);
 	return (TRUE);
 }
-
-// t_bool	word_splitting(t_word_list **list_p, t_word_list *list,
-// 		char **document_p, t_shell_env *shell_env)
-// {
-// 	char		**ifs_split;
-// 	int			varlen;
-// 	char		*value;
-// 	t_word_list	*next;
-// 	int			i;
-
-// 	varlen = get_varlen(&(*document_p)[1]);
-// 	value = get_varvalue(shell_env, *document_p);
-// 	ifs_split = command_split(value);
-// 	if (!ifs_split)
-// 		return (FALSE);
-// 	next = list->next;
-// 	i = 0;
-// 	list->word->word = join_and_free(list->word->word, ifs_split[i++]);
-// 	while (ifs_split[i])
-// 	{
-// 		list->next = (t_word_list *)xcalloc(sizeof(t_word_list), 1);
-// 		list = list->next;
-// 		list->word = (t_word_desc *)xcalloc(sizeof(t_word_desc), 1);
-// 		list->word->word = savestring(ifs_split[i]);
-// 		list->word->kind = TK_WORD;
-// 		i++;
-// 	}
-// 	list->next = next;
-// 	(*list_p) = list;
-// 	*document_p += (varlen + 1);
-// 	return (TRUE);
-// }
-
-// static t_bool	expand_and_word_splitting_internal(char *document,
-// 		t_word_list **list_p, t_word_list *list, t_shell_env *shell_env)
-// {
-// 	char	*document_p;
-
-// 	document_p = document;
-// 	while (*document)
-// 	{
-// 		if (*document == SINGLE_QUOTE_CHAR || *document == DOUBLE_QUOTE_CHAR)
-// 		{
-// 			(*list_p)->word->word = join_and_free((*list_p)->word->word,
-// 					expand_quote_and_value(&document, document, shell_env));
-// 			if (!(*list_p)->word->word)
-// 				return (FALSE);
-// 		}
-// 		else if (*document == DOLLAR_CHAR)
-// 		{
-// 			if (!word_splitting(list_p, list, &document, shell_env))
-// 				return (FALSE);
-// 		}
-// 		else
-// 		{
-// 			(*list_p)->word->word = join_string_until_varvalue_and_quote((*list_p)->word->word,
-// 					&document);
-// 			if (!(*list_p)->word->word)
-// 				return (FALSE);
-// 		}
-// 	}
-// 	free(document_p);
-// 	return (TRUE);
-// }
 
 static t_bool	expand_and_word_splitting_internal(char *document,
 		t_word_list **list_p, t_word_list *list, t_shell_env *shell_env)
