@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 12:15:04 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/05 12:16:23 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/10 13:37:25 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,12 @@ static char	*ft_fill_word(char const **p)
 	return (res);
 }
 
-static void	ft_free(char **current, char **head)
-{
-	while (--current > head)
-		free(*current);
-	free(current);
-}
+// static void	ft_free(char **current, char **head)
+// {
+// 	while (--current > head)
+// 		free(*current);
+// 	free(current);
+// }
 
 char	**command_split(char const *s)
 {
@@ -95,11 +95,13 @@ char	**command_split(char const *s)
 	while (tmp < &head[head_size])
 	{
 		*tmp = ft_fill_word(&s);
-		if (*tmp == NULL)
-		{
-			ft_free(++tmp, head);
-			return (NULL);
-		}
+		// if (*tmp == NULL)
+		// {
+		// 	ft_free(++tmp, head);
+		// 	return (NULL);
+		// }
+		if (!*tmp)
+			return (dispose_char_arr(head), NULL);
 		tmp++;
 	}
 	*tmp = NULL;

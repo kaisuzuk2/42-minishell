@@ -6,7 +6,7 @@
 #    By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/07 14:10:24 by kaisuzuk          #+#    #+#              #
-#    Updated: 2025/11/10 10:00:06 by kaisuzuk         ###   ########.fr        #
+#    Updated: 2025/11/10 14:00:48 by kaisuzuk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,8 +40,10 @@ SRCS	=	minishell.c \
 			parser_is_tokenkind.c \
 			expand.c \
 			expand_utils.c \
+			expand_quote_removal.c \
 			expand_word_splitting.c \
 			subst.c \
+			subst_getter.c \
 			dispose_cmd.c \
 			dispose_env.c \
 			execute_pipeline.c \
@@ -52,6 +54,7 @@ SRCS	=	minishell.c \
 			strvec.c \
 			redir.c \
 			make_cmd.c \
+			make_cmd_utils.c \
 			ft_mkstemp.c \
 			builtin.c \
 			builtin_echo.c \

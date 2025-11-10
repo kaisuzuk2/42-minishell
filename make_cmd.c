@@ -6,18 +6,24 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:23:18 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/07 11:13:09 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/10 13:47:13 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// make_cmd_utils.c
+t_bool			is_hasdollar(t_word_desc *desc);
+t_bool			is_d_quote(t_word_desc *desc);
+t_bool			is_s_quote(t_word_desc *desc);
 
 char	*heredoc_expand(t_redirect *r, size_t *lenp, t_shell_env *shell_env)
 {
 	if (!is_s_quote(r->redirectee.filename)
 		&& !is_d_quote(r->redirectee.filename)
 		&& ft_strchr(r->redirectee.filename->word, '$'))
-		r->redirectee.filename->word = expand_string_to_string(r->redirectee.filename->word, shell_env);
+		r->redirectee.filename->word = expand_string_to_string(r->redirectee.filename->word,
+				shell_env);
 	if (r->redirectee.filename->word)
 		*lenp = ft_strlen(r->redirectee.filename->word);
 	return (r->redirectee.filename->word);
@@ -64,18 +70,19 @@ char	*make_here_document(char *here_doc_eof, t_token_error *e)
 	enter_heredoc_mode();
 	document = strdup("");
 	if (!document)
-		return (fatal_error("malloc", MALLOC_ERR_STR), set_parse_error(ST_ERR_NOMEM, NULL, NULL, e),  NULL);
+		return (fatal_error("malloc", MALLOC_ERR_STR),
+			set_parse_error(ST_ERR_NOMEM, NULL, NULL, e), NULL);
 	while (1)
 	{
 		buf = readline("> "); // ### TODO: プロンプトは$PS2
 		if (!buf)
-			break;
+			break ;
 		if (*buf == '\0' && g_signal_state == SIGSTATE_INT)
 		{
 			g_signal_state = SIGSTATE_NONE;
 			free(document);
 			set_parse_error(ST_SIGNAL, NULL, NULL, e);
-			break;
+			break ;
 		}
 		if (is_heredoc_eof(here_doc_eof, buf))
 			break ;

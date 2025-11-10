@@ -6,63 +6,119 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 11:28:03 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/02 10:55:28 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/10 14:04:08 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-pid_t	wait_for(pid_t lastpid);
-
-t_bool	is_hasdollar(t_word_desc *desc)
+char	*join_and_free(char *s1, char *s2)
 {
-	return (desc->flag == W_HASDOLLAR);
-}
+	char	*res;
 
-t_bool is_d_quote(t_word_desc *desc)
-{
-	return (desc->flag == W_DQUOTE);
-}
-
-t_bool is_s_quote(t_word_desc *desc)
-{
-	return (desc->flag == W_SQUOTE);
-}
-
-char	*string_quote_removal(char *string, char quote)
-{
-	char	set[2];
-
-	set[0] = quote;
-	set[1] = '\0';
-	return (ft_strtrim(string, set));
-}
-
-char *quote_removal_delimiter(char *delimiter)
-{
-	char *new;
-	char *q;
-	char *p;
-	char quote;
-
-	new = (char *)xmalloc(sizeof(char) * (ft_strlen(delimiter) + 1));
-	if (!new)
+	if (!s1 || !s2)
 		return (NULL);
-	p = delimiter;
-	q = new;
-	quote = 0;
-	while (*p)
+	res = ft_strjoin(s1, s2);
+	free(s1);
+	free(s2);
+	return (res);
+}
+
+char	*join_string_until_varvalue_and_quote(char *res, char **document)
+{
+	char	*doll_ptr;
+	char	*tmp;
+	char	*res_tmp;
+	int		i;
+
+	i = 0;
+	while ((*document)[i] && (*document)[i] != '$' && (*document)[i] != '\''
+		&& (*document)[i] != '\"')
+		i++;
+	tmp = ft_substr(*document, 0, i);
+	if (!tmp)
+		return (free(res), NULL);
+	res_tmp = join_and_free(res, tmp);
+	*document = &(*document)[i];
+	return (res_tmp);
+}
+
+static char	*expand_quote(char **document_p, char *document)
+{
+	char	quote;
+	int		i;
+	char	*tmp;
+	char	*res;
+
+	i = 0;
+	quote = document[i++];
+	while (document[i] != quote)
+		i++;
+	tmp = ft_substr(document, 0, i);
+	if (!tmp)
+		return (NULL);
+	res = string_quote_removal(tmp, quote);
+	if (!res)
+		return (free(tmp), NULL);
+	free(tmp);
+	*document_p = &document[i + 1];
+	return (res);
+}
+
+char	*expand_quote_and_value(char **document_p, char *document,
+		t_shell_env *shell_env)
+{
+	int		i;
+	char	*rm_quote_doc;
+	char	*doc;
+	char	*val;
+	char	quote;
+
+	quote = document[0];
+	rm_quote_doc = expand_quote(document_p, document);
+	if (!rm_quote_doc)
+		return (NULL);
+	if (quote == SINGLE_QUOTE_CHAR || !ft_strchr(rm_quote_doc, '$'))
+		return (rm_quote_doc);
+	i = 0;
+	while (rm_quote_doc[i] != '$')
+		i++;
+	doc = ft_substr(rm_quote_doc, 0, i);
+	if (!doc)
+		return (free(rm_quote_doc), NULL);
+	val = get_varvalue(shell_env, &rm_quote_doc[i]);
+	if (!get_varvalue)
+		return (free(rm_quote_doc), free(doc), NULL);
+	free(rm_quote_doc);
+	return (join_and_free(doc, val));
+}
+
+t_bool	word_splitting_internal(t_word_list **list_p, t_word_list *list,
+		char **ifs_split)
+{
+	t_word_list	*next;
+	t_word_list	*new;
+	int			i;
+
+	next = list->next;
+	i = 0;
+	list->word->word = join_and_free(list->word->word,
+			savestring(ifs_split[i++]));
+	while (ifs_split[i])
 	{
-		if (!quote && (*p == SINGLE_QUOTE_CHAR || *p == DOUBLE_QUOTE_CHAR))
-			quote = *p++;
-		else if (quote && *p == quote)
-		{
-			p++;
-			quote = 0;
-		}
-		else
-			*q++ = *p++;
+		new = (t_word_list *)xcalloc(sizeof(t_word_list), 1);
+		if (!new)
+			return (FALSE);
+		new->word = (t_word_desc *)xcalloc(sizeof(t_word_desc), 1);
+		if (!new->word)
+			return (free(new), FALSE);
+		new->word->word = savestring(ifs_split[i++]);
+		if (!new->word->word)
+			return (dispose_desc_words(new), FALSE);
+		list->next = new;
+		list = list->next;
 	}
-	*q = '\0';
-	return (new);
+	list->next = next;
+	(*list_p) = list;
+	return (TRUE);
 }
