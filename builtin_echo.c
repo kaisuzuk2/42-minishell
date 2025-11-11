@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 07:58:42 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/28 14:20:26 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/11 16:12:38 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static t_bool	is_option(t_word_list **list_p, t_word_list *list)
 	display_return = TRUE;
 	while (list)
 	{
-		*list_p = list;
+		// *list_p = list;
 		tmp = list->word->word;
 		if (!tmp || *tmp != '-')
 			break ;
@@ -45,6 +45,7 @@ static t_bool	is_option(t_word_list **list_p, t_word_list *list)
 		display_return = FALSE;
 		list = list->next;
 	}
+	*list_p = list;
 	return (display_return);
 }
 

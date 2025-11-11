@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 11:03:04 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/01 09:30:29 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/11 16:35:45 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static char	*sh_makepath(char *path, char *dir)
 		return (getcwd(NULL, 0));
 	tmp = ft_strjoin(path, "/");
 	if (!tmp)
-		return (NULL); // ### TODO: エラー処理
+		return (NULL); 
 	res = ft_strjoin(tmp, dir);
 	if (!res)
 		return (free(tmp), NULL);
@@ -74,6 +74,8 @@ static int	change_to_directory(char *newdir, t_shell_env *shell_env)
 	if (!tcwd)
 		return (sys_error("getcwd failed"), 0);
 	t = make_absolute(newdir, tcwd);
+	if (!t)
+		return (0);
 	tdir = sh_canonpath(t);
 	if (!chdir(tdir))
 	{

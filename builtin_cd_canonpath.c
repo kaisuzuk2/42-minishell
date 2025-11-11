@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 09:15:07 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/09 14:02:08 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/11 16:22:00 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ static void skip_slashes(char **p)
 
 static void remove_parent(char **q, char *base)
 {
-	if (*q > base)
+	if (*q > (base + 1))
 	{
 		(*q)--;
-		while ((*q) > base && *(*q - 1) != '/')
+		while ((*q) > (base + 1) && *(*q - 1) != '/')
 			(*q)--;
 		while ((*q) > (base + 1) && *(*q - 1) == '/')
 			(*q)--;
@@ -54,6 +54,8 @@ static void trim_last_slash(char **q, char *base)
 	while ((*q) > (base + 1) && *(*q - 1) == '/')
 		(*q)--;
 }
+
+// /../../../././.././
 
 char *sh_canonpath(char *tmp_path)
 {

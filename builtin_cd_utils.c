@@ -19,7 +19,7 @@ t_bool	is_pathsep(char c)
 
 t_bool is_interpret_home(t_word_list *list)
 {
-	if (!list && !list->word->word)
+	if (!list)
 		return (TRUE);
 	if (list->word->word[0] == '~' && list->word->word[1] == '\0')
 		return (TRUE);

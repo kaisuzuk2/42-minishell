@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 11:28:03 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/10 14:04:08 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/11 15:23:53 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,9 @@ static char	*expand_quote(char **document_p, char *document)
 char	*expand_quote_and_value(char **document_p, char *document,
 		t_shell_env *shell_env)
 {
+	char *res;
 	int		i;
 	char	*rm_quote_doc;
-	char	*doc;
-	char	*val;
 	char	quote;
 
 	quote = document[0];
@@ -81,16 +80,18 @@ char	*expand_quote_and_value(char **document_p, char *document,
 	if (quote == SINGLE_QUOTE_CHAR || !ft_strchr(rm_quote_doc, '$'))
 		return (rm_quote_doc);
 	i = 0;
-	while (rm_quote_doc[i] != '$')
-		i++;
-	doc = ft_substr(rm_quote_doc, 0, i);
-	if (!doc)
-		return (free(rm_quote_doc), NULL);
-	val = get_varvalue(shell_env, &rm_quote_doc[i]);
-	if (!get_varvalue)
-		return (free(rm_quote_doc), free(doc), NULL);
-	free(rm_quote_doc);
-	return (join_and_free(doc, val));
+	// while (rm_quote_doc[i] != '$')
+	// 	i++;
+	// doc = ft_substr(rm_quote_doc, 0, i);
+	// if (!doc)
+	// 	return (free(rm_quote_doc), NULL);
+	// val = get_varvalue(shell_env, &rm_quote_doc[i]);
+	// if (!get_varvalue)
+	// 	return (free(rm_quote_doc), free(doc), NULL);
+	// free(rm_quote_doc);
+	res = expand_string_to_string(rm_quote_doc, shell_env);
+	// return (join_and_free(doc, val));
+	return (res);
 }
 
 t_bool	word_splitting_internal(t_word_list **list_p, t_word_list *list,
@@ -102,6 +103,8 @@ t_bool	word_splitting_internal(t_word_list **list_p, t_word_list *list,
 
 	next = list->next;
 	i = 0;
+	if (!*ifs_split)
+		return (TRUE);
 	list->word->word = join_and_free(list->word->word,
 			savestring(ifs_split[i++]));
 	while (ifs_split[i])

@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 17:23:55 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/30 08:45:33 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/11 16:41:29 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,10 @@ char *create_exportstr(char *key, char *value)
 	tmp = ft_strjoin(key, "=");
 	if (!tmp)
 		return (fatal_error("malloc", MALLOC_ERR_STR), NULL);
-	res = ft_strjoin(tmp, value);
+	if (!value)
+		res = ft_strjoin(tmp, "");
+	else
+		res = ft_strjoin(tmp, value);
 	free(tmp);
 	if (!res)
 		return (fatal_error("malloc", MALLOC_ERR_STR), NULL);

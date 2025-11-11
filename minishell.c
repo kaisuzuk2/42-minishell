@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:13:31 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/10 16:03:07 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/11 14:50:50 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,17 +192,19 @@ int	main(int argc, char *argv[], char *envp[])
 	enter_prompt_mode();
 	shell_variables = initialize_shell_variables(envp);
 	initialize_readline();
+
 	while (1)
 	{
-		// line = readline("minishell$ ");
-		line = readline(NULL);
+		line = readline("minishell$ ");
+		// line = readline(NULL);
 		if (!line)
 		{
-			// ft_dprintf(STDOUT_FILENO, "exit\n");
+			if (isatty(STDIN_FILENO))
+				ft_dprintf(STDERR_FILENO, "exit\n");
 			dispose_env(shell_variables);
 			break ;
 		}
-		if (*line == '\0' && g_signal_state == SIGSTATE_INT)
+		if (g_signal_state == SIGSTATE_INT)
 		{
 			set_last_status(130, shell_variables);
 			g_signal_state = SIGSTATE_NONE;
@@ -222,5 +224,6 @@ int	main(int argc, char *argv[], char *envp[])
 			shell_variables);
 		dispose_command(parse);
 	}
-	return (0);
+	// return (0);
+	return (shell_variables->last_status); // これちょっと考えよう
 }

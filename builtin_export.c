@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 08:37:57 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/09 12:53:45 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/11 14:45:15 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,16 @@ static int show_var_attributes(t_varlist *env)
 	char **envstr;
 	int i;
 
-	envstr = get_env_arr(env);  // varlistのexportstr出力したらええのでは
-	if (!envstr)
-		return (EX_FATAL_ERROR);
 	i = 0;
-	while (envstr[i])
+	while (env)
 	{
-		ft_dprintf(STDOUT_FILENO, "declare -x %s\n", envstr[i]);
-		free(envstr[i]);
+		// ft_dprintf(STDOUT_FILENO, "declare -x %s=\"%s\"\n",env->var->name, env->var->value);
+		ft_dprintf(STDOUT_FILENO, "declare -x %s", env->var->name);
+		if (env->var->value)
+			ft_dprintf(STDOUT_FILENO, "=\"%s\"", env->var->value);
+		ft_dprintf(STDOUT_FILENO, "\n");
 		i++;
+		env = env->next;
 	}
 	return (EXECUTION_SUCCESS);
 }

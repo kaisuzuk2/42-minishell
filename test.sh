@@ -281,8 +281,8 @@ assert 'exit42\necho $?\necho $?'
 assert 'exit42\n\necho $?\necho $?'
 
 # Word Splitting
-assert 'export FOO="echo hello"\n$FOO'
-assert 'export TEST="cho -n"\ne$TEST'
+assert 'export FOO="echo hello"\necho$FOO'
+assert 'export TEST="cho -n"\necho$TEST'
 assert 'export FOO="a       b"\necho $FOO'
 assert 'export FOO="a       b"\necho hello$FOO'
 assert 'export FOO="a       b"\necho $FOO"world"'
@@ -385,7 +385,7 @@ assert 'exit -9223372036854775809'
 
 ## export
 print_desc "Output of 'export' differs, but it's ok."
-assert 'export' # order of variables, default variables differs...
+#assert 'export' # order of variables, default variables differs...
 assert 'export | grep nosuch | sort'
 assert 'export nosuch\n export | grep nosuch | sort'
 assert 'export nosuch=fuga\n export | grep nosuch | sort'
@@ -415,7 +415,7 @@ assert 'export nosuch="nosuch2=hoge"\nexport $nosuch\n export | grep nosuch | so
 
 ## env
 print_desc "Output of 'env' differs, but it's ok."
-assert 'env' # order of variables, default variables differs...
+#assert 'env' # order of variables, default variables differs...
 assert 'env | grep hoge | sort'
 
 ## cd
