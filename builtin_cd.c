@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 11:03:04 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/12 09:04:50 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/12 10:06:30 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,19 @@ static char	*make_absolute(char *dirname, char *cwd)
 static t_bool	bindpwd(t_varlist *env, char *key, char *value)
 {
 	char	*exportstr;
-
+	int flag;
+	t_shell_var *env_var;
 	exportstr = create_exportstr(key, value);
 	if (!exportstr)
 		return (FALSE);
-	if (!update_variable_item(env, exportstr, 0))
+	env_var = list_getshell_var(env, key);
+	if (!env_var || !env_var->attributes)
+		flag = 0;
+	else
+		flag = 1;
+	if (!update_variable_item(env, exportstr, flag))
 		return (free(exportstr), FALSE);
+	free(exportstr);
 	return (TRUE);
 }
 
@@ -77,6 +84,7 @@ static int	change_to_directory(char *newdir, t_shell_env *shell_env)
 	if (!t)
 		return (0);
 	tdir = sh_canonpath(t);
+	free(t);
 	if (!chdir(tdir))
 	{
 		if (!set_current_working_directory(shell_env, tdir))
