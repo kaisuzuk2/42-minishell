@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 12:29:59 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/27 13:11:39 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/12 17:15:09 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,14 @@ static char	*join_path_element(char *dir, char *arg)
 	return (full_path);
 }
 
+int file_isdir(char *command);
+
 static t_bool	file_status(char *full_path, char **file_to_lose_on)
 {
 	if (!access(full_path, F_OK))
 	{
+		if (file_isdir(full_path))
+			return (FALSE);
 		if (!access(full_path, X_OK))
 			return (TRUE);
 		else
@@ -73,6 +77,7 @@ static char	*find_user_command_in_path(char *cmd, char **path_list,
 	return (full_path);
 }
 
+// ..の入力のとき
 char	*search_for_command(char *cmd, t_varlist *env)
 {
 	char	**path_list;
@@ -80,7 +85,7 @@ char	*search_for_command(char *cmd, t_varlist *env)
 	char	*full_path;
 	char	*file_to_lose_on;
 
-	if (is_absolute_program(cmd))
+	if (is_absolute_program(cmd) || !*cmd)
 		return (savestring(cmd));
 	path = list_getenv(env, "PATH");
 	if (!path)

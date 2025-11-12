@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 10:31:38 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/12 12:14:14 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/12 17:24:12 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,17 +73,46 @@ pid_t	wait_for(pid_t lastpid)
 		return (EXECUTION_FAILURE);
 }
 
-static int	shell_execve(char *command, char **arg, char **env)
+// static int	shell_execve(char *command, char **arg, char **env)
+// {
+// 	int		i;
+
+// 	execve(command, arg, env);
+// 	i = errno;
+// 	if (i == ENOENT)
+// 		fatal_error(command, NOTFOUND_STR);
+// 		return (fatal_error(command, NOTFOUND_STR), EX_NOTFOUND);
+// 	else
+// 		internal_error(command, strerror(i));
+// 	return (EXECUTION_FAILURE);
+// }
+
+int file_isdir(char *command)
 {
-	int		i;
+	struct stat sb;
+
+	return ((!stat(command, &sb) && S_ISDIR(sb.st_mode)));
+}
+
+static int shell_execve(char *command, char **arg, char **env)
+{
+	int i;
+	int status;
 
 	execve(command, arg, env);
 	i = errno;
-	if (i == ENOENT)
-		fatal_error(command, NOTFOUND_STR);
+	if (i != ENOEXEC)
+	{
+		if (file_isdir(command) && ft_strcmp(command, ".."))
+			fatal_error(command, "Is a directory");
+		else if (i == ENOENT || !ft_strcmp(command, ".."))
+			return (fatal_error(command, NOTFOUND_STR), EX_NOTFOUND);
+		else
+			internal_error(command, strerror(i));
+	}
 	else
-		internal_error(command, strerror(i));
-	return (EXECUTION_FAILURE);
+		fatal_error(command, "cannnot support");
+	return (EX_NOEXEC);
 }
 
 static int	execute_disk_command(t_command *cmd, t_pipefd pipefd,
@@ -93,6 +122,7 @@ static int	execute_disk_command(t_command *cmd, t_pipefd pipefd,
 	char			**arg;
 	char			**envarr;
 	t_builtin_table	builtin_info;
+	int status;
 
 	if (cmd->command->redirects && do_redirections(cmd->command->redirects,
 			shell_env) != 0)
@@ -112,9 +142,9 @@ static int	execute_disk_command(t_command *cmd, t_pipefd pipefd,
 	if (!envarr || !arg)
 		return (free(command), dispose_char_arr(envarr), dispose_char_arr(arg),
 			fatal_error("malloc", MALLOC_ERR_STR), EX_FATAL_ERROR);
-	shell_execve(command, arg, envarr);
+	status = shell_execve(command, arg, envarr);
 	return (free(command), dispose_char_arr(envarr), dispose_char_arr(arg),
-		EXECUTION_FAILURE);
+		status);
 }
 
 static int	execute_simple_command_internal(t_command *cmd, t_pipefd pipefd,
