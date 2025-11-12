@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:13:31 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/11 14:50:50 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/12 12:20:12 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,7 @@ int	main(int argc, char *argv[], char *envp[])
 	t_command		*parse;
 	t_shell_env		*shell_variables;
 	char			*input;
+	int last_status;
 
 	enter_prompt_mode();
 	shell_variables = initialize_shell_variables(envp);
@@ -201,6 +202,7 @@ int	main(int argc, char *argv[], char *envp[])
 		{
 			if (isatty(STDIN_FILENO))
 				ft_dprintf(STDERR_FILENO, "exit\n");
+			last_status = shell_variables->last_status;
 			dispose_env(shell_variables);
 			break ;
 		}
@@ -225,5 +227,5 @@ int	main(int argc, char *argv[], char *envp[])
 		dispose_command(parse);
 	}
 	// return (0);
-	return (shell_variables->last_status); // これちょっと考えよう
+	return (last_status); // これちょっと考えよう
 }

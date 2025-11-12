@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 10:31:38 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/12 09:10:55 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/12 12:14:14 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ pid_t	wait_for(pid_t lastpid)
 static int	shell_execve(char *command, char **arg, char **env)
 {
 	int		i;
-	char	*re_args[3];
 
 	execve(command, arg, env);
 	i = errno;

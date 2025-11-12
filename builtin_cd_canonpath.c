@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 09:15:07 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/11 16:22:00 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/12 12:37:28 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static t_bool is_abst_path(char **p, char **q, char *base)
 	if ((*p)[0] == '.' && is_pathsep((*p)[1]))
 	{
 		(*p)++;
-		if (is_pathsep(**p))
+		if ((**p) && is_pathsep(**p))
 			(*p)++;
 		return (TRUE);
 	}
@@ -54,8 +54,6 @@ static void trim_last_slash(char **q, char *base)
 	while ((*q) > (base + 1) && *(*q - 1) == '/')
 		(*q)--;
 }
-
-// /../../../././.././
 
 char *sh_canonpath(char *tmp_path)
 {
