@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/09 14:24:18 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/12 18:22:28 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,34 +34,66 @@ t_bool	is_quote(char c);
 
 
 
-static t_word_desc	*make_operator_token(char **line_p, char *line,
-		t_token_error *e)
+// static t_word_desc	*make_operator_token(char **line_p, char *line,
+// 		t_token_error *e)
+// {
+// 	int					i;
+// 	const t_token_kind	operators_table[] = {TK_LESS_LESS, TK_LESS,
+// 		TK_GREAT_GREAT, TK_GREAT, TK_PIPE};
+// 	const char			*operators[] = {"<<", "<", ">>", ">", "|"};
+// 	const char			*unsupport_operators[] = {"&&", "&", "||", ";;", ";",
+// 		"<>", "<<-", "<&", ">|", ">&", "(", ")"};
+
+// 	i = 0;
+// 	while (i < sizeof(unsupport_operators) / sizeof(unsupport_operators[0]))
+// 	{
+// 		if (!startswith(line, unsupport_operators[i]))
+// 			return (set_parse_error(ST_ERR_SYNTAX, NOSUP_STR,
+// 					unsupport_operators[i], e), NULL);
+// 		i++;
+// 	}
+// 	i = 0;
+// 	while (i < sizeof(operators) / sizeof(operators[0]))
+// 	{
+// 		if (!startswith(line, operators[i]))
+// 			return (make_token(line_p, ft_strlen(operators[i]),
+// 						operators_table[i], e));
+// 		i++;
+// 	}
+// 	return (set_parse_error(ST_ERR_SYNTAX, SYNTAX_ERR_STR, NULL, e), NULL);
+// }
+
+
+static t_word_desc *make_operator_token(char **line_p, char *line, t_token_error *e)
 {
 	int					i;
+	size_t len;
 	const t_token_kind	operators_table[] = {TK_LESS_LESS, TK_LESS,
 		TK_GREAT_GREAT, TK_GREAT, TK_PIPE};
 	const char			*operators[] = {"<<", "<", ">>", ">", "|"};
 	const char			*unsupport_operators[] = {"&&", "&", "||", ";;", ";",
 		"<>", "<<-", "<&", ">|", ">&", "(", ")"};
 
+	len = 0;
+	while (is_metacharacter(line[len]))
+		len++;
 	i = 0;
 	while (i < sizeof(unsupport_operators) / sizeof(unsupport_operators[0]))
 	{
-		if (!startswith(line, unsupport_operators[i]))
-			return (set_parse_error(ST_ERR_SYNTAX, NOSUP_STR,
-					unsupport_operators[i], e), NULL);
+		if (len == ft_strlen(unsupport_operators[i]) && !ft_strncmp(line, unsupport_operators[i], len))
+			return (set_parse_error(ST_ERR_SYNTAX, NOSUP_STR, unsupport_operators[i], e), NULL);
 		i++;
 	}
 	i = 0;
 	while (i < sizeof(operators) / sizeof(operators[0]))
 	{
-		if (!startswith(line, operators[i]))
-			return ((make_token(line_p, ft_strlen(operators[i]),
-						operators_table[i], e)));
+		if (len == ft_strlen(operators[i]) && !ft_strncmp(line, operators[i], len))
+			return (make_token(line_p, ft_strlen(operators[i]), operators_table[i], e));
 		i++;
 	}
-	return (e->status = ST_ERR_SYNTAX, NULL);
+	return (set_parse_error(ST_ERR_SYNTAX, SYNTAX_ERR_STR, NULL, e), NULL);
 }
+
 
 static t_word_desc	*make_word_token(char **line_p, char *line,
 		t_token_error *e)
