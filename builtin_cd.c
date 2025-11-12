@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 11:03:04 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/11 16:44:06 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/12 09:04:50 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static t_bool	bindpwd(t_varlist *env, char *key, char *value)
 	exportstr = create_exportstr(key, value);
 	if (!exportstr)
 		return (FALSE);
-	if (!update_variable_item(env, exportstr))
+	if (!update_variable_item(env, exportstr, 0))
 		return (free(exportstr), FALSE);
 	return (TRUE);
 }
@@ -117,6 +117,13 @@ char	*get_interpret_cd(t_word_list *list, t_varlist *env)
 	}
 	return (dirname);
 }
+
+/*
+
+PWD OLDPWDが消えている場合環境変数としては再設定しない
+しかしシェル変数としては再設定する
+
+*/
 
 int	builtin_cd(t_word_list *list, t_shell_env *shell_env)
 {

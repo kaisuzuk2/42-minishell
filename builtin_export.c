@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 08:37:57 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/11 14:45:15 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/12 09:15:45 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@ static int show_var_attributes(t_varlist *env)
 	i = 0;
 	while (env)
 	{
+		if (!env->var->attributes)
+		{
+			env = env->next;
+			continue ;
+		}
 		// ft_dprintf(STDOUT_FILENO, "declare -x %s=\"%s\"\n",env->var->name, env->var->value);
 		ft_dprintf(STDOUT_FILENO, "declare -x %s", env->var->name);
 		if (env->var->value)
@@ -60,7 +65,7 @@ static t_bool update_export(t_varlist *env, char *exportstr)
 	t_bool res;
 	
 	if (!ft_strchr(exportstr, '+'))
-		return (update_variable_item(env, exportstr));
+		return (update_variable_item(env, exportstr, 1));
 	key = get_env_key(exportstr);
 	if (!key)
 		return (FALSE);
@@ -73,7 +78,7 @@ static t_bool update_export(t_varlist *env, char *exportstr)
 	new_exportstr = ft_strjoin(key_env->exportstr, value);
 	if (!new_exportstr)
 		return (free(key), free(value), FALSE);
-	res = update_variable_item(env, new_exportstr);
+	res = update_variable_item(env, new_exportstr, 1);
 	return (free(key), free(value), free(new_exportstr), res);
 }
 

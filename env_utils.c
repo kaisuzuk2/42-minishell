@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 17:27:54 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/08 13:42:02 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/12 09:14:08 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,13 @@ char **get_env_arr(t_varlist *env)
 	if (!res)
 		return (NULL);
 	i = 0;
-	while (i < len)
+	while (env)
 	{
+		if (!env->var->attributes)
+		{
+			env = env->next;
+			continue ;
+		}
 		res[i] = savestring(env->var->exportstr);
 		if (!res[i])
 		{
@@ -94,7 +99,7 @@ char *list_getenv(t_varlist *env, char *key)
 	return (NULL);
 }
 
-static t_bool add_variable_item(t_varlist *env, char *exportstr)
+static t_bool add_variable_item(t_varlist *env, char *exportstr, int flag)
 {
 	while (env->next)
 		env = env->next;
@@ -111,11 +116,11 @@ static t_bool add_variable_item(t_varlist *env, char *exportstr)
 		return (FALSE);
 	if (!set_variable_exportstr(env->var, exportstr))
 		return (FALSE);
-	set_variable_attributes(env->var);	
+	set_variable_attributes(env->var, flag);	
 	return (TRUE);
 }
 
-t_bool update_key_value(t_varlist *env, char *key, char *value)
+t_bool update_key_value(t_varlist *env, char *key, char *value, int flag)
 {
 	char *exportstr_tmp;
 	char *exportstr;
@@ -127,12 +132,12 @@ t_bool update_key_value(t_varlist *env, char *key, char *value)
 	if (!exportstr)
 		return (free(exportstr_tmp), fatal_error("malloc", MALLOC_ERR_STR), FALSE);
 	free(exportstr_tmp);
-	res = update_variable_item(env, exportstr);
+	res = update_variable_item(env, exportstr, flag);
 	free(exportstr);
 	return (res);
 }
 
-t_bool update_variable_item(t_varlist *env, char *exportstr)
+t_bool update_variable_item(t_varlist *env, char *exportstr, int flag)
 {
 	char *key;
 	t_shell_var *target;
@@ -142,11 +147,11 @@ t_bool update_variable_item(t_varlist *env, char *exportstr)
 		return (FALSE);
 	target = list_getshell_var(env, key);
 	if (!target)
-		return (free(key), add_variable_item(env, exportstr));
+		return (free(key), add_variable_item(env, exportstr, flag));
 	free(key);
 	free(target->value);
 	free(target->exportstr);
-	set_variable_attributes(target);
+	set_variable_attributes(target, flag);
 	if (!set_variable_exportstr(target, exportstr))
 		return (FALSE);
 	if (!set_variable_value(target, exportstr))

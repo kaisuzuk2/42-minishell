@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 08:02:57 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/31 10:40:15 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/12 09:06:46 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static t_bool	set_variable_item_internal(t_shell_var *var, char *envp_str)
 		return (FALSE);
 	if (!set_variable_exportstr(var, envp_str))
 		return (FALSE);
-	set_variable_attributes(var);
+	set_variable_attributes(var, 1);
 	return (TRUE);
 }
 
@@ -104,7 +104,7 @@ static t_bool init_pwd(t_shell_env *shell_env)
 	if (!pwd)
 		return (free(pwd_value), fatal_error("malloc", MALLOC_ERR_STR), FALSE);
 	free(pwd_value);
-	if (!update_variable_item(shell_env->env, pwd))
+	if (!update_variable_item(shell_env->env, pwd, 1))
 		return (free(pwd), FALSE);
 	free(pwd);
 	return (TRUE);

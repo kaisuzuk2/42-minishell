@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/09 15:28:26 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/12 09:11:30 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,8 +136,8 @@ t_bool			bind_variable(t_varlist *env, char *key, char *value);
 char			**get_env_arr(t_varlist *env);
 t_shell_var		*list_getshell_var(t_varlist *env, char *key);
 char			*list_getenv(t_varlist *env, char *key);
-t_bool			update_variable_item(t_varlist *env, char *exportstr);
-t_bool			update_key_value(t_varlist *env, char *key, char *value);
+t_bool			update_variable_item(t_varlist *env, char *exportstr, int flag);
+t_bool			update_key_value(t_varlist *env, char *key, char *value, int flag);
 char *get_current_working_directory(t_shell_env *shell_env);
 t_bool set_current_working_directory(t_shell_env *shell_env, char *value);
 void set_last_status(int s, t_shell_env *env);

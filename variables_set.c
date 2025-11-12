@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 17:31:27 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/08 09:15:46 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/12 09:02:38 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ t_bool	set_variable_exportstr(t_shell_var *map, char *env)
 	return (TRUE);
 }
 
-void set_variable_attributes(t_shell_var *map)
+void set_variable_attributes(t_shell_var *map, int flag)
 {
-	map->attributes = 1;
+	map->attributes = flag;
 }
