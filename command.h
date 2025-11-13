@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 10:53:00 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/07 11:01:35 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/13 13:48:08 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef enum e_token_kind
 	TK_LESS_LESS,   // <<
 	TK_LESS,        // <
 	TK_PIPE,
+	TK_SYNTAX_ERR,
 	TK_EOF,
 }						t_token_kind;
 

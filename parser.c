@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 13:13:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/13 09:48:29 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/13 13:50:04 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,11 @@ static t_command	*make_connection_command(t_command *cur,
 static t_command	*add_command(t_command *cur, t_token_list **token_p,
 		t_token_list *token, t_token_error *e)
 {
+	if (token->word->kind == TK_SYNTAX_ERR)
+	{
+		set_parse_error(ST_ERR_SYNTAX, PARSE_ERR_STR, token->word->word, e);
+		return (NULL);
+	}
 	if (!cur->command && !is_wordtoken(token->word->kind) && !is_redirect(token->word->kind))
 	{
 		set_parse_error(ST_ERR_SYNTAX, PARSE_ERR_STR, token->word->word, e);

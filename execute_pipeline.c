@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 10:31:38 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/13 11:33:23 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/13 15:09:09 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void	print_signal_end(int last_status)
 static void	print_core_dumped(int last_status)
 {
 	if (last_status == SIGQUIT)
-		ft_dprintf(STDOUT_FILENO, "Quit (core dumped)\n");
+		ft_dprintf(STDERR_FILENO, "Quit (core dumped)\n");
 }
 
 pid_t	wait_for(pid_t lastpid)

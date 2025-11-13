@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 11:28:03 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/11 15:23:53 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/13 14:46:46 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,46 @@ char	*join_and_free(char *s1, char *s2)
 	return (res);
 }
 
-char	*join_string_until_varvalue_and_quote(char *res, char **document)
+// char	*join_string_until_varvalue_and_quote(char *res, char **document)
+// {
+// 	char	*doll_ptr;
+// 	char	*tmp;
+// 	char	*res_tmp;
+// 	int		i;
+
+// 	i = 0;
+// 	while ((*document)[i] && (*document)[i] != '$' && (*document)[i] != '\''
+// 		&& (*document)[i] != '\"')
+// 		i++;
+// 	tmp = ft_substr(*document, 0, i);
+// 	if (!tmp)
+// 		return (free(res), NULL);
+// 	res_tmp = join_and_free(res, tmp);
+// 	*document = &(*document)[i];
+// 	return (res_tmp);
+// }
+
+char	*join_string_until_varvalue_and_quote(char *res, char **document, t_varlist *env)
 {
 	char	*doll_ptr;
 	char	*tmp;
 	char	*res_tmp;
 	int		i;
+	char *home_value;
 
+	if ((*document)[0] == '~' && (((*document)[1] == '\0') || ((*document)[1] == '/')))
+	{
+		home_value = list_getenv(env, "HOME");
+		if (home_value)
+		{
+			tmp = ft_strjoin(res, home_value);
+			free(res);
+			res = tmp;
+			(*document)++;
+		}
+	}
 	i = 0;
-	while ((*document)[i] && (*document)[i] != '$' && (*document)[i] != '\''
+	while ((*document)[i]&& (*document)[i] != '$' && (*document)[i] != '\''
 		&& (*document)[i] != '\"')
 		i++;
 	tmp = ft_substr(*document, 0, i);

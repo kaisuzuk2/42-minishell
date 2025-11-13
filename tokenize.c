@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/12 18:22:28 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/13 13:52:47 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,8 @@ static t_word_desc *make_operator_token(char **line_p, char *line, t_token_error
 			return (make_token(line_p, ft_strlen(operators[i]), operators_table[i], e));
 		i++;
 	}
-	return (set_parse_error(ST_ERR_SYNTAX, SYNTAX_ERR_STR, NULL, e), NULL);
+	return (make_token(line_p, len, TK_SYNTAX_ERR, e));
+	// return (set_parse_error(ST_ERR_SYNTAX, SYNTAX_ERR_STR, NULL, e), NULL);
 }
 
 
