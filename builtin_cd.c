@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 11:03:04 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/12 12:32:43 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/13 10:45:06 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,10 +95,10 @@ static int	change_to_directory(char *newdir, t_shell_env *shell_env)
 		if (!bindpwd(shell_env->env, "PWD", tdir))
 			return (EX_FATAL_ERROR);
 		free(tdir);
-		return (0);
+		return (EXECUTION_SUCCESS);
 	}
 	sys_error("cd");
-	return (1);
+	return (EXECUTION_FAILURE);
 }
 
 char	*get_interpret_cd(t_word_list *list, t_varlist *env)
@@ -163,10 +163,9 @@ int	builtin_cd(t_word_list *list, t_shell_env *shell_env)
 			if (!newpath)
 				return (EX_FATAL_ERROR);
 			if (!change_to_directory(newpath, shell_env))
-				return (0);
+				return (EXECUTION_SUCCESS);
 			i++;
 		}
 	}
-	change_to_directory(dirname, shell_env);
-	return (0);
+	return (change_to_directory(dirname, shell_env));
 }

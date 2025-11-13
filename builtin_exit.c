@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 15:22:14 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/12 11:33:03 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/13 10:14:38 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ static intmax_t	get_exitstat(t_word_list *list)
 	char *string;
 	intmax_t value;
 
+	if (*list->word->word == '\0')
+		return (builtin_error("exit", list->word->word, EXIT_ERR_STR), -1);
 	string = list->word->word;
 	value = ft_strtoimax(string, &ep);
 

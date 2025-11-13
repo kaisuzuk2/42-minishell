@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 12:29:59 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/12 17:15:09 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/13 09:10:32 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,32 @@ static char	*find_user_command_in_path(char *cmd, char **path_list,
 }
 
 // ..の入力のとき
-char	*search_for_command(char *cmd, t_varlist *env)
+// char	*search_for_command(char *cmd, t_varlist *env)
+// {
+// 	char	**path_list;
+// 	char	*path;
+// 	char	*full_path;
+// 	char	*file_to_lose_on;
+
+// 	if (is_absolute_program(cmd) || !*cmd)
+// 		return (savestring(cmd));
+// 	path = list_getenv(env, "PATH");
+// 	if (!path)
+// 		return (savestring(cmd));
+// 	path_list = ft_split(path, ':');
+// 	if (!path_list)
+// 		return (NULL); 
+// 	file_to_lose_on = NULL;
+// 	full_path = find_user_command_in_path(cmd, path_list, &file_to_lose_on);
+// 	free_path(path_list);
+// 	if (full_path)
+// 		return (free(file_to_lose_on), full_path);
+// 	if (file_to_lose_on)
+// 		return (file_to_lose_on);
+// 	return (NULL);
+// }
+
+t_bool search_for_command(char *cmd, t_varlist *env, char **command)
 {
 	char	**path_list;
 	char	*path;
@@ -86,19 +111,19 @@ char	*search_for_command(char *cmd, t_varlist *env)
 	char	*file_to_lose_on;
 
 	if (is_absolute_program(cmd) || !*cmd)
-		return (savestring(cmd));
+		return (*command = savestring(cmd), TRUE);
 	path = list_getenv(env, "PATH");
 	if (!path)
-		return (savestring(cmd));
+		return (*command = savestring(cmd), TRUE);
 	path_list = ft_split(path, ':');
 	if (!path_list)
-		return (NULL); 
+		return (FALSE); 
 	file_to_lose_on = NULL;
 	full_path = find_user_command_in_path(cmd, path_list, &file_to_lose_on);
 	free_path(path_list);
 	if (full_path)
-		return (free(file_to_lose_on), full_path);
+		return (free(file_to_lose_on), *command = full_path, TRUE);
 	if (file_to_lose_on)
-		return (file_to_lose_on);
-	return (savestring(cmd));
+		return (*command = file_to_lose_on, TRUE);
+	return (FALSE);
 }

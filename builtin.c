@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 10:13:08 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/09 12:49:05 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/13 09:14:49 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,21 +27,6 @@ static t_builtin_func	*find_builtin_func(const char *name,
 	return (NULL);
 }
 
-t_bool	is_builtin(char *command, const t_builtin *builtin_table,
-		const size_t table_size)
-{
-	int	i;
-
-	i = 0;
-	while (i < table_size)
-	{
-		if (!ft_strcmp(command, builtin_table[i].name))
-			return (TRUE);
-		i++;
-	}
-	return (FALSE);
-}
-
 t_builtin_table	get_builtin_table(void)
 {
 	t_builtin_table	info;
@@ -60,6 +45,23 @@ t_builtin_table	get_builtin_table(void)
 	return (info);
 }
 
+t_bool	is_builtin(char *command)
+{
+	int			i;
+	t_builtin_table	builtin_info;
+
+	builtin_info = get_builtin_table();
+	i = 0;
+	while (i < builtin_info.size)
+	{
+		if (!ft_strcmp(command, builtin_info.table[i].name))
+			return (TRUE);
+		i++;
+	}
+	return (FALSE);
+}
+
+
 static int	handle_exit_command(t_command *cmd, t_shell_env *shell_env,
 		int status)
 {
@@ -70,9 +72,9 @@ static int	handle_exit_command(t_command *cmd, t_shell_env *shell_env,
 	exit(status);
 }
 
-t_bool  save_stdfd(int *fd_arr)
+t_bool	save_stdfd(int *fd_arr)
 {
-	int i;
+	int	i;
 
 	fd_arr[STDIN_FILENO] = dup(STDIN_FILENO);
 	fd_arr[STDOUT_FILENO] = dup(STDOUT_FILENO);
@@ -87,9 +89,9 @@ t_bool  save_stdfd(int *fd_arr)
 	return (TRUE);
 }
 
-t_bool reset_stdfd(int *fd_arr)
+t_bool	reset_stdfd(int *fd_arr)
 {
-	if (dup2(fd_arr[STDIN_FILENO], STDIN_FILENO) < 0)	
+	if (dup2(fd_arr[STDIN_FILENO], STDIN_FILENO) < 0)
 		return (sys_error("dup2 failed"), FALSE);
 	if (dup2(fd_arr[STDOUT_FILENO], STDOUT_FILENO) < 0)
 		return (sys_error("dup2 failed"), FALSE);
@@ -98,9 +100,9 @@ t_bool reset_stdfd(int *fd_arr)
 	return (TRUE);
 }
 
-void close_stdfd(int *fd_arr)
+void	close_stdfd(int *fd_arr)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < STDFD_SIZE)

@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/12 09:11:30 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/13 09:15:45 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ size_t			list_length(t_generic_list *list);
 int				execute_pipeline(t_command *cmd, t_shell_env *env);
 
 // findcmd.c
-char			*search_for_command(char *cmd, t_varlist *env);
+t_bool search_for_command(char *cmd, t_varlist *env, char **command);
 char			*savestring(char *str);
 
 // strvec.c
@@ -105,8 +105,7 @@ t_builtin_table	get_builtin_table(void);
 int				execute_builtin_command(t_command *cmd,
 					t_pipefd pipefd,
 					t_shell_env *env);
-t_bool			is_builtin(char *command, const t_builtin *builtin_table,
-					const size_t table_size);
+t_bool			is_builtin(char *command);
 
 // builtin_echo.c
 int				builtin_echo(t_word_list *list, t_shell_env *shell_env);

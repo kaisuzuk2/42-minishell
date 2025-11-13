@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 10:01:13 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/09 15:22:28 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/13 11:48:23 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	here_document_to_file(t_redirect *r)
 	fd = sh_mktmpfd("sh-thd", &filename);
 	if (fd < 0)
 		return (EXECUTION_FAILURE);
-	ft_dprintf(fd, r->redirectee.filename->word);
+	ft_dprintf(fd, "%s", r->redirectee.filename->word);
 	close(fd);
 	fd2 = open(filename, O_RDONLY, 0600);
 	if (fd2 < 0)
@@ -76,7 +76,7 @@ static int	here_document_to_fd(t_redirect *r, t_shell_env *shell_env)
 	{
 		if (pipe(herepipe) < 0)
 			return (sys_error("pipe failed"), EXECUTION_FAILURE);
-		ft_dprintf(herepipe[1], r->redirectee.filename->word);
+		ft_dprintf(herepipe[1], "%s", r->redirectee.filename->word);
 		close(herepipe[1]);
 		return (herepipe[0]);
 	}
