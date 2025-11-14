@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 10:31:38 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/13 15:09:09 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/14 14:37:17 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,20 +73,6 @@ pid_t	wait_for(pid_t lastpid)
 		return (EXECUTION_FAILURE);
 }
 
-// static int	shell_execve(char *command, char **arg, char **env)
-// {
-// 	int		i;
-
-// 	execve(command, arg, env);
-// 	i = errno;
-// 	if (i == ENOENT)
-// 		fatal_error(command, NOTFOUND_STR);
-// 		return (fatal_error(command, NOTFOUND_STR), EX_NOTFOUND);
-// 	else
-// 		internal_error(command, strerror(i));
-// 	return (EXECUTION_FAILURE);
-// }
-
 int file_isdir(char *command)
 {
 	struct stat sb;
@@ -114,38 +100,6 @@ static int shell_execve(char *command, char **arg, char **env)
 		fatal_error(command, "cannnot support");
 	return (EX_NOEXEC);
 }
-
-// static int	execute_disk_command(t_command *cmd, t_pipefd pipefd,
-// 		t_shell_env *shell_env)
-// {
-// 	char			*command;
-// 	char			**arg;
-// 	char			**envarr;
-// 	t_builtin_table	builtin_info;
-// 	int status;
-
-// 	if (cmd->command->redirects && do_redirections(cmd->command->redirects,
-// 			shell_env) != 0)
-// 		return (EXECUTION_FAILURE);
-// 	builtin_info = get_builtin_table();
-// 	if (is_builtin(cmd->command->words->word->word, builtin_info.table,
-// 			builtin_info.size))
-// 		return (execute_builtin_command(cmd, pipefd, shell_env));
-// 	command = search_for_command(cmd->command->words->word->word,
-// 			shell_env->env);
-// 	if (!command)
-// 		return (fatal_error("malloc", MALLOC_ERR_STR), EX_FATAL_ERROR);
-// 	if (!update_key_value(shell_env->env, "_", command, 1))
-// 		return (free(command), EX_FATAL_ERROR);
-// 	arg = strvec_from_word_list(cmd->command->words);
-// 	envarr = get_env_arr(shell_env->env);
-// 	if (!envarr || !arg)
-// 		return (free(command), dispose_char_arr(envarr), dispose_char_arr(arg),
-// 			fatal_error("malloc", MALLOC_ERR_STR), EX_FATAL_ERROR);
-// 	status = shell_execve(command, arg, envarr);
-// 	return (free(command), dispose_char_arr(envarr), dispose_char_arr(arg),
-// 		status);
-// }
 
 static int	execute_disk_command(t_command *cmd, t_pipefd pipefd,
 		t_shell_env *shell_env)
@@ -206,9 +160,6 @@ static pid_t	execute_simple_command(t_pipefd pipefd, t_command *cmd,
 	pid_t			pid;
 	t_builtin_table	builtin_info;
 
-	// if (pipefd.pipe_in == -1 && pipefd.pipe_out == -1
-	// 	&& is_builtin(cmd->command->words->word->word))
-	// 	return (execute_builtin_command(cmd, pipefd, shell_env));
 	pid = fork();
 	if (pid < 0)
 	{
