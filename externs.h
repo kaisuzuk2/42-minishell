@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/13 09:15:45 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/14 10:13:00 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,11 @@ t_token_list	*tokenize(char *line, t_shell_env *shell_env);
 
 // tokenize_utils.c
 t_bool	startswith(const char *s, const char *op);
+void	skip_shellblank(char **line);
 
 // token_utils_tokenkinds.c
-t_bool	is_shellbrank(char c);
+t_bool	is_shellblank(char c);
+t_bool	is_quote(char c);
 
 
 /* **************************************************************** */

@@ -6,121 +6,24 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/13 13:52:47 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/14 10:17:19 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// // tokenize_utils_tokenkinds.c
-// t_bool				is_shellbrank(char c);
-// t_bool				is_word(char *line);
-// char				*is_metacharacter(char c);
-// t_bool				is_operator(char *line);
-// t_bool				is_quote(char c);
-
-// tokenize_utils.c
-void	skip_shellbrank(char **line);
-t_word_desc	*make_token(char **line, size_t len, t_token_kind kind,
-		t_token_error *e);
-t_token_list	*make_word_list(t_token_list *cur, t_word_desc *desc,
-		t_token_error *e);
+// tokenize_make.c
+t_word_desc			*make_word_token(char **line_p, char *line,
+						t_token_error *e);
+t_word_desc			*make_operator_token(char **line_p, char *line,
+						t_token_error *e);
+t_word_desc			*make_token(char **line, size_t len, t_token_kind kind,
+						t_token_error *e);
+t_token_list		*make_word_list(t_token_list *cur, t_word_desc *desc,
+						t_token_error *e);
 
 // tokenize_utils_tokenkinds.c
-char	*is_metacharacter(char c);
-t_bool	is_word(char *line);
-t_bool	is_operator(char *line);
-t_bool	is_quote(char c);
-
-
-
-// static t_word_desc	*make_operator_token(char **line_p, char *line,
-// 		t_token_error *e)
-// {
-// 	int					i;
-// 	const t_token_kind	operators_table[] = {TK_LESS_LESS, TK_LESS,
-// 		TK_GREAT_GREAT, TK_GREAT, TK_PIPE};
-// 	const char			*operators[] = {"<<", "<", ">>", ">", "|"};
-// 	const char			*unsupport_operators[] = {"&&", "&", "||", ";;", ";",
-// 		"<>", "<<-", "<&", ">|", ">&", "(", ")"};
-
-// 	i = 0;
-// 	while (i < sizeof(unsupport_operators) / sizeof(unsupport_operators[0]))
-// 	{
-// 		if (!startswith(line, unsupport_operators[i]))
-// 			return (set_parse_error(ST_ERR_SYNTAX, NOSUP_STR,
-// 					unsupport_operators[i], e), NULL);
-// 		i++;
-// 	}
-// 	i = 0;
-// 	while (i < sizeof(operators) / sizeof(operators[0]))
-// 	{
-// 		if (!startswith(line, operators[i]))
-// 			return (make_token(line_p, ft_strlen(operators[i]),
-// 						operators_table[i], e));
-// 		i++;
-// 	}
-// 	return (set_parse_error(ST_ERR_SYNTAX, SYNTAX_ERR_STR, NULL, e), NULL);
-// }
-
-
-static t_word_desc *make_operator_token(char **line_p, char *line, t_token_error *e)
-{
-	int					i;
-	size_t len;
-	const t_token_kind	operators_table[] = {TK_LESS_LESS, TK_LESS,
-		TK_GREAT_GREAT, TK_GREAT, TK_PIPE};
-	const char			*operators[] = {"<<", "<", ">>", ">", "|"};
-	const char			*unsupport_operators[] = {"&&", "&", "||", ";;", ";",
-		"<>", "<<-", "<&", ">|", ">&", "(", ")"};
-
-	len = 0;
-	while (is_metacharacter(line[len]))
-		len++;
-	i = 0;
-	while (i < sizeof(unsupport_operators) / sizeof(unsupport_operators[0]))
-	{
-		if (len == ft_strlen(unsupport_operators[i]) && !ft_strncmp(line, unsupport_operators[i], len))
-			return (set_parse_error(ST_ERR_SYNTAX, NOSUP_STR, unsupport_operators[i], e), NULL);
-		i++;
-	}
-	i = 0;
-	while (i < sizeof(operators) / sizeof(operators[0]))
-	{
-		if (len == ft_strlen(operators[i]) && !ft_strncmp(line, operators[i], len))
-			return (make_token(line_p, ft_strlen(operators[i]), operators_table[i], e));
-		i++;
-	}
-	return (make_token(line_p, len, TK_SYNTAX_ERR, e));
-	// return (set_parse_error(ST_ERR_SYNTAX, SYNTAX_ERR_STR, NULL, e), NULL);
-}
-
-
-static t_word_desc	*make_word_token(char **line_p, char *line,
-		t_token_error *e)
-{
-	size_t	len;
-	char	quote;
-
-	quote = 0;
-	len = 0;
-	if (is_quote(line[len]))
-		quote = line[len++];
-	while (line[len])
-	{
-		if (quote && line[len] == quote)
-			quote = 0;
-		else if (!quote && is_quote(line[len]))
-			quote = line[len];
-		if (!quote && (is_shellbrank(line[len]) || is_metacharacter(line[len])))
-			break ;
-		len++;
-	}
-	if (quote)
-		return (set_parse_error(ST_ERR_SYNTAX, SYNTAX_ERR_STR, QUOTE_ERR_STR,
-				e), NULL);
-	return (make_token(line_p, len, TK_WORD, e));
-}
+t_bool				is_word(char *line);
 
 static t_token_list	*make_word_list_wrapper(t_token_list *cur, char **line_p,
 		char *line, t_token_error *e)
@@ -151,8 +54,8 @@ t_token_list	*append_token(char *line, t_shell_env *shell_env)
 	while (*line)
 	{
 		memset(&e, 0, sizeof(e));
-		if (is_shellbrank(*line))
-			skip_shellbrank(&line);
+		if (is_shellblank(*line))
+			skip_shellblank(&line);
 		if (!*line || *line == '#')
 			return (head.next);
 		cur = make_word_list_wrapper(cur, &line, line, &e);

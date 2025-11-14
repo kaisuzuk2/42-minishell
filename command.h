@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 10:53:00 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/13 13:48:08 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/14 09:16:53 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ typedef struct s_glist
 /*										*/
 /* **************************************************************** */
 
-// error chech
+// local errno
 typedef enum e_token_status
 {
 	ST_OK,
@@ -62,7 +62,6 @@ typedef struct s_word_desc
 {
 	t_token_kind		kind;
 	char				*word;
-	// int					flag;
 	t_bool flag;
 }						t_word_desc;
 

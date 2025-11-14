@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 13:13:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/13 13:50:04 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/14 10:37:24 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,10 @@
 
 // parser_utils.c
 t_command	*new_command(t_command_type type);
+t_bool is_unexpected_token(t_command *cmd, t_token_list *token);
 
 // parser_is_tokenkind.c
 t_bool				is_redirect(t_token_kind kind);
-t_bool				is_wordtoken(t_token_kind kind);
-t_bool				is_eoftoken(t_token_kind kind);
 t_bool				is_pipetoken(t_token_kind kind);
 
 // parser_redirect.c
@@ -102,21 +101,8 @@ static t_command	*make_connection_command(t_command *cur,
 static t_command	*add_command(t_command *cur, t_token_list **token_p,
 		t_token_list *token, t_token_error *e)
 {
-	if (token->word->kind == TK_SYNTAX_ERR)
-	{
-		set_parse_error(ST_ERR_SYNTAX, PARSE_ERR_STR, token->word->word, e);
-		return (NULL);
-	}
-	if (!cur->command && !is_wordtoken(token->word->kind) && !is_redirect(token->word->kind))
-	{
-		set_parse_error(ST_ERR_SYNTAX, PARSE_ERR_STR, token->word->word, e);
-		return (NULL);
-	}
-	if (is_pipetoken(token->word->kind) && is_eoftoken(token->next->word->kind))
-	{
-		set_parse_error(ST_ERR_SYNTAX, PARSE_ERR_STR, token->word->word, e);
-		return (NULL);
-	}
+	if (is_unexpected_token(cur, token))
+		return (set_parse_error(ST_ERR_SYNTAX, PARSE_ERR_STR, token->word->word, e), NULL);
 	if (is_wordtoken(token->word->kind) || is_redirect(token->word->kind))
 	{
 		cur->command = make_simple_command(token_p, token, e);

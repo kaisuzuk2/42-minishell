@@ -6,19 +6,19 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 10:39:48 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/09 14:24:43 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/14 10:17:41 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	skip_shellbrank(char **line)
+void	skip_shellblank(char **line)
 {
-	while (**line && is_shellbrank(**line))
+	while (**line && is_shellblank(**line))
 		(*line)++;
 }
 
-static void	set_token_flg(char *line, t_word_desc *desc)
+void	set_token_flg(char *line, t_word_desc *desc)
 {
 	desc->flag = 0;
 	if (ft_strchr(line, SINGLE_QUOTE_CHAR))
@@ -34,46 +34,7 @@ t_bool	startswith(const char *s, const char *op)
 	return (ft_strncmp(s, op, ft_strlen(op)));
 }
 
-t_word_desc	*make_token(char **line, size_t len, t_token_kind kind,
-		t_token_error *e)
+t_bool	is_match_op(char *str, size_t len, const char *op)
 {
-	t_word_desc	*desc;
-	char		*word;
-
-	desc = (t_word_desc *)xcalloc(sizeof(t_word_desc), 1);
-	if (!desc)
-		return (set_parse_error(ST_ERR_NOMEM, NULL, NULL, e), NULL);
-	desc->flag = 0;
-	if (!line)
-		word = NULL;
-	else
-	{
-		set_token_flg(*line, desc);
-		word = (char *)xmalloc(sizeof(char) * (len + 1));
-		if (!word)
-			return (free(desc), set_parse_error(ST_ERR_NOMEM, NULL, NULL, e),
-				NULL);
-		ft_memcpy(word, *line, len);
-		word[len] = '\0';
-		*line += len;
-	}
-	desc->word = word;
-	desc->kind = kind;
-	return (desc);
-}
-
-t_token_list	*make_word_list(t_token_list *cur, t_word_desc *desc,
-		t_token_error *e)
-{
-	t_token_list	*new;
-
-	if (!desc)
-		return (set_parse_error(ST_ERR_NOMEM, NULL, NULL, e), NULL);
-	new = (t_token_list *)xcalloc(sizeof(t_token_list), 1);
-	if (!new)
-		return (dispose_word(desc), set_parse_error(ST_ERR_NOMEM, NULL, NULL,
-				e), NULL);
-	new->word = desc;
-	cur->next = new;
-	return (new);
+	return (len == ft_strlen(op) && !ft_strncmp(str, op, len));
 }

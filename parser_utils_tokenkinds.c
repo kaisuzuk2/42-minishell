@@ -1,33 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenize_utils_tokenkinds.c                        :+:      :+:    :+:   */
+/*   parser_utils_tokenkinds.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/23 10:35:48 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/14 10:17:56 by kaisuzuk         ###   ########.fr       */
+/*   Created: 2025/10/26 09:43:21 by kaisuzuk          #+#    #+#             */
+/*   Updated: 2025/11/14 10:35:56 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_bool	is_shellblank(char c)
+t_bool	is_redirect(t_token_kind kind)
 {
-	return (c == ' ' || c == '\t' || c == '\n');
+	return (kind == TK_GREAT_GREAT || kind == TK_GREAT || kind == TK_LESS_LESS
+		|| kind == TK_LESS);
 }
 
-char	*is_metacharacter(char c)
+t_bool	is_wordtoken(t_token_kind kind)
 {
-	return (ft_strchr("&|;<>()", c));
+	return (kind == TK_WORD);
 }
 
-t_bool	is_word(char *line)
+t_bool	is_eoftoken(t_token_kind kind)
 {
-	return (*line && !is_metacharacter(*line));
+	return (kind == TK_EOF);
 }
 
-t_bool	is_quote(char c)
+t_bool	is_pipetoken(t_token_kind kind)
 {
-	return (c == SINGLE_QUOTE_CHAR || c == DOUBLE_QUOTE_CHAR);
+	return (kind == TK_PIPE);
 }

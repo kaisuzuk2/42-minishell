@@ -6,7 +6,7 @@
 #    By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/07 14:10:24 by kaisuzuk          #+#    #+#              #
-#    Updated: 2025/11/13 14:49:32 by kaisuzuk         ###   ########.fr        #
+#    Updated: 2025/11/14 10:22:49 by kaisuzuk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,13 +31,14 @@ SRCS	=	minishell.c \
 			sig.c \
 			bashline.c \
 			tokenize.c \
+			tokenize_make.c \
 			tokenize_utils_tokenkinds.c \
 			tokenize_utils.c \
 			parser.c \
 			parser_redirect.c \
 			parser_utils.c \
 			parser_error.c \
-			parser_is_tokenkind.c \
+			parser_utils_tokenkinds.c \
 			expand.c \
 			expand_utils.c \
 			expand_quote_removal.c \
