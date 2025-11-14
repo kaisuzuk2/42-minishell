@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 13:57:58 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/10 13:59:07 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/14 14:36:00 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*get_varvalue(t_shell_env *shell_env, char *doll_ptr)
 {
 	char	*varname;
 	char	*varvalue;
-	char *tmp_varvalue;
+	char	*tmp_varvalue;
 
 	varvalue = NULL;
 	varname = ft_substr(doll_ptr + 1, 0, get_varlen(doll_ptr + 1));
@@ -63,7 +63,7 @@ char	*get_varvalue(t_shell_env *shell_env, char *doll_ptr)
 		if (!tmp_varvalue)
 			varvalue = ft_strdup("");
 		else
-			varvalue = savestring(tmp_varvalue);		
+			varvalue = savestring(tmp_varvalue);
 	}
 	free(varname);
 	return (varvalue);

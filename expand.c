@@ -6,33 +6,31 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 14:05:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/13 14:20:55 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/14 12:15:37 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // exoand_utils.c
-char	*join_and_free(char *s1, char *s2);
-char	*join_string_until_varvalue_and_quote(char *res, char **document, t_varlist *env);
-char	*expand_quote_and_value(char **document_p, char *document,
-		t_shell_env *shell_env);
-t_bool	word_splitting_internal(t_word_list **list_p, t_word_list *list,
-		char **ifs_split);
+char			*join_and_free(char *s1, char *s2);
+char			*join_string_until_varvalue_and_quote(char *res,
+					char **document, t_varlist *env);
+char			*expand_quote_and_value(char **document_p, char *document,
+					t_shell_env *shell_env);
+t_bool			word_splitting_internal(t_word_list **list_p, t_word_list *list,
+					char **ifs_split);
 
-// expand_quote_removal.c 
-char	*string_quote_removal(char *string, char quote);
+// expand_quote_removal.c
+char			*string_quote_removal(char *string, char quote);
 
 // expand_word_splitting.c
-char	**command_split(char const *s);
-
-// ### TODO: ~と?の展開
-
+char			**ifs_split(char const *s);
 
 t_bool	word_splitting(t_word_list **list_p, t_word_list *list,
 		char **document_p, t_shell_env *shell_env)
 {
-	char		**ifs_split;
+	char		**words;
 	int			varlen;
 	char		*value;
 	t_word_list	*next;
@@ -41,20 +39,20 @@ t_bool	word_splitting(t_word_list **list_p, t_word_list *list,
 	value = get_varvalue(shell_env, *document_p);
 	if (!value)
 		return (FALSE);
-	ifs_split = command_split(value);
+	words = ifs_split(value);
 	free(value);
-	if (!ifs_split)
+	if (!words)
 		return (FALSE);
 	next = list->next;
-	if (!word_splitting_internal(list_p, list, ifs_split))
-		return (dispose_char_arr(ifs_split), FALSE);
-	dispose_char_arr(ifs_split);
+	if (!word_splitting_internal(list_p, list, words))
+		return (dispose_char_arr(words), FALSE);
+	dispose_char_arr(words);
 	(*document_p) += (varlen + 1);
 	return (TRUE);
 }
 
-t_bool	expand_and_word_splitting_internal(char *document,
-		t_word_list **list_p, t_word_list *list, t_shell_env *shell_env)
+t_bool	expand_and_word_splitting_internal(char *document, t_word_list **list_p,
+		t_word_list *list, t_shell_env *shell_env)
 {
 	char	*document_p;
 	char	*tmp;
@@ -62,16 +60,14 @@ t_bool	expand_and_word_splitting_internal(char *document,
 	document_p = document;
 	while (*document)
 	{
-		if (*document == SINGLE_QUOTE_CHAR || *document == DOUBLE_QUOTE_CHAR
-			|| *document != DOLLAR_CHAR)
+		if (is_quote(*document) || *document != DOLLAR_CHAR)
 		{
-			if (*document == SINGLE_QUOTE_CHAR
-				|| *document == DOUBLE_QUOTE_CHAR)
-				tmp = join_and_free((*list_p)->word->word,
+			if (is_quote(*document))
+				tmp = join_and_free(list->word->word,
 						expand_quote_and_value(&document, document, shell_env));
 			else
-				tmp = join_string_until_varvalue_and_quote((*list_p)->word->word,
-					&document, shell_env->env);
+				tmp = join_string_until_varvalue_and_quote(list->word->word,
+						&document, shell_env->env);
 			if (!tmp)
 				return (FALSE);
 			(*list_p)->word->word = tmp;
@@ -101,10 +97,8 @@ t_bool	expand_and_word_splitting(t_word_list **list_p, t_word_list *list,
 			shell_env));
 }
 
-
-static t_bool expand_var_token(t_word_list *list, t_shell_env *shell_env)
+static t_bool	expand_var_token(t_word_list *list, t_shell_env *shell_env)
 {
-
 	while (list)
 	{
 		expand_and_word_splitting(&list, list, shell_env);
@@ -113,9 +107,9 @@ static t_bool expand_var_token(t_word_list *list, t_shell_env *shell_env)
 	return (TRUE);
 }
 
-t_bool expand(t_command *command, t_shell_env *shell_env)
+t_bool	expand(t_command *command, t_shell_env *shell_env)
 {
-	t_command *cur;
+	t_command	*cur;
 
 	cur = command;
 	while (cur)

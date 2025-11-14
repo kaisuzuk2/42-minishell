@@ -6,13 +6,13 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 13:09:16 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/10 13:58:23 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/14 14:32:46 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char			**command_split(char const *s);
+char			**ifs_split(char const *s);
 
 // envkey is alnum or underbar
 
@@ -73,3 +73,22 @@ char	*expand_string_to_string(char *document, t_shell_env *shell_env)
 	return (free(document), res);
 }
 
+char	*expand_tilda(char *res, char **document, t_varlist *env)
+{
+	char	*home_value;
+	char	*tmp;
+
+	if ((*document)[0] == '~' && (((*document)[1] == '\0')
+			|| ((*document)[1] == '/')))
+	{
+		home_value = list_getenv(env, "HOME");
+		if (!home_value)
+			return (ft_strdup(res));
+		tmp = ft_strjoin(res, home_value);
+		free(res);
+		res = tmp;
+		(*document)++;
+		return (res);
+	}
+	return (ft_strdup(res));
+}

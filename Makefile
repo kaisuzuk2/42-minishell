@@ -6,7 +6,7 @@
 #    By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/07 14:10:24 by kaisuzuk          #+#    #+#              #
-#    Updated: 2025/11/14 10:22:49 by kaisuzuk         ###   ########.fr        #
+#    Updated: 2025/11/14 12:38:26 by kaisuzuk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,7 @@ SRCS	=	minishell.c \
 			expand.c \
 			expand_utils.c \
 			expand_quote_removal.c \
-			expand_word_splitting.c \
+			expand_ifs_split.c \
 			subst.c \
 			subst_getter.c \
 			dispose_cmd.c \

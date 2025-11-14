@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/14 10:13:00 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/14 14:33:35 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ t_bool			expand(t_command *command, t_shell_env *shell_env);
 t_bool			is_hasdollar(t_word_desc *desc);
 t_bool			is_d_quote(t_word_desc *desc);
 t_bool			is_s_quote(t_word_desc *desc);
-char			*string_quote_removal(char *string, char quote);
 
 // subst.c
 char			*expand_string_to_string(char *document, t_shell_env *shell_env);
