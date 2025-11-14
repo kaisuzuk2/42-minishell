@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 13:13:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/14 10:37:24 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/14 11:16:56 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,11 @@ t_command	*new_command(t_command_type type);
 t_bool is_unexpected_token(t_command *cmd, t_token_list *token);
 
 // parser_is_tokenkind.c
+t_bool				is_wordtoken(t_token_kind kind);
+t_bool				is_eoftoken(t_token_kind kind);
 t_bool				is_redirect(t_token_kind kind);
 t_bool				is_pipetoken(t_token_kind kind);
+
 
 // parser_redirect.c
 t_redirect	*connect_redirection(t_command *command, t_token_list **token_p,
@@ -37,12 +40,15 @@ static t_word_list	*append_command_words(t_command *command,
 	if (!list)
 		return (NULL);
 	desc = tokendup(token->word);
-	*token_p = token->next;
-	if (!token)
+	if (!desc)
 		return (free(list), NULL);
+	*token_p = token->next;
 	list->word = desc;
 	if (!command->words)
-		return (command->words = list, list);
+	{
+		command->words = list;
+		return (list);
+	}
 	cur = command->words;
 	while (cur->next)
 		cur = cur->next;
