@@ -6,22 +6,23 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 10:13:08 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/13 09:14:49 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/15 11:25:07 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_builtin_func	*find_builtin_func(const char *name,
-		const t_builtin *builtin_table, const size_t table_size)
+static t_builtin_func	*find_builtin_func(const char *name)
 {
 	int	i;
+	t_builtin_table info;
 
+	info = get_builtin_table();
 	i = 0;
-	while (i < table_size)
+	while (i < info.size)
 	{
-		if (!ft_strcmp(name, builtin_table[i].name))
-			return (builtin_table[i].f);
+		if (!ft_strcmp(name, info.table[i].name))
+			return (info.table[i].f);
 		i++;
 	}
 	return (NULL);
@@ -119,7 +120,6 @@ int	execute_builtin_command(t_command *cmd, t_pipefd pipefd,
 	t_word_list *arg;
 	t_builtin_func *f;
 	int status;
-	t_builtin_table builtin_info;
 	int fd_arr[3];
 
 	if (cmd->command->redirects)
@@ -129,10 +129,9 @@ int	execute_builtin_command(t_command *cmd, t_pipefd pipefd,
 		if (do_redirections(cmd->command->redirects, shell_env))
 			return (close_stdfd(fd_arr), EXECUTION_FAILURE);
 	}
-	builtin_info = get_builtin_table();
 	command = cmd->command->words->word->word;
 	f = NULL;
-	f = find_builtin_func(command, builtin_info.table, builtin_info.size);
+	f = find_builtin_func(command);
 	if (!f)
 		return (internal_error(BUILTIN_ERR_STR, command), EXECUTION_FAILURE);
 	arg = cmd->command->words->next;

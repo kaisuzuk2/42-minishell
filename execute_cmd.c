@@ -6,13 +6,13 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 11:12:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 11:15:11 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/15 11:17:43 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	file_isdir(char *command);
+int			file_isdir(char *command);
 
 static int	shell_execve(char *command, char **arg, char **env)
 {
