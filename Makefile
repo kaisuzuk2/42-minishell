@@ -6,7 +6,7 @@
 #    By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/07 14:10:24 by kaisuzuk          #+#    #+#              #
-#    Updated: 2025/11/15 11:14:05 by kaisuzuk         ###   ########.fr        #
+#    Updated: 2025/11/15 12:12:18 by kaisuzuk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,6 +60,7 @@ SRCS	=	minishell.c \
 			make_cmd_utils.c \
 			ft_mkstemp.c \
 			builtin.c \
+			builtin_fd.c \
 			builtin_echo.c \
 			builtin_env.c \
 			builtin_exit.c \
