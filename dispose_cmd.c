@@ -6,47 +6,13 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 14:59:46 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/26 08:50:03 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/15 15:33:26 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	dispose_word(t_word_desc *w)
-{
-	if (!w)
-		return ;
-	free(w->word);
-	free(w);
-}
-
-void	dispose_token_words(t_token_list *list)
-{
-	t_token_list	*t;
-
-	if (!list)
-		return ;
-	while (list)
-	{
-		t = list;
-		list = list->next;
-		dispose_word(t->word);
-		free(t);
-	}
-}
-
-void	dispose_desc_words(t_word_list *list)
-{
-	t_word_list	*t;
-
-	while (list)
-	{
-		t = list;
-		list = list->next;
-		dispose_word(t->word);
-		free(t);
-	}
-}
+void	dispose_desc_words(t_word_list *list);
 
 void	dispose_redirects(t_redirect *list)
 {
@@ -62,7 +28,7 @@ void	dispose_redirects(t_redirect *list)
 	}
 }
 
-void dispose_simple_command(t_command *command)
+void	dispose_simple_command(t_command *command)
 {
 	if (!command)
 		return ;
@@ -74,8 +40,8 @@ void dispose_simple_command(t_command *command)
 
 void	dispose_command(t_command *command)
 {
-	t_command *simple;
-	t_command *t;
+	t_command	*simple;
+	t_command	*t;
 
 	if (!command)
 		return ;
