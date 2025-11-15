@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 11:03:04 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/13 10:45:06 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/15 10:59:44 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ t_bool			is_absolute_pathname(const char *string);
 // buintin_cd_canonpath.c
 char			*sh_canonpath(char *tmp_path);
 t_bool			is_pathsep(char c);
+
+// .../が弾けてない
 
 static char	*sh_makepath(char *path, char *dir)
 {

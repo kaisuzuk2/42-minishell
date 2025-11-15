@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 09:15:07 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/12 12:37:28 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/15 11:08:37 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ static void remove_parent(char **q, char *base)
 
 static t_bool is_abst_path(char **p, char **q, char *base)
 {
+	if (*q > base && *(*q - 1) != '/')
+		return (FALSE);
 	if ((*p)[0] == '.' && is_pathsep((*p)[1]))
 	{
 		(*p)++;
