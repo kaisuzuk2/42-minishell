@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 14:05:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/14 12:15:37 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/15 10:07:01 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,10 @@ t_bool	expand_and_word_splitting_internal(char *document, t_word_list **list_p,
 		if (is_quote(*document) || *document != DOLLAR_CHAR)
 		{
 			if (is_quote(*document))
-				tmp = join_and_free(list->word->word,
+				tmp = join_and_free((*list_p)->word->word,
 						expand_quote_and_value(&document, document, shell_env));
 			else
-				tmp = join_string_until_varvalue_and_quote(list->word->word,
+				tmp = join_string_until_varvalue_and_quote((*list_p)->word->word,
 						&document, shell_env->env);
 			if (!tmp)
 				return (FALSE);

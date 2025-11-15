@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 09:10:07 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 09:08:05 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/15 09:09:59 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,6 @@ int	signal_prompt_hook(void)
 
 void	enter_prompt_mode(void)
 {
-	// rl_catch_signals = 0;
-	// rl_event_hook = signal_prompt_hook;
 	if (isatty(STDIN_FILENO))
 		rl_event_hook = signal_prompt_hook;
 	set_handler(SIGINT, sigint_prompt_handler, 0);

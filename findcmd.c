@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 12:29:59 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/13 09:10:32 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/15 09:54:21 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ t_bool search_for_command(char *cmd, t_varlist *env, char **command)
 		return (*command = savestring(cmd), TRUE);
 	path_list = ft_split(path, ':');
 	if (!path_list)
-		return (FALSE); 
+		return (*command = NULL, FALSE); 
 	file_to_lose_on = NULL;
 	full_path = find_user_command_in_path(cmd, path_list, &file_to_lose_on);
 	free_path(path_list);
@@ -125,5 +125,5 @@ t_bool search_for_command(char *cmd, t_varlist *env, char **command)
 		return (free(file_to_lose_on), *command = full_path, TRUE);
 	if (file_to_lose_on)
 		return (*command = file_to_lose_on, TRUE);
-	return (FALSE);
+	return (*command = NULL, FALSE);
 }

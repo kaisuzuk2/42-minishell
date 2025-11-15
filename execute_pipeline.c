@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 10:31:38 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/14 14:47:30 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/15 10:24:59 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,17 @@ static void	print_core_dumped(int last_status)
 		ft_dprintf(STDERR_FILENO, "Quit (core dumped)\n");
 }
 
+static pid_t	status_to_exitcode(int last_status)
+{
+	if (WIFSIGNALED(last_status))
+		return (print_core_dumped(WTERMSIG(last_status)), 128
+			+ WTERMSIG(last_status));
+	if (WIFEXITED(last_status))
+		return (WEXITSTATUS(last_status));
+	else
+		return (EXECUTION_FAILURE);
+}
+
 pid_t	wait_for(pid_t lastpid)
 {
 	int		status;
@@ -64,26 +75,20 @@ pid_t	wait_for(pid_t lastpid)
 	}
 	if (lastpid < 0)
 		return (EXECUTION_FAILURE);
-	if (WIFSIGNALED(last_status))
-		return (print_core_dumped(WTERMSIG(last_status)), 128
-			+ WTERMSIG(last_status));
-	if (WIFEXITED(last_status))
-		return (WEXITSTATUS(last_status));
-	else
-		return (EXECUTION_FAILURE);
+	return (status_to_exitcode(last_status));
 }
 
-int file_isdir(char *command)
+int	file_isdir(char *command)
 {
-	struct stat sb;
+	struct stat	sb;
 
 	return ((!stat(command, &sb) && S_ISDIR(sb.st_mode)));
 }
 
-static int shell_execve(char *command, char **arg, char **env)
+static int	shell_execve(char *command, char **arg, char **env)
 {
-	int i;
-	int status;
+	int	i;
+	int	status;
 
 	execve(command, arg, env);
 	i = errno;
@@ -92,23 +97,30 @@ static int shell_execve(char *command, char **arg, char **env)
 		if (file_isdir(command) && ft_strcmp(command, ".."))
 			fatal_error(command, "Is a directory");
 		else if (i == ENOENT || !ft_strcmp(command, ".."))
+		{
+			free(command);
+			dispose_char_arr(arg);
+			dispose_char_arr(env);
 			return (fatal_error(command, NOTFOUND_STR), EX_NOTFOUND);
+		}
 		else
 			internal_error(command, strerror(i));
 	}
 	else
 		fatal_error(command, "cannnot support");
+	free(command);
+	dispose_char_arr(arg);
+	dispose_char_arr(env);
 	return (EX_NOEXEC);
 }
 
 static int	execute_disk_command(t_command *cmd, t_pipefd pipefd,
 		t_shell_env *shell_env)
 {
-	char			*command;
-	char			**arg;
-	char			**envarr;
-	int status;
-	
+	char	*command;
+	char	**arg;
+	char	**envarr;
+
 	if (cmd->command->redirects && do_redirections(cmd->command->redirects,
 			shell_env) != 0)
 		return (EXECUTION_FAILURE);
@@ -116,29 +128,25 @@ static int	execute_disk_command(t_command *cmd, t_pipefd pipefd,
 		return (EXECUTION_SUCCESS);
 	if (is_builtin(cmd->command->words->word->word))
 		return (execute_builtin_command(cmd, pipefd, shell_env));
-	command = NULL;
-	if (!search_for_command(cmd->command->words->word->word,
-			shell_env->env, &command))
-		return (fatal_error(cmd->command->words->word->word, NOTFOUND_STR), EX_NOTFOUND);
-	if (!command)
-		return (fatal_error("malloc", MALLOC_ERR_STR), EX_FATAL_ERROR);
-	if (!update_key_value(shell_env->env, "_", command, 1))
-		return (free(command), EX_FATAL_ERROR);
+	if (!search_for_command(cmd->command->words->word->word, shell_env->env,
+			&command))
+		return (fatal_error(cmd->command->words->word->word, NOTFOUND_STR),
+			EX_NOTFOUND);
 	arg = strvec_from_word_list(cmd->command->words);
 	envarr = get_env_arr(shell_env->env);
-	if (!envarr || !arg)
+	if (!command || !envarr || !arg)
 		return (free(command), dispose_char_arr(envarr), dispose_char_arr(arg),
 			fatal_error("malloc", MALLOC_ERR_STR), EX_FATAL_ERROR);
-	status = shell_execve(command, arg, envarr);
-	return (free(command), dispose_char_arr(envarr), dispose_char_arr(arg),
-		status);
+	if (!update_key_value(shell_env->env, "_", command, 1))
+		return (free(command), EX_FATAL_ERROR);
+	return (shell_execve(command, arg, envarr));
 }
 
 static int	execute_simple_command_internal(t_command *cmd, t_pipefd pipefd,
 		int close_fd, t_shell_env *shell_env)
 {
-	int status; 
-	
+	int	status;
+
 	reset_signals_for_child();
 	if (close_fd != -1)
 		close(close_fd);
@@ -173,6 +181,33 @@ static pid_t	execute_simple_command(t_pipefd pipefd, t_command *cmd,
 	return (pid);
 }
 
+static t_bool	is_simple_command(t_command *cmd)
+{
+	return (!cmd->next && cmd->command && cmd->command->words);
+}
+
+static pid_t	execute_pipeline_internal(t_command *cmd, t_pipefd pipefd,
+		t_shell_env *shell_env)
+{
+	pid_t	lastpid;
+	int		fildes[2];
+
+	while (cmd)
+	{
+		pipefd.pipe_out = -1;
+		if (cmd->next && !execute_pipe_internal(&pipefd, fildes))
+			return (-1);
+		else if (!cmd->next)
+			fildes[0] = -1;
+		lastpid = execute_simple_command(pipefd, cmd, fildes[0], shell_env);
+		close_pipe(&pipefd);
+		if (cmd->next)
+			pipefd.pipe_in = fildes[0];
+		cmd = cmd->next;
+	}
+	return (lastpid);
+}
+
 int	execute_pipeline(t_command *cmd, t_shell_env *shell_env)
 {
 	int			fildes[2];
@@ -183,21 +218,11 @@ int	execute_pipeline(t_command *cmd, t_shell_env *shell_env)
 
 	cur_cmd = cmd;
 	pipefd.pipe_in = -1;
-	if (!cur_cmd->next && cur_cmd->command->words && is_builtin(cur_cmd->command->words->word->word))
-		return (pipefd.pipe_out = -1, execute_builtin_command(cmd, pipefd, shell_env));
-	while (cur_cmd)
-	{
-		pipefd.pipe_out = -1;
-		if (cur_cmd->next && !execute_pipe_internal(&pipefd, fildes))
-			return (EXECUTION_FAILURE);
-		else if (!cur_cmd->next)
-			fildes[0] = -1;
-		lastpid = execute_simple_command(pipefd, cur_cmd, fildes[0], shell_env);
-		close_pipe(&pipefd);
-		if (cur_cmd->next)
-			pipefd.pipe_in = fildes[0];
-		cur_cmd = cur_cmd->next;
-	}
+	if (is_simple_command(cur_cmd)
+		&& is_builtin(cur_cmd->command->words->word->word))
+		return (pipefd.pipe_out = -1, execute_builtin_command(cmd, pipefd,
+				shell_env));
+	lastpid = execute_pipeline_internal(cmd, pipefd, shell_env);
 	set_signal_for_parent();
 	res = wait_for(lastpid);
 	enter_prompt_mode();
