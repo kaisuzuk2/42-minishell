@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 10:13:08 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 13:54:40 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/15 14:27:52 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int	execute_builtin_command(t_command *cmd, t_bool is_direct,
 	if (!f)
 		return (internal_error(BUILTIN_ERR_STR, command), EXECUTION_FAILURE);
 	status = (*f)(cmd->command->words->next, shell_env);
-	if ((*f) == builtin_exit)
+	if ((*f) == builtin_exit || status < 0)
 		return (handle_exit(cmd, shell_env, status));
 	if (is_direct && cmd->command->redirects)
 	{

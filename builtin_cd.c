@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 11:03:04 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 14:24:27 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/15 15:01:41 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@ t_bool			is_absolute_pathname(const char *string);
 char			*sh_canonpath(char *tmp_path);
 t_bool			is_pathsep(char c);
 
+
+char	*get_interpret_cd(t_word_list *list, t_varlist *env);
+
+
+int	update_pwd(char *tdir, t_shell_env *shell_env);
 
 static char	*sh_makepath(char *path, char *dir)
 {
@@ -50,26 +55,6 @@ static char	*make_absolute(char *dirname, char *cwd)
 	return (sh_makepath(cwd, dirname));
 }
 
-static t_bool	bindpwd(t_varlist *env, char *key, char *value)
-{
-	char		*exportstr;
-	int			flag;
-	t_shell_var	*env_var;
-
-	exportstr = create_exportstr(key, value);
-	if (!exportstr)
-		return (FALSE);
-	env_var = list_getshell_var(env, key);
-	if (!env_var || !env_var->attributes)
-		flag = 0;
-	else
-		flag = 1;
-	if (!update_variable_item(env, exportstr, flag))
-		return (free(exportstr), FALSE);
-	free(exportstr);
-	return (TRUE);
-}
-
 static int	change_to_directory(char *newdir, t_shell_env *shell_env)
 {
 	char	*tcwd;
@@ -84,55 +69,21 @@ static int	change_to_directory(char *newdir, t_shell_env *shell_env)
 		return (sys_error("getcwd failed"), 0);
 	t = make_absolute(newdir, tcwd);
 	if (!t)
-		return (0);
+		return (-1);
 	tdir = sh_canonpath(t);
 	free(t);
 	if (!chdir(tdir))
-	{
-		if (!set_current_working_directory(shell_env, tdir))
-			return (EX_FATAL_ERROR);
-		if (!bindpwd(shell_env->env, "OLDPWD", list_getenv(shell_env->env,
-					"PWD")))
-			return (EX_FATAL_ERROR);
-		if (!bindpwd(shell_env->env, "PWD", tdir))
-			return (EX_FATAL_ERROR);
-		free(tdir);
-		return (EXECUTION_SUCCESS);
-	}
+		return (update_pwd(tdir, shell_env));
 	sys_error("cd");
+	free(tdir);
 	return (EXECUTION_FAILURE);
 }
 
-char	*get_interpret_cd(t_word_list *list, t_varlist *env)
+static int	try_cdpath(char *dirname, t_shell_env *shell_env)
 {
-	char	*dirname;
-
-	if (is_interpret_home(list))
-	{
-		dirname = list_getenv(env, "HOME");
-		if (!dirname)
-		{
-			builtin_error("cd", NULL, "HOME not set");
-			return (NULL);
-		}
-	}
-	else
-	{
-		dirname = list_getenv(env, "OLDPWD");
-		if (!dirname)
-		{
-			builtin_error("cd", NULL, "OLDPWD not set");
-			return (NULL);
-		}
-	}
-	return (dirname);
-}
-
-static int try_cdpath(char *dirname,t_shell_env *shell_env)
-{
-	int i;
-	char **cdpath;
-	char *newpath;
+	int		i;
+	char	**cdpath;
+	char	*newpath;
 
 	i = 0;
 	cdpath = ft_split(list_getenv(shell_env->env, "CDPATH"), ':');
@@ -145,7 +96,7 @@ static int try_cdpath(char *dirname,t_shell_env *shell_env)
 			return (dispose_char_arr(cdpath), -1);
 		if (!change_to_directory(newpath, shell_env))
 			return (free(newpath), dispose_char_arr(cdpath), EXECUTION_SUCCESS);
-		free(newpath);	
+		free(newpath);
 		i++;
 	}
 	dispose_char_arr(cdpath);
@@ -156,8 +107,8 @@ int	builtin_cd(t_word_list *list, t_shell_env *shell_env)
 {
 	char	*dirname;
 	char	*t;
-	int status;
-	
+	int		status;
+
 	if (!valid_cd_path(list))
 		return (EXIT_FAILURE);
 	if (is_interpret_cd(list))

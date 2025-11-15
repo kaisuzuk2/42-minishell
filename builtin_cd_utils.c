@@ -17,25 +17,6 @@ t_bool	is_pathsep(char c)
 	return (c == '/' || c == 0);
 }
 
-t_bool is_interpret_home(t_word_list *list)
-{
-	if (!list)
-		return (TRUE);
-	if (list->word->word[0] == '~' && list->word->word[1] == '\0')
-		return (TRUE);
-	return (FALSE);
-}
-
-t_bool is_interpret_oldpwd(t_word_list *list)
-{
-	return (list && list->word->word[0] == '-' && list->word->word[1] == '\0');
-}
-
-t_bool is_interpret_cd(t_word_list * list)
-{
-	return (is_interpret_home(list) || is_interpret_oldpwd(list));
-}
-
 t_bool	is_same_file(const char *path1, const char *path2,
 		struct stat *stp1, struct stat *stp2)
 {
@@ -76,3 +57,4 @@ t_bool	valid_cd_path(t_word_list *list)
 		return (builtin_error("cd", NULL, ARGNUM_ERR_STR), FALSE);
 	return (TRUE);
 }
+
