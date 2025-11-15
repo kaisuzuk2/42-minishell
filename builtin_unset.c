@@ -6,19 +6,26 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 09:32:20 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/29 14:53:54 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/15 12:32:11 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// https://atmarkit.itmedia.co.jp/ait/articles/1905/24/news015.html
+static void	env_delone(t_varlist *cur)
+{
+	t_varlist	*t;
 
-// ### TODO: strcmpでええかね？
+	t = cur->next;
+	cur->next = t->next;
+	dispose_shell_var(t->var);
+	free(t);
+}
+
 static t_varlist	*unset_env(char *key, t_varlist *env)
 {
 	t_varlist	*t;
-	t_varlist *head;
+	t_varlist	*head;
 
 	if (!list_getshell_var(env, key))
 		return (env);
@@ -31,18 +38,10 @@ static t_varlist	*unset_env(char *key, t_varlist *env)
 		return (env);
 	}
 	head = env;
-	while (env)
+	while (env->next)
 	{
-		if (!env->next)
-			break ;
 		if (!ft_strcmp(env->next->var->name, key))
-		{
-			t = env->next;
-			env->next = t->next;
-			dispose_shell_var(t->var);
-			free(t);
-			return (head);
-		}
+			return (env_delone(env), head);
 		env = env->next;
 	}
 	return (head);

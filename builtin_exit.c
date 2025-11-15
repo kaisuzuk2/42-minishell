@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 15:22:14 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/13 10:14:38 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/15 13:26:20 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,17 @@ static t_bool	is_option(char *opt, char c)
 {
 	return (opt[0] == '-' && opt[2] == '\0' && opt[1] == c);
 }
-// exit -1
+
 static intmax_t	get_exitstat(t_word_list *list)
 {
-	char			*ep;
-	char *string;
-	intmax_t value;
+	char		*ep;
+	char		*string;
+	intmax_t	value;
 
 	if (*list->word->word == '\0')
 		return (builtin_error("exit", list->word->word, EXIT_ERR_STR), -1);
 	string = list->word->word;
 	value = ft_strtoimax(string, &ep);
-
 	while (ft_isspace((unsigned char)*ep))
 		ep++;
 	if (*ep != '\0')
@@ -41,7 +40,7 @@ static intmax_t	get_exitstat(t_word_list *list)
 static int	exit_or_logout(t_word_list *list, t_shell_env *shell_env)
 {
 	char	*arg;
-	int status;
+	int		status;
 
 	if (!list)
 		return (shell_env->last_status);

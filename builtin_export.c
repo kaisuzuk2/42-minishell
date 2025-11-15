@@ -6,21 +6,16 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 08:37:57 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/12 10:50:31 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/15 13:25:43 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// ### TODO: 設定がすでにされている場合のケース
-// +=のケース
-
-// ### TODO: クォートは除去してから入れる
-
-static int show_var_attributes(t_varlist *env)
+static int	show_var_attributes(t_varlist *env)
 {
-	char **envstr;
-	int i;
+	char	**envstr;
+	int		i;
 
 	i = 0;
 	while (env)
@@ -30,7 +25,6 @@ static int show_var_attributes(t_varlist *env)
 			env = env->next;
 			continue ;
 		}
-		// ft_dprintf(STDOUT_FILENO, "declare -x %s=\"%s\"\n",env->var->name, env->var->value);
 		ft_dprintf(STDOUT_FILENO, "declare -x %s", env->var->name);
 		if (env->var->value)
 			ft_dprintf(STDOUT_FILENO, "=\"%s\"", env->var->value);
@@ -41,13 +35,14 @@ static int show_var_attributes(t_varlist *env)
 	return (EXECUTION_SUCCESS);
 }
 
-static t_bool is_valid_env_name(char *exportstr)
+static t_bool	is_valid_env_name(char *exportstr)
 {
-	if (ft_isdigit(*exportstr) || (!ft_isalnum(*exportstr) && !(*exportstr == '_')))
+	if (ft_isdigit(*exportstr) || (!ft_isalnum(*exportstr)
+			&& !(*exportstr == '_')))
 		return (FALSE);
 	while (*exportstr)
 	{
-		if (*exportstr == '=' || (*exportstr == '+' && exportstr[1] == '=') )
+		if (*exportstr == '=' || (*exportstr == '+' && exportstr[1] == '='))
 			return (TRUE);
 		if (!ft_isalnum(*exportstr) && !(*exportstr == '_'))
 			return (FALSE);
@@ -56,14 +51,32 @@ static t_bool is_valid_env_name(char *exportstr)
 	return (TRUE);
 }
 
-static t_bool update_export(t_varlist *env, char *exportstr)
+static t_bool	add_export(t_varlist *env, t_shell_var *key_env,
+		char *exportstr)
 {
-	char *key;
-	t_shell_var *key_env;
-	char *new_exportstr;
-	char *value;
-	t_bool res;
-	
+	char	*value;
+	char	*new_exportstr;
+	t_bool	res;
+
+	value = get_env_value(exportstr);
+	if (!value)
+		return (FALSE);
+	new_exportstr = ft_strjoin(key_env->exportstr, value);
+	free(value);
+	if (!new_exportstr)
+		return (FALSE);
+	res = update_variable_item(env, new_exportstr, 1);
+	return (free(new_exportstr), res);
+}
+
+static t_bool	update_export(t_varlist *env, char *exportstr)
+{
+	char		*key;
+	t_shell_var	*key_env;
+	char		*new_exportstr;
+	char		*value;
+	t_bool		res;
+
 	key = get_env_key(exportstr);
 	if (!key)
 		return (FALSE);
@@ -77,19 +90,12 @@ static t_bool update_export(t_varlist *env, char *exportstr)
 	}
 	if (!ft_strchr(exportstr, '+'))
 		return (update_variable_item(env, exportstr, 1));
-	value = get_env_value(exportstr);
-	if (!value)
-		return (free(key), FALSE);
-	new_exportstr = ft_strjoin(key_env->exportstr, value);
-	if (!new_exportstr)
-		return (free(key), free(value), FALSE);
-	res = update_variable_item(env, new_exportstr, 1);
-	return (free(key), free(value), free(new_exportstr), res);
+	return (add_export(env, key_env, exportstr));
 }
 
-int builtin_export(t_word_list *list, t_shell_env *shell_env)
+int	builtin_export(t_word_list *list, t_shell_env *shell_env)
 {
-	t_bool flg;
+	t_bool	flg;
 
 	if (!list)
 		return (show_var_attributes(shell_env->env));

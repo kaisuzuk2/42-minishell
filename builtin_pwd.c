@@ -6,24 +6,24 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 10:56:10 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/12 11:41:27 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/15 12:34:51 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-1) get $PWD or the_current_working_directory value
-2) stat value
-3) if correct print pwd
-   else getcwd 
+1) stat tcwd
+2) if correct print tcwd
+   else getcwd
 		if success print getcwd value
-		else print $PWD or the_current_working_directory value (Possibly deleted directory)
+		else print $PWD or the_current_working_directory value 
+		(Possibly deleted directory)
 */
 
-int builtin_pwd(t_word_list *list, t_shell_env *shell_env)
+int	builtin_pwd(t_word_list *list, t_shell_env *shell_env)
 {
-	char *directory;
+	char	*directory;
 
 	if (shell_env->tcwd)
 	{
@@ -37,5 +37,4 @@ int builtin_pwd(t_word_list *list, t_shell_env *shell_env)
 	ft_dprintf(STDOUT_FILENO, "%s\n", directory);
 	free(directory);
 	return (EXECUTION_SUCCESS);
-	
 }
