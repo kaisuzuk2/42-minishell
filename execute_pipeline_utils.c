@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 10:39:59 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/27 16:21:09 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/15 11:15:06 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,11 @@ t_bool	execute_pipe_internal(t_pipefd *pipefd, int *fildes)
 	}
 	pipefd->pipe_out = fildes[1];
 	return (TRUE);
+}
+
+int	file_isdir(char *command)
+{
+	struct stat	sb;
+
+	return ((!stat(command, &sb) && S_ISDIR(sb.st_mode)));
 }
