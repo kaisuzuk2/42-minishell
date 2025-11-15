@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 10:53:00 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/14 09:16:53 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/15 17:47:22 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ typedef struct s_token_error
 typedef enum e_token_kind
 {
 	TK_WORD,
-	TK_GREAT_GREAT, // >>
-	TK_GREAT,       // >
-	TK_LESS_LESS,   // <<
-	TK_LESS,        // <
+	TK_GREAT_GREAT,// >>
+	TK_GREAT,// >
+	TK_LESS_LESS,// <<
+	TK_LESS,// <
 	TK_PIPE,
 	TK_SYNTAX_ERR,
 	TK_EOF,
@@ -62,7 +62,7 @@ typedef struct s_word_desc
 {
 	t_token_kind		kind;
 	char				*word;
-	t_bool flag;
+	t_bool				flag;
 }						t_word_desc;
 
 typedef struct s_token_list
@@ -91,16 +91,16 @@ typedef struct s_word_list
 
 typedef enum e_instruction
 {
-	r_output_direction, // >
-	r_input_direction,  // <
-	r_appending_to,     // >>
-	r_reading_until,    // <<
+	r_output_direction,// >
+	r_input_direction,// <
+	r_appending_to,// >>
+	r_reading_until,// <<
 }						t_instruction;
 
 // ### TODO: destはfdの複製用のため不要 削除してfilenameだけにする
-typedef union
+typedef union u_redirectee
 {
-	int dest; // 2 >& 1
+	// int					dest;
 	t_word_desc			*filename;
 }						t_redirectee;
 
@@ -115,10 +115,10 @@ typedef struct s_redirect_info
 typedef struct s_redirect
 {
 	struct s_redirect	*next;
-	t_redirectee redirector;   // fd
-	int flags;                 // open flag O_CREAT
-	t_instruction instruction; // redirect kind
-	t_redirectee redirectee;   // filename
+	t_redirectee		redirector;
+	int					flags;
+	t_instruction		instruction;
+	t_redirectee		redirectee;
 	char				*here_doc_eof;
 }						t_redirect;
 

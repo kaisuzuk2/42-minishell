@@ -6,15 +6,15 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 18:37:37 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/08 13:40:10 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/15 17:42:22 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void dispose_char_arr(char **arr)
+void	dispose_char_arr(char **arr)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!arr)
@@ -27,7 +27,7 @@ void dispose_char_arr(char **arr)
 	free(arr);
 }
 
-void dispose_shell_var(t_shell_var *var)
+void	dispose_shell_var(t_shell_var *var)
 {
 	if (var->name)
 		free(var->name);
@@ -38,9 +38,9 @@ void dispose_shell_var(t_shell_var *var)
 	free(var);
 }
 
-void dispose_varlist(t_varlist *list)
+void	dispose_varlist(t_varlist *list)
 {
-	t_varlist *t;
+	t_varlist	*t;
 
 	while (list)
 	{
@@ -51,7 +51,7 @@ void dispose_varlist(t_varlist *list)
 	}
 }
 
-void dispose_env(t_shell_env *shell_env)
+void	dispose_env(t_shell_env *shell_env)
 {
 	if (shell_env->tcwd)
 		free(shell_env->tcwd);

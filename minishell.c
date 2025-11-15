@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:13:31 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 08:46:39 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/15 17:08:58 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,7 @@ parse test
 // 	dispose_command(parse);
 // }
 
-void initialize_readline(void);
+void	initialize_readline(void);
 
 int	main(int argc, char *argv[], char *envp[])
 {
@@ -188,12 +188,11 @@ int	main(int argc, char *argv[], char *envp[])
 	t_command		*parse;
 	t_shell_env		*shell_variables;
 	char			*input;
-	int last_status;
+	int				last_status;
 
 	enter_prompt_mode();
 	shell_variables = initialize_shell_variables(envp);
 	initialize_readline();
-
 	while (1)
 	{
 		line = readline("minishell$ ");

@@ -6,22 +6,19 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:35:25 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/08 13:16:36 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/15 17:20:59 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// t_command -> char **
-// ### TODO:  allocで複製するかどうかを判定している。必要か考える
-// char **strvec_from_word_list (WORD_LIST *list, int alloc, int starting_index, int *ip)
+// ### TODO 複製する必要あるかね
 char	**strvec_from_word_list(t_word_list *list)
 {
-	size_t count;
-	char **arr;
-	size_t i;
+	const size_t	count = list_length((t_generic_list *)list);
+	char			**arr;
+	size_t			i;
 
-	count = list_length((t_generic_list *)list);
 	arr = (char **)malloc(sizeof(char *) * (count + 1));
 	if (!arr)
 		return (NULL);
@@ -30,15 +27,7 @@ char	**strvec_from_word_list(t_word_list *list)
 	{
 		arr[i] = savestring(list->word->word);
 		if (!arr[i])
-		{
-			while (i >= 0)
-			{
-				free(arr[i]);
-				i--;
-			}
-			free(arr);
-			return (NULL);
-		}
+			return (dispose_char_arr(arr), NULL);
 		list = list->next;
 		i++;
 	}

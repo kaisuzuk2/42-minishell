@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 09:10:07 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 09:09:59 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/15 17:43:03 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,13 @@ static void	sigint_prompt_handler(int s)
 	g_signal_state = SIGSTATE_INT;
 }
 
-static void sigint_heredoc_handler(int s)
+static void	sigint_heredoc_handler(int s)
 {
 	(void)s;
 	g_signal_state = SIGSTATE_INT;
 }
 
-int signal_heredoc_hook(void)
+int	signal_heredoc_hook(void)
 {
 	if (g_signal_state == SIGSTATE_INT)
 	{
@@ -67,7 +67,7 @@ void	enter_prompt_mode(void)
 	set_handler(SIGQUIT, SIG_IGN, 0);
 }
 
-void enter_heredoc_mode(void)
+void	enter_heredoc_mode(void)
 {
 	rl_event_hook = signal_heredoc_hook;
 	rl_catch_signals = 0;
@@ -81,7 +81,7 @@ void	reset_signals_for_child(void)
 	set_handler(SIGQUIT, SIG_DFL, 0);
 }
 
-void set_signal_for_parent(void)
+void	set_signal_for_parent(void)
 {
 	set_handler(SIGINT, SIG_IGN, 0);
 	set_handler(SIGQUIT, SIG_IGN, 0);
