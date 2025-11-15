@@ -2,11 +2,11 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   builtin_cd_utils.c                                 :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */   
+/*                                                    +:+ +:+         +:+     */
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 16:30:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/29 16:31:01 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/15 15:16:47 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ t_bool	is_pathsep(char c)
 	return (c == '/' || c == 0);
 }
 
-t_bool	is_same_file(const char *path1, const char *path2,
-		struct stat *stp1, struct stat *stp2)
+t_bool	is_same_file(const char *path1, const char *path2, struct stat *stp1,
+		struct stat *stp2)
 {
 	struct stat	st1;
 	struct stat	st2;
@@ -57,4 +57,3 @@ t_bool	valid_cd_path(t_word_list *list)
 		return (builtin_error("cd", NULL, ARGNUM_ERR_STR), FALSE);
 	return (TRUE);
 }
-

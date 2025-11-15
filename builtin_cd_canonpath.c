@@ -6,22 +6,22 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 09:15:07 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 11:08:37 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/15 15:17:22 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // builtin_cd_utils.c
-t_bool	is_pathsep(char c);
+t_bool			is_pathsep(char c);
 
-static void skip_slashes(char **p)
+static void	skip_slashes(char **p)
 {
 	while (**p == '/')
 		(*p)++;
 }
 
-static void remove_parent(char **q, char *base)
+static void	remove_parent(char **q, char *base)
 {
 	if (*q > (base + 1))
 	{
@@ -33,7 +33,7 @@ static void remove_parent(char **q, char *base)
 	}
 }
 
-static t_bool is_abst_path(char **p, char **q, char *base)
+static t_bool	is_abst_path(char **p, char **q, char *base)
 {
 	if (*q > base && *(*q - 1) != '/')
 		return (FALSE);
@@ -49,7 +49,7 @@ static t_bool is_abst_path(char **p, char **q, char *base)
 	return (FALSE);
 }
 
-static void trim_last_slash(char **q, char *base)
+static void	trim_last_slash(char **q, char *base)
 {
 	if (ft_strlen(base) <= 1)
 		return ;
@@ -57,11 +57,11 @@ static void trim_last_slash(char **q, char *base)
 		(*q)--;
 }
 
-char *sh_canonpath(char *tmp_path)
+char	*sh_canonpath(char *tmp_path)
 {
-	char *base;
-	char *p;
-	char *q;
+	char	*base;
+	char	*p;
+	char	*q;
 
 	base = savestring(tmp_path);
 	if (!base)

@@ -369,6 +369,7 @@ assert './infinite_loop'
 # Builtin
 ## exit
 assert 'exit'
+assert 'exit --'
 assert 'exit 42'
 assert 'exit -42'
 assert 'exit +42'
@@ -430,6 +431,8 @@ assert 'cd /../../../././.././'
 assert 'cd src'
 assert 'unset HOME\ncd'
 assert '$ cd / | pwd'
+assert 'cd -'
+assert 'cd ~'
 
 assert 'cd $HOME/Documents'
 assert 'cd \n echo $PWD'

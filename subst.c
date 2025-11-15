@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 13:09:16 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/14 14:32:46 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/15 15:09:59 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ char	*expand_tilda(char *res, char **document, t_varlist *env)
 		if (!home_value)
 			return (ft_strdup(res));
 		tmp = ft_strjoin(res, home_value);
-		free(res);
 		res = tmp;
 		(*document)++;
 		return (res);
