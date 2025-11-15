@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 11:03:04 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 10:59:44 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/15 14:24:27 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ t_bool			is_absolute_pathname(const char *string);
 char			*sh_canonpath(char *tmp_path);
 t_bool			is_pathsep(char c);
 
-// .../が弾けてない
 
 static char	*sh_makepath(char *path, char *dir)
 {
@@ -36,7 +35,7 @@ static char	*sh_makepath(char *path, char *dir)
 		return (getcwd(NULL, 0));
 	tmp = ft_strjoin(path, "/");
 	if (!tmp)
-		return (NULL); 
+		return (NULL);
 	res = ft_strjoin(tmp, dir);
 	if (!res)
 		return (free(tmp), NULL);
@@ -53,9 +52,10 @@ static char	*make_absolute(char *dirname, char *cwd)
 
 static t_bool	bindpwd(t_varlist *env, char *key, char *value)
 {
-	char	*exportstr;
-	int flag;
-	t_shell_var *env_var;
+	char		*exportstr;
+	int			flag;
+	t_shell_var	*env_var;
+
 	exportstr = create_exportstr(key, value);
 	if (!exportstr)
 		return (FALSE);
@@ -128,21 +128,36 @@ char	*get_interpret_cd(t_word_list *list, t_varlist *env)
 	return (dirname);
 }
 
-/*
+static int try_cdpath(char *dirname,t_shell_env *shell_env)
+{
+	int i;
+	char **cdpath;
+	char *newpath;
 
-PWD OLDPWDが消えている場合環境変数としては再設定しない
-しかしシェル変数としては再設定する
-
-*/
+	i = 0;
+	cdpath = ft_split(list_getenv(shell_env->env, "CDPATH"), ':');
+	if (!cdpath)
+		return (-1);
+	while (cdpath[i])
+	{
+		newpath = sh_makepath(cdpath[i], dirname);
+		if (!newpath)
+			return (dispose_char_arr(cdpath), -1);
+		if (!change_to_directory(newpath, shell_env))
+			return (free(newpath), dispose_char_arr(cdpath), EXECUTION_SUCCESS);
+		free(newpath);	
+		i++;
+	}
+	dispose_char_arr(cdpath);
+	return (EXECUTION_FAILURE);
+}
 
 int	builtin_cd(t_word_list *list, t_shell_env *shell_env)
 {
 	char	*dirname;
 	char	*t;
-	char	**cdpath;
-	int i;
-	char *newpath;
-
+	int status;
+	
 	if (!valid_cd_path(list))
 		return (EXIT_FAILURE);
 	if (is_interpret_cd(list))
@@ -155,19 +170,11 @@ int	builtin_cd(t_word_list *list, t_shell_env *shell_env)
 		dirname = list->word->word;
 	if (!is_absolute_pathname(dirname) && list_getenv(shell_env->env, "CDPATH"))
 	{
-		i = 0;
-		cdpath = ft_split(list_getenv(shell_env->env, "CDPATH"), ':');
-		if (!cdpath)
-			return (EX_FATAL_ERROR);
-		while (cdpath[i])
-		{
-			newpath = sh_makepath(cdpath[i], dirname);
-			if (!newpath)
-				return (EX_FATAL_ERROR);
-			if (!change_to_directory(newpath, shell_env))
-				return (EXECUTION_SUCCESS);
-			i++;
-		}
+		status = try_cdpath(dirname, shell_env);
+		if (status < 0)
+			return (-1);
+		else if (!status)
+			return (EXECUTION_SUCCESS);
 	}
 	return (change_to_directory(dirname, shell_env));
 }

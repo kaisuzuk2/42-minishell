@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 10:13:08 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 12:15:55 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/15 13:54:40 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ t_bool	is_builtin(char *command)
 	return (FALSE);
 }
 
-static int	handle_exit_command(t_command *cmd, t_shell_env *shell_env,
+static int	handle_exit(t_command *cmd, t_shell_env *shell_env,
 		int status)
 {
 	if (status > 255)
@@ -97,7 +97,7 @@ int	execute_builtin_command(t_command *cmd, t_bool is_direct,
 		return (internal_error(BUILTIN_ERR_STR, command), EXECUTION_FAILURE);
 	status = (*f)(cmd->command->words->next, shell_env);
 	if ((*f) == builtin_exit)
-		return (handle_exit_command(cmd, shell_env, status));
+		return (handle_exit(cmd, shell_env, status));
 	if (is_direct && cmd->command->redirects)
 	{
 		if (!reset_stdfd(fd_arr))
