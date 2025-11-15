@@ -6,56 +6,19 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 17:31:27 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/12 09:36:32 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/15 15:22:10 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char *get_env_key(char *env)
-{
-	char *res;
-	int i;
-
-	if (!ft_strchr(env, '='))
-		return (savestring(env));
-	res = savestring(env);
-	if (!res)
-		return (NULL);
-	i = 0;
-	while (res[i])
-	{
-		if (res[i] == '=' || res[i] == '+')
-			break;
-		i++;
-	}
-	res[i] = '\0';
-	return (res);
-}
-
-char *get_env_value(char *env)
-{
-	char *res;
-	int i;
-	char *value_ptr;
-
-	value_ptr = ft_strchr(env, '=');
-	if (!value_ptr)
-		res = ft_strdup("");
-	else
-		res = savestring(++value_ptr);
-	if (!res)
-		return (fatal_error("malloc", MALLOC_ERR_STR), NULL);
-	return (res);
-}
-
 t_bool	set_variable_name(t_shell_var *map, char *env)
 {
 	char	*name_ptr;
-	int i;
+	int		i;
 
 	i = 0;
-	name_ptr = ft_strchr(env, '='); // ### TODO: マクロ化
+	name_ptr = ft_strchr(env, '=');
 	if (!name_ptr)
 		map->name = savestring(env);
 	else
@@ -63,7 +26,7 @@ t_bool	set_variable_name(t_shell_var *map, char *env)
 		while (env[i])
 		{
 			if (env[i] == '=')
-				break;
+				break ;
 			i++;
 		}
 		map->name = savestring(env);
@@ -74,7 +37,6 @@ t_bool	set_variable_name(t_shell_var *map, char *env)
 	return (TRUE);
 }
 
-// ### TODO: nameを先に設定するとvalueが設定できなくなる
 t_bool	set_variable_value(t_shell_var *map, char *env)
 {
 	char	*value_ptr;
@@ -102,7 +64,7 @@ t_bool	set_variable_exportstr(t_shell_var *map, char *env)
 	return (TRUE);
 }
 
-void set_variable_attributes(t_shell_var *map, int flag)
+void	set_variable_attributes(t_shell_var *map, int flag)
 {
 	map->attributes = flag;
 }
