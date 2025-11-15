@@ -6,16 +6,16 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 10:13:08 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 12:12:02 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/15 12:15:55 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // builtin_fd.c
-t_bool	save_stdfd(int *fd_arr);
-t_bool	reset_stdfd(int *fd_arr);
-void	close_stdfd(int *fd_arr);
+t_bool					save_stdfd(int *fd_arr);
+t_bool					reset_stdfd(int *fd_arr);
+void					close_stdfd(int *fd_arr);
 
 static t_builtin_func	*get_builtin_func(const char *name)
 {
@@ -35,17 +35,17 @@ static t_builtin_func	*get_builtin_func(const char *name)
 
 t_builtin_table	get_builtin_table(void)
 {
-	t_builtin_table	info;
-
-	static const t_builtin builtin_table[] = {
-		{"cd", builtin_cd},
-		{"echo", builtin_echo},
-		{"env", builtin_env},
-		{"exit", builtin_exit},
-		{"export", builtin_export},
-		{"pwd", builtin_pwd},
-		{"unset", builtin_unset},
+	t_builtin_table			info;
+	static const t_builtin	builtin_table[] = {
+	{"cd", builtin_cd},
+	{"echo", builtin_echo},
+	{"env", builtin_env},
+	{"exit", builtin_exit},
+	{"export", builtin_export},
+	{"pwd", builtin_pwd},
+	{"unset", builtin_unset},
 	};
+
 	info.table = builtin_table;
 	info.size = sizeof(builtin_table) / sizeof(builtin_table[0]);
 	return (info);
@@ -80,10 +80,10 @@ static int	handle_exit_command(t_command *cmd, t_shell_env *shell_env,
 int	execute_builtin_command(t_command *cmd, t_bool is_direct,
 		t_shell_env *shell_env)
 {
-	const char *command = cmd->command->words->word->word;
-	t_builtin_func *f;
-	int status;
-	int fd_arr[3];
+	const char		*command = cmd->command->words->word->word;
+	t_builtin_func	*f;
+	int				status;
+	int				fd_arr[3];
 
 	if (is_direct && cmd->command->redirects)
 	{

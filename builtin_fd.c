@@ -6,12 +6,11 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 12:11:14 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 12:11:43 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/15 12:16:58 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 t_bool	save_stdfd(int *fd_arr)
 {
