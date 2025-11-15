@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:13:31 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/12 12:20:12 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/15 08:46:39 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,58 +83,58 @@
 // 	}
 // }
 
-void	show_token_and_redir(t_command *command)
-{
-	t_word_list	*list;
-	t_redirect	*redir;
+// void	show_token_and_redir(t_command *command)
+// {
+// 	t_word_list	*list;
+// 	t_redirect	*redir;
 
-	if (!command)
-		return ;
-	list = command->words;
-	while (list)
-	{
-		printf("command %s : ", list->word->word);
-		list = list->next;
-	}
-	printf("\n");
-	redir = command->redirects;
-	while (redir)
-	{
-		printf("redirect %d - %s :", redir->redirector.dest,
-			redir->redirectee.filename->word);
-		redir = redir->next;
-	}
-	printf("\n");
-}
+// 	if (!command)
+// 		return ;
+// 	list = command->words;
+// 	while (list)
+// 	{
+// 		printf("command %s : ", list->word->word);
+// 		list = list->next;
+// 	}
+// 	printf("\n");
+// 	redir = command->redirects;
+// 	while (redir)
+// 	{
+// 		printf("redirect %d - %s :", redir->redirector.dest,
+// 			redir->redirectee.filename->word);
+// 		redir = redir->next;
+// 	}
+// 	printf("\n");
+// }
 
-void	show_parse_list(t_command *command)
-{
-	while (command)
-	{
-		show_token_and_redir(command->command);
-		command = command->next;
-	}
-}
+// void	show_parse_list(t_command *command)
+// {
+// 	while (command)
+// 	{
+// 		show_token_and_redir(command->command);
+// 		command = command->next;
+// 	}
+// }
 
-void	show_envvalue(t_varlist *list)
-{
-	while (list->next)
-	{
-		printf("%s=%s\n", list->var->name, list->var->value);
-		list = list->next;
-	}
-}
+// void	show_envvalue(t_varlist *list)
+// {
+// 	while (list->next)
+// 	{
+// 		printf("%s=%s\n", list->var->name, list->var->value);
+// 		list = list->next;
+// 	}
+// }
 
-void	show_token_list(t_token_list *token)
-{
-	if (token == NULL)
-		return ;
-	while (token->word->kind != TK_EOF)
-	{
-		printf("%s\n", token->word->word);
-		token = token->next;
-	}
-}
+// void	show_token_list(t_token_list *token)
+// {
+// 	if (token == NULL)
+// 		return ;
+// 	while (token->word->kind != TK_EOF)
+// 	{
+// 		printf("%s\n", token->word->word);
+// 		token = token->next;
+// 	}
+// }
 // tmp code ↑
 
 /*
