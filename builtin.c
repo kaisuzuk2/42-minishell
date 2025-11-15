@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 10:13:08 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 11:57:15 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/15 12:09:10 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,10 +112,10 @@ void	close_stdfd(int *fd_arr)
 	}
 }
 
-int	execute_builtin_command(t_command *cmd, t_bool is_direct, t_shell_env *shell_env)
+int	execute_builtin_command(t_command *cmd, t_bool is_direct,
+		t_shell_env *shell_env)
 {
-	char *command;
-	t_word_list *arg;
+	const char *command = cmd->command->words->word->word;
 	t_builtin_func *f;
 	int status;
 	int fd_arr[3];
@@ -127,18 +127,16 @@ int	execute_builtin_command(t_command *cmd, t_bool is_direct, t_shell_env *shell
 		if (do_redirections(cmd->command->redirects, shell_env))
 			return (close_stdfd(fd_arr), EXECUTION_FAILURE);
 	}
-	command = cmd->command->words->word->word;
-	f = NULL;
 	f = get_builtin_func(command);
 	if (!f)
 		return (internal_error(BUILTIN_ERR_STR, command), EXECUTION_FAILURE);
-	arg = cmd->command->words->next;
-	status = (*f)(arg, shell_env);
+	status = (*f)(cmd->command->words->next, shell_env);
 	if ((*f) == builtin_exit)
 		return (handle_exit_command(cmd, shell_env, status));
 	if (is_direct && cmd->command->redirects)
 	{
-		reset_stdfd(fd_arr);
+		if (!reset_stdfd(fd_arr))
+			return (close_stdfd(fd_arr), EXECUTION_FAILURE);
 		close_stdfd(fd_arr);
 	}
 	return (status);
