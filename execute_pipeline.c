@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 10:31:38 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 11:16:42 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/15 11:58:08 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int	execute_pipeline(t_command *cmd, t_shell_env *shell_env)
 	pipefd.pipe_in = -1;
 	if (is_simple_command(cur_cmd)
 		&& is_builtin(cur_cmd->command->words->word->word))
-		return (pipefd.pipe_out = -1, execute_builtin_command(cmd, pipefd,
+		return (pipefd.pipe_out = -1, execute_builtin_command(cmd, EX_SIMPLE,
 				shell_env));
 	lastpid = execute_pipeline_internal(cmd, pipefd, shell_env);
 	set_signal_for_parent();

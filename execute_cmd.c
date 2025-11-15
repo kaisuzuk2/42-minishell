@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 11:12:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 11:17:43 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/15 11:54:13 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	execute_disk_command(t_command *cmd, t_pipefd pipefd,
 	if (!cmd->command->words)
 		return (EXECUTION_SUCCESS);
 	if (is_builtin(cmd->command->words->word->word))
-		return (execute_builtin_command(cmd, pipefd, shell_env));
+		return (execute_builtin_command(cmd, EX_CONNECT, shell_env));
 	if (!search_for_command(cmd->command->words->word->word, shell_env->env,
 			&command))
 		return (fatal_error(cmd->command->words->word->word, NOTFOUND_STR),

@@ -6,16 +6,16 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 10:13:08 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 11:25:07 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/15 11:57:15 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_builtin_func	*find_builtin_func(const char *name)
+static t_builtin_func	*get_builtin_func(const char *name)
 {
-	int	i;
-	t_builtin_table info;
+	int				i;
+	t_builtin_table	info;
 
 	info = get_builtin_table();
 	i = 0;
@@ -48,7 +48,7 @@ t_builtin_table	get_builtin_table(void)
 
 t_bool	is_builtin(char *command)
 {
-	int			i;
+	int				i;
 	t_builtin_table	builtin_info;
 
 	builtin_info = get_builtin_table();
@@ -61,7 +61,6 @@ t_bool	is_builtin(char *command)
 	}
 	return (FALSE);
 }
-
 
 static int	handle_exit_command(t_command *cmd, t_shell_env *shell_env,
 		int status)
@@ -113,8 +112,7 @@ void	close_stdfd(int *fd_arr)
 	}
 }
 
-int	execute_builtin_command(t_command *cmd, t_pipefd pipefd,
-		t_shell_env *shell_env)
+int	execute_builtin_command(t_command *cmd, t_bool is_direct, t_shell_env *shell_env)
 {
 	char *command;
 	t_word_list *arg;
@@ -122,7 +120,7 @@ int	execute_builtin_command(t_command *cmd, t_pipefd pipefd,
 	int status;
 	int fd_arr[3];
 
-	if (cmd->command->redirects)
+	if (is_direct && cmd->command->redirects)
 	{
 		if (!save_stdfd(fd_arr))
 			return (EXECUTION_FAILURE);
@@ -131,14 +129,17 @@ int	execute_builtin_command(t_command *cmd, t_pipefd pipefd,
 	}
 	command = cmd->command->words->word->word;
 	f = NULL;
-	f = find_builtin_func(command);
+	f = get_builtin_func(command);
 	if (!f)
 		return (internal_error(BUILTIN_ERR_STR, command), EXECUTION_FAILURE);
 	arg = cmd->command->words->next;
 	status = (*f)(arg, shell_env);
 	if ((*f) == builtin_exit)
 		return (handle_exit_command(cmd, shell_env, status));
-	if (cmd->command->redirects)
+	if (is_direct && cmd->command->redirects)
+	{
 		reset_stdfd(fd_arr);
+		close_stdfd(fd_arr);
+	}
 	return (status);
 }
