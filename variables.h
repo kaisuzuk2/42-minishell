@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 08:03:44 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 17:23:40 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/16 09:53:13 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ typedef struct s_variable
 	char			*name;
 	char			*value;
 	char			*exportstr;
-	int				attributes;
+	t_bool			attributes;
 }					t_shell_var;
 
 typedef struct s_vlist
@@ -46,7 +46,7 @@ char				*create_exportstr(char *key, char *value);
 t_bool				set_variable_name(t_shell_var *map, char *env);
 t_bool				set_variable_value(t_shell_var *map, char *env);
 t_bool				set_variable_exportstr(t_shell_var *map, char *env);
-void				set_variable_attributes(t_shell_var *map, int flag);
+void				set_variable_attributes(t_shell_var *map, t_bool flag);
 char				*get_env_key(char *env);
 char				*get_env_value(char *env);
 

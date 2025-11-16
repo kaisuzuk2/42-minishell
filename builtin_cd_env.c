@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 14:59:01 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 15:17:17 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/16 09:54:14 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,13 @@
 static t_bool	bindpwd(t_varlist *env, char *key, char *value)
 {
 	char		*exportstr;
-	int			flag;
 	t_shell_var	*env_var;
 
 	exportstr = create_exportstr(key, value);
 	if (!exportstr)
 		return (FALSE);
 	env_var = list_getshell_var(env, key);
-	if (!env_var || !env_var->attributes)
-		flag = 0;
-	else
-		flag = 1;
-	if (!update_variable_item(env, exportstr, flag))
+	if (!update_variable_item(env, exportstr, is_exported(env_var)))
 		return (free(exportstr), FALSE);
 	free(exportstr);
 	return (TRUE);

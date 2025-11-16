@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 08:37:57 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 13:25:43 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/16 09:56:11 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	show_var_attributes(t_varlist *env)
 	i = 0;
 	while (env)
 	{
-		if (!env->var->attributes)
+		if (!is_exported(env->var))
 		{
 			env = env->next;
 			continue ;

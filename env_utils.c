@@ -6,11 +6,18 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 17:27:54 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 17:41:28 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/16 09:56:47 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_bool is_exported(t_shell_var *env_var)
+{
+	if (!env_var)
+		return (FALSE);
+	return (env_var->attributes == TRUE);
+}
 
 void	set_last_status(int s, t_shell_env *env)
 {
@@ -49,7 +56,7 @@ char	**get_env_arr(t_varlist *env)
 	i = 0;
 	while (env)
 	{
-		if (!env->var->attributes)
+		if (!is_exported(env->var))
 		{
 			env = env->next;
 			continue ;
@@ -139,7 +146,7 @@ t_bool	update_key_value(t_varlist *env, char *key, char *value, int flag)
 	return (res);
 }
 
-t_bool	update_variable_item(t_varlist *env, char *exportstr, int flag)
+t_bool	update_variable_item(t_varlist *env, char *exportstr, t_bool flag)
 {
 	char *key;
 	t_shell_var *target;
