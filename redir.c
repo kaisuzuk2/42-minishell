@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 10:01:13 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/16 10:48:00 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/16 10:55:30 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	here_document_to_file(t_redirect *r)
 	fd2 = open(filename, O_RDONLY, 0600);
 	if (fd2 < 0)
 	{
-		internal_error(filename, strerror(errno)); //### TODO: エラー処理
+		internal_error(filename, strerror(errno)); 
 		unlink(filename);
 		free(filename);
 		return (EXECUTION_ERR);
@@ -99,25 +99,21 @@ static int	redirect_to_fd(t_redirect *r)
 	}
 	if (fd < 0)
 		return (fatal_error(r->redirectee.filename->word, strerror(errno)),
-				EXECUTION_ERR);
+			EXECUTION_ERR);
 	if (dup2(fd, to_fd) < 0)
 		return (sys_error("dup2 failed"), EXECUTION_ERR);
-	// ### TODO: エラー処理
 	close(fd);
 	return (EXECUTION_SUCCESS);
 }
 
 static int	do_redirections_internal(t_redirect *redir, t_shell_env *shell_env)
 {
-	int here_fd;
-	
+	int	here_fd;
+
 	if (redir->instruction == r_input_direction
 		|| redir->instruction == r_output_direction
 		|| redir->instruction == r_appending_to)
-	{
-		if (redirect_to_fd(redir) == EXECUTION_FAILURE)
-			return (EXECUTION_FAILURE);
-	}
+		return (redirect_to_fd(redir));
 	else if (redir->next && redir->instruction == r_reading_until
 		&& redir->next->instruction == r_reading_until)
 		return (EXECUTION_SUCCESS);
@@ -127,7 +123,7 @@ static int	do_redirections_internal(t_redirect *redir, t_shell_env *shell_env)
 		if (here_fd < 0)
 			return (here_fd);
 		if (dup2(here_fd, STDIN_FILENO) < 0)
-			return (EXECUTION_FAILURE);
+			return (EXECUTION_ERR);
 	}
 	return (EXECUTION_SUCCESS);
 }
