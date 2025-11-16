@@ -6,12 +6,18 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 08:03:44 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/16 09:53:13 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/16 16:13:43 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VARIABLES_H
 # define VARIABLES_H
+
+typedef struct s_variable_map
+{
+	char			*name;
+	char			*value;
+}					t_shell_var_map;
 
 typedef struct s_variable
 {
