@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:23:18 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/13 11:36:45 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/16 11:51:57 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ static t_bool	is_heredoc_eof(char *here_doc_eof, char *buf)
 
 char	*make_here_document(char *here_doc_eof, t_token_error *e)
 {
-	char *buf;
-	char *document;
+	char	*buf;
+	char	*document;
 
 	g_signal_state = SIGSTATE_NONE;
 	enter_heredoc_mode();
@@ -74,7 +74,7 @@ char	*make_here_document(char *here_doc_eof, t_token_error *e)
 			set_parse_error(ST_ERR_NOMEM, NULL, NULL, e), NULL);
 	while (1)
 	{
-		buf = readline("> "); // ### TODO: プロンプトは$PS2
+		buf = readline("> ");
 		if (!buf)
 			break ;
 		if (*buf == '\0' && g_signal_state == SIGSTATE_INT)
@@ -87,7 +87,7 @@ char	*make_here_document(char *here_doc_eof, t_token_error *e)
 		if (is_heredoc_eof(here_doc_eof, buf))
 			break ;
 		document = documentcat(document, buf);
-		document = documentcat(document, "\n"); // ### TODO: もう少し考える
+		document = documentcat(document, "\n");
 		free(buf);
 		if (!document)
 			return (set_parse_error(ST_ERR_NOMEM, NULL, NULL, e), NULL);

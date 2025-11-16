@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 10:13:08 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/16 10:21:18 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/16 11:06:20 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ static int	handle_exit(t_command *cmd, t_shell_env *shell_env,
 		return (EXIT_FAILURE);
 	dispose_command(cmd->head);
 	dispose_env(shell_env);
+	if (status == EXECUTION_MEMERR)
+		exit(EX_FATAL_ERROR);
 	exit(status);
 }
 

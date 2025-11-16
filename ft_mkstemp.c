@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:53:00 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/16 10:27:17 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/16 11:39:52 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,14 @@ static t_bool	is_noexist(char *filename)
 
 int	ft_mkstemp(char **template)
 {
-	int i;
-	char *filename;
-	char *addnum;
+	int		i;
+	char	*filename;
+	char	*addnum;
 
 	i = 0;
 	while (i < 100)
 	{
-		addnum = ft_itoa(i);
+		addnum = ft_itoa(i++);
 		if (!addnum)
 			return (fatal_error("malloc", MALLOC_ERR_STR), EXECUTION_MEMERR);
 		filename = ft_strjoin(*template, addnum);
@@ -44,7 +44,6 @@ int	ft_mkstemp(char **template)
 		}
 		free(addnum);
 		free(filename);
-		i++;
 	}
 	free(*template);
 	*template = NULL;

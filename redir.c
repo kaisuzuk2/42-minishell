@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 10:01:13 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/16 10:55:30 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/16 11:50:19 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	here_document_to_file(t_redirect *r)
 	fd2 = open(filename, O_RDONLY, 0600);
 	if (fd2 < 0)
 	{
-		internal_error(filename, strerror(errno)); 
+		internal_error(filename, strerror(errno));
 		unlink(filename);
 		free(filename);
 		return (EXECUTION_ERR);
@@ -130,8 +130,8 @@ static int	do_redirections_internal(t_redirect *redir, t_shell_env *shell_env)
 
 int	do_redirections(t_command *cmd, t_shell_env *shell_env)
 {
-	t_redirect *redir;
-	int status;
+	t_redirect	*redir;
+	int			status;
 
 	redir = cmd->redirects;
 	while (redir)
@@ -141,7 +141,7 @@ int	do_redirections(t_command *cmd, t_shell_env *shell_env)
 		{
 			dispose_command(cmd->head);
 			dispose_env(shell_env);
-			exit(EXECUTION_FAILURE);
+			exit(EX_FATAL_ERROR);
 		}
 		if (status < 0)
 			return (EXECUTION_FAILURE);

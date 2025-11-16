@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 08:37:57 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/16 09:56:11 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/16 11:05:36 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int	builtin_export(t_word_list *list, t_shell_env *shell_env)
 			continue ;
 		}
 		if (!update_export(shell_env->env, list->word->word))
-			return (EX_FATAL_ERROR);
+			return (EXECUTION_MEMERR);
 		list = list->next;
 	}
 	if (!flg)

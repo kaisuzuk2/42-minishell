@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 09:15:07 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 15:17:22 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/16 11:15:01 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char	*sh_canonpath(char *tmp_path)
 
 	base = savestring(tmp_path);
 	if (!base)
-		return (NULL);
+		return (fatal_error("malloc", MALLOC_ERR_STR), NULL);
 	p = base;
 	q = base;
 	while (*p)

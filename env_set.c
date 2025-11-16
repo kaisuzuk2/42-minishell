@@ -1,39 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   xmalloc.c                                          :+:      :+:    :+:   */
+/*   env_set.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/22 16:50:16 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/16 11:51:14 by kaisuzuk         ###   ########.fr       */
+/*   Created: 2025/11/16 11:44:13 by kaisuzuk          #+#    #+#             */
+/*   Updated: 2025/11/16 11:48:50 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	*xmalloc(size_t size)
+void	set_last_status(int s, t_shell_env *env)
 {
-	void	*tmp;
-
-	tmp = malloc(size);
-	if (!tmp)
-	{
-		fatal_error("malloc", MALLOC_ERR_STR);
-		return (NULL);
-	}
-	return (tmp);
+	env->last_status = s;
 }
 
-void	*xcalloc(size_t nmemb, size_t size)
+t_bool	set_current_working_directory(t_shell_env *shell_env, char *value)
 {
-	void	*tmp;
-
-	tmp = ft_calloc(nmemb, size);
-	if (!tmp)
-	{
-		fatal_error("ft_calloc", MALLOC_ERR_STR);
-		return (NULL);
-	}
-	return (tmp);
+	if (shell_env->tcwd)
+		free(shell_env->tcwd);
+	shell_env->tcwd = savestring(value);
+	if (!shell_env->tcwd)
+		return (FALSE);
+	return (TRUE);
 }
