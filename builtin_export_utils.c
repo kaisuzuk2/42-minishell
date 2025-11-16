@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 17:40:03 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/16 17:42:09 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/16 17:45:07 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	print_var_map(t_shell_var_map *env)
 
 t_shell_var_map	*make_shell_env_map(t_shell_var_map *var_arr, t_varlist *env)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (env)
@@ -97,6 +97,5 @@ t_shell_var_map	*make_shell_env_map(t_shell_var_map *var_arr, t_varlist *env)
 		env = env->next;
 		i++;
 	}
-	var_arr[i].name = NULL;
 	return (var_arr);
 }
