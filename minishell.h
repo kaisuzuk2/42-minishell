@@ -6,25 +6,13 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:12:50 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/16 15:16:46 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/16 15:21:31 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "builtin.h"
-# include "command.h"
-# include "dispose_cmd.h"
-# include "error.h"
-# include "externs.h"
-# include "ft_printf.h"
-# include "general.h"
-# include "libft.h"
-# include "sig.h"
-# include "subst.h"
-# include "variables.h"
-# include "xmalloc.h"
 # include <errno.h>
 # include <fcntl.h>
 # include <readline/history.h>
@@ -34,6 +22,18 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include "general.h"
+# include "builtin.h"
+# include "command.h"
+# include "dispose_cmd.h"
+# include "error.h"
+# include "externs.h"
+# include "ft_printf.h"
+# include "libft.h"
+# include "sig.h"
+# include "subst.h"
+# include "variables.h"
+# include "xmalloc.h"
 
 extern char	**environ;
 
