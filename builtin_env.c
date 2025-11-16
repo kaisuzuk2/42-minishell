@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 11:26:48 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 13:29:49 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/16 10:22:16 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	builtin_printenv(t_varlist *env)
 {
 	while (env)
 	{
-		if (!env->var->value || !env->var->attributes)
+		if (!env->var->value || !is_exported(env->var))
 		{
 			env = env->next;
 			continue ;

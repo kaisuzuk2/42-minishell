@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:53:00 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 16:28:33 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/16 10:27:17 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ static t_bool	is_noexist(char *filename)
 	return (TRUE);
 }
 
-// ### TODO: 失敗して-1返すのはmalloc時のみにする
 int	ft_mkstemp(char **template)
 {
 	int i;
@@ -33,10 +32,11 @@ int	ft_mkstemp(char **template)
 	{
 		addnum = ft_itoa(i);
 		if (!addnum)
-			return (-1);
+			return (fatal_error("malloc", MALLOC_ERR_STR), EXECUTION_MEMERR);
 		filename = ft_strjoin(*template, addnum);
 		if (!filename)
-			return (free(addnum), -1);
+			return (fatal_error("malloc", MALLOC_ERR_STR), free(addnum),
+				EXECUTION_MEMERR);
 		if (is_noexist(filename))
 		{
 			*template = filename;
@@ -48,5 +48,5 @@ int	ft_mkstemp(char **template)
 	}
 	free(*template);
 	*template = NULL;
-	return (-1);
+	return (fatal_error("ft_mkstemp", MKSTEMP_ERR), EXECUTION_ERR);
 }

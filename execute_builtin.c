@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 10:13:08 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/16 09:47:48 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/16 10:21:18 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	execute_builtin_command(t_command *cmd, t_bool is_direct,
 	{
 		if (!save_stdfd(fd_arr))
 			return (EXECUTION_FAILURE);
-		if (do_redirections(cmd->command->redirects, shell_env))
+		if (do_redirections(cmd->command, shell_env))
 			return (close_stdfd(fd_arr), EXECUTION_FAILURE);
 	}
 	f = get_builtin_func(command);

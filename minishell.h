@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:12:50 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 17:08:14 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/16 10:27:03 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,14 @@ typedef int t_bool;
 
 # define EXECUTION_FAILURE 1
 # define EXECUTION_SUCCESS 0
+# define EXECUTION_ERR -1
+# define EXECUTION_MEMERR -2
 
 #define EX_SYNTAX_ERROR 2
 # define EX_FATAL_ERROR 2
 # define EX_NOEXEC 126
 # define EX_NOTFOUND 127
-// # define EX_SHERRBASE 256
+
 
 
 #endif

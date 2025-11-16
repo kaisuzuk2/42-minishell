@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 15:42:24 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/10/30 15:12:44 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/16 10:24:45 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # define EXPORT_ERR "not a valid identifier"
 # define ARGNUM_ERR_STR "too many arguments"
 # define EXIT_ERR_STR "numeric argument required"
+# define MKSTEMP_ERR "could not create temporary file"
 
 void	fatal_error(char *func, char *str);
 void	parser_error(char *str);

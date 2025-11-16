@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 11:12:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 11:54:13 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/16 10:14:36 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	execute_disk_command(t_command *cmd, t_pipefd pipefd,
 	char	**arg;
 	char	**envarr;
 
-	if (cmd->command->redirects && do_redirections(cmd->command->redirects,
+	if (cmd->command->redirects && do_redirections(cmd->command,
 			shell_env) != 0)
 		return (EXECUTION_FAILURE);
 	if (!cmd->command->words)

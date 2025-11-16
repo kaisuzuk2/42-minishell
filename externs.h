@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/16 09:55:04 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/16 10:15:07 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ char			**strvec_from_word_list(t_word_list *list);
 int				ft_mkstemp(char **template);
 
 // redir.c
-int				do_redirections(t_redirect *redirect, t_shell_env *shell_env);
+int				do_redirections(t_command *cmd, t_shell_env *shell_env);
 
 // make_cmd.c
 char			*make_here_document(char *here_doc_eof, t_token_error *e);
