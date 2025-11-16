@@ -6,13 +6,24 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:12:50 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/16 11:53:30 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/16 12:37:54 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <errno.h>
+# include <fcntl.h>
+# include <readline/history.h>
+# include <readline/readline.h>
+# include <stdlib.h>
+# include <sys/stat.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <unistd.h>
+
+#include "general.h"
 # include "builtin.h"
 # include "command.h"
 # include "dispose_cmd.h"
@@ -24,31 +35,10 @@
 # include "subst.h"
 # include "variables.h"
 # include "xmalloc.h"
-# include <errno.h>
-# include <fcntl.h>
-# include <readline/history.h>
-# include <readline/readline.h>
-# include <stdlib.h>
-# include <sys/stat.h>
-# include <sys/types.h>
-# include <sys/wait.h>
-# include <unistd.h>
 
 extern char	**environ;
 
-# ifndef HEREDOC_PIPESIZE
-#  ifdef PIPE_BUF
-#   define HEREDOC_PIPESIZE PIPE_BUF
-#  else
-#   define HEREDOC_PIPESIZE 4096
-#  endif
-# endif
-
 # define STDFD_SIZE 3
-
-typedef int	t_bool;
-# define TRUE 1
-# define FALSE 0
 
 # define SINGLE_QUOTE_CHAR '\''
 # define DOUBLE_QUOTE_CHAR '\"'

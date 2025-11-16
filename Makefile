@@ -6,7 +6,7 @@
 #    By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/07 14:10:24 by kaisuzuk          #+#    #+#              #
-#    Updated: 2025/11/16 11:45:42 by kaisuzuk         ###   ########.fr        #
+#    Updated: 2025/11/16 13:19:32 by kaisuzuk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,6 @@ INC		+=	-I$(FT_NAME)/libft
 
 SRCS	=	minishell.c \
 			sig.c \
-			bashline.c \
 			tokenize.c \
 			tokenize_make.c \
 			tokenize_utils_tokenkinds.c \

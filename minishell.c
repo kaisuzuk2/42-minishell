@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:13:31 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 17:08:58 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/16 13:25:56 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,52 +179,138 @@ parse test
 // 	dispose_command(parse);
 // }
 
-void	initialize_readline(void);
+// int	main(int argc, char *argv[], char *envp[])
+// {
+// 	char			*line;
+// 	t_token_list	*token;
+// 	t_command		*parse;
+// 	t_shell_env		*shell_variables;
+// 	char			*input;
+// 	int				last_status;
 
-int	main(int argc, char *argv[], char *envp[])
+// 	enter_prompt_mode();
+// 	shell_variables = initialize_shell_variables(envp);
+// 	initialize_readline();
+// 	while (1)
+// 	{
+// 		line = readline("minishell$ ");
+// 		// line = readline(NULL);
+// 		if (!line)
+// 		{
+// 			if (isatty(STDIN_FILENO))
+// 				ft_dprintf(STDERR_FILENO, "exit\n");
+// 			last_status = shell_variables->last_status;
+// 			dispose_env(shell_variables);
+// 			break ;
+// 		}
+// 		if (g_signal_state == SIGSTATE_INT)
+// 		{
+// 			set_last_status(130, shell_variables);
+// 			g_signal_state = SIGSTATE_NONE;
+// 			continue ;
+// 		}
+// 		if (*line)
+// 			add_history(line);
+// 		token = tokenize(line, shell_variables);
+// 		if (!token)
+// 			continue ;
+// 		parse = parser(token, shell_variables);
+// 		if (!parse)
+// 			continue ;
+// 		expand(parse, shell_variables);
+// 		// show_envvalue(shell_variables);
+// 		set_last_status(execute_pipeline(parse, shell_variables),
+// 			shell_variables);
+// 		dispose_command(parse);
+// 	}
+// 	// return (0);
+// 	return (last_status); // これちょっと考えよう
+// }
+
+// static void	initialize_readline(void)
+// {
+// 	rl_instream = stdin;
+// 	rl_outstream = stderr;
+// }
+
+static void	initialize_readline(void)
+{
+	rl_instream = stdin;
+	rl_outstream = stderr;
+}
+
+static char	*read_command(t_shell_env *shell_env)
+{
+	int		last_status;
+	char	*line;
+
+	line = readline("minishell$ ");
+	if (!line)
+	{
+		if (isatty(STDIN_FILENO))
+			ft_dprintf(STDERR_FILENO, "exit\n");
+		return (NULL);
+	}
+	if (g_signal_state == SIGSTATE_INT)
+	{
+		set_last_status(130, shell_env);
+		return (NULL);
+	}
+	return (line);
+}
+
+static int	is_signal(t_shell_env *shell_env)
+{
+	if (g_signal_state == SIGSTATE_INT)
+	{
+		set_last_status(130, shell_env);
+		g_signal_state = SIGSTATE_NONE;
+		return (TRUE);
+	}
+	return (FALSE);
+}
+
+static int	reader_loop(t_shell_env *shell_env)
 {
 	char			*line;
 	t_token_list	*token;
 	t_command		*parse;
-	t_shell_env		*shell_variables;
-	char			*input;
-	int				last_status;
 
-	enter_prompt_mode();
-	shell_variables = initialize_shell_variables(envp);
-	initialize_readline();
 	while (1)
 	{
-		line = readline("minishell$ ");
-		// line = readline(NULL);
+		line = read_command(shell_env);
 		if (!line)
 		{
-			if (isatty(STDIN_FILENO))
-				ft_dprintf(STDERR_FILENO, "exit\n");
-			last_status = shell_variables->last_status;
-			dispose_env(shell_variables);
-			break ;
-		}
-		if (g_signal_state == SIGSTATE_INT)
-		{
-			set_last_status(130, shell_variables);
-			g_signal_state = SIGSTATE_NONE;
-			continue ;
+			if (is_signal(shell_env))
+				continue ;
+			return (shell_env->last_status);
 		}
 		if (*line)
 			add_history(line);
-		token = tokenize(line, shell_variables);
+		token = tokenize(line, shell_env);
 		if (!token)
 			continue ;
-		parse = parser(token, shell_variables);
+		parse = parser(token, shell_env);
 		if (!parse)
 			continue ;
-		expand(parse, shell_variables);
-		// show_envvalue(shell_variables);
-		set_last_status(execute_pipeline(parse, shell_variables),
-			shell_variables);
+		expand(parse, shell_env);
+		set_last_status(execute_pipeline(parse, shell_env), shell_env);
 		dispose_command(parse);
 	}
-	// return (0);
-	return (last_status); // これちょっと考えよう
+}
+
+int	main(int argc, char *argv[], char *envp[])
+{
+	char		*line;
+	t_shell_env	*shell_env;
+	int			last_status;
+
+	shell_env = initialize_shell_variables(envp);
+	if (!shell_env)
+		exit(EX_FATAL_ERROR);
+	enter_prompt_mode();
+	initialize_readline();
+	last_status = reader_loop(shell_env);
+	dispose_env(shell_env);
+	return (last_status);
 }
