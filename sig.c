@@ -6,13 +6,18 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 09:10:07 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/16 11:49:10 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/16 15:16:10 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 volatile sig_atomic_t	g_signal_state = SIGSTATE_NONE;
+
+void				sigint_heredoc_handler(int s);
+void				sigint_prompt_handler(int s);
+int					signal_prompt_hook(void);
+int					signal_heredoc_hook(void);
 
 void	set_handler(int sig, void (*handler)(int), int flags)
 {
@@ -23,40 +28,6 @@ void	set_handler(int sig, void (*handler)(int), int flags)
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = flags;
 	sigaction(sig, &sa, NULL);
-}
-
-static void	sigint_prompt_handler(int s)
-{
-	(void)s;
-	g_signal_state = SIGSTATE_INT;
-}
-
-static void	sigint_heredoc_handler(int s)
-{
-	(void)s;
-	g_signal_state = SIGSTATE_INT;
-}
-
-int	signal_heredoc_hook(void)
-{
-	if (g_signal_state == SIGSTATE_INT)
-	{
-		rl_replace_line("", 0);
-		rl_done = 1;
-	}
-	return (0);
-}
-
-int	signal_prompt_hook(void)
-{
-	if (g_signal_state == SIGSTATE_INT)
-	{
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-		rl_done = 1;
-	}
-	return (0);
 }
 
 void	enter_prompt_mode(void)

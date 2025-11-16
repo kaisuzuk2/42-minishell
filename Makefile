@@ -6,7 +6,7 @@
 #    By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/07 14:10:24 by kaisuzuk          #+#    #+#              #
-#    Updated: 2025/11/16 13:19:32 by kaisuzuk         ###   ########.fr        #
+#    Updated: 2025/11/16 15:15:07 by kaisuzuk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ INC		+=	-I$(FT_NAME)/libft
 
 SRCS	=	minishell.c \
 			sig.c \
+			sig_utils.c \
 			tokenize.c \
 			tokenize_make.c \
 			tokenize_utils_tokenkinds.c \
@@ -56,6 +57,7 @@ SRCS	=	minishell.c \
 			list.c \
 			strvec.c \
 			redir.c \
+			redir_heredoc.c \
 			make_cmd.c \
 			make_cmd_utils.c \
 			ft_mkstemp.c \
@@ -81,6 +83,7 @@ SRCS	=	minishell.c \
 			env_get.c \
 			env_set.c \
 			error.c \
+			error_parse.c \
 			xmalloc.c
 
 

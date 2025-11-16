@@ -6,11 +6,13 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 08:37:57 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/16 11:05:36 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/16 14:06:20 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// ### TODO: sort
 
 static int	show_var_attributes(t_varlist *env)
 {

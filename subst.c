@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 13:09:16 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 15:09:59 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/16 14:10:26 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char			**ifs_split(char const *s);
 
 // envkey is alnum or underbar
 
-static char	*join_string_until_varvalue(char *res, char **document)
+static char	*join_string(char *res, char **document)
 {
 	char	*doll_ptr;
 	char	*tmp;
@@ -60,7 +60,7 @@ char	*expand_string_to_string(char *document, t_shell_env *shell_env)
 		varvalue = get_varvalue(shell_env, ft_strchr(document_ptr, '$'));
 		if (!varvalue)
 			return (NULL);
-		res = join_string_until_varvalue(res, &document_ptr);
+		res = join_string(res, &document_ptr);
 		if (!res)
 			return (NULL);
 		res_tmp = ft_strjoin(res, varvalue);

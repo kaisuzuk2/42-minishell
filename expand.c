@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 14:05:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 17:48:10 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/16 14:10:09 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 // exoand_utils.c
 char			*join_and_free(char *s1, char *s2);
-char			*join_string_until_varvalue_and_quote(char *res,
+char			*join_string(char *res,
 					char **document, t_varlist *env);
 char			*expand_quote_and_value(char **document_p, char *document,
 					t_shell_env *shell_env);
@@ -66,7 +66,7 @@ t_bool	expand_and_word_splitting_internal(char *document, t_word_list **list_p,
 				tmp = join_and_free((*list_p)->word->word,
 						expand_quote_and_value(&document, document, shell_env));
 			else
-				tmp = join_string_until_varvalue_and_quote((*list_p)->word->word,
+				tmp = join_string((*list_p)->word->word,
 						&document, shell_env->env);
 			if (!tmp)
 				return (FALSE);

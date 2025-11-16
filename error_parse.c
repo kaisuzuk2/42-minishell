@@ -1,49 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dispose_token.c                                    :+:      :+:    :+:   */
+/*   error_parse.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/15 15:32:57 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/16 14:16:49 by kaisuzuk         ###   ########.fr       */
+/*   Created: 2025/11/16 13:31:16 by kaisuzuk          #+#    #+#             */
+/*   Updated: 2025/11/16 13:31:33 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	dispose_word(t_word_desc *w)
+void	parser_error(char *str)
 {
-	if (!w)
-		return ;
-	free(w->word);
-	free(w);
+	ft_dprintf(STDERR_FILENO, "minishell: %s\n", str);
 }
 
-void	dispose_token_words(t_token_list *list)
+void	parser_operator_error(const char *msg, const char *detail)
 {
-	t_token_list	*t;
-
-	if (!list)
-		return ;
-	while (list)
-	{
-		t = list;
-		list = list->next;
-		dispose_word(t->word);
-		free(t);
-	}
-}
-
-void	dispose_desc_words(t_word_list *list)
-{
-	t_word_list	*t;
-
-	while (list)
-	{
-		t = list;
-		list = list->next;
-		dispose_word(t->word);
-		free(t);
-	}
+	if (!detail)
+		ft_dprintf(STDERR_FILENO, "minishell: %s\n", msg);
+	else
+		ft_dprintf(STDERR_FILENO, "minishell: %s '%s'\n", msg, detail);
 }

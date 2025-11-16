@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/16 11:44:56 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/16 14:17:15 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,6 @@ void			dispose_char_arr(char **arr);
 
 t_bool			is_exported(t_shell_var *env_var);
 
-t_shell_var	*list_getshell_var(t_varlist *env, char *key);
+t_shell_var		*list_getshell_var(t_varlist *env, char *key);
 
 #endif

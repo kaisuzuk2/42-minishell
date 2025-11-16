@@ -1,49 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dispose_token.c                                    :+:      :+:    :+:   */
+/*   sig_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/15 15:32:57 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/16 14:16:49 by kaisuzuk         ###   ########.fr       */
+/*   Created: 2025/11/16 13:33:07 by kaisuzuk          #+#    #+#             */
+/*   Updated: 2025/11/16 14:11:23 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	dispose_word(t_word_desc *w)
+int	signal_heredoc_hook(void)
 {
-	if (!w)
-		return ;
-	free(w->word);
-	free(w);
+	if (g_signal_state == SIGSTATE_INT)
+	{
+		rl_replace_line("", 0);
+		rl_done = 1;
+	}
+	return (0);
 }
 
-void	dispose_token_words(t_token_list *list)
+int	signal_prompt_hook(void)
 {
-	t_token_list	*t;
-
-	if (!list)
-		return ;
-	while (list)
+	if (g_signal_state == SIGSTATE_INT)
 	{
-		t = list;
-		list = list->next;
-		dispose_word(t->word);
-		free(t);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+		rl_done = 1;
 	}
+	return (0);
 }
 
-void	dispose_desc_words(t_word_list *list)
+void	sigint_prompt_handler(int s)
 {
-	t_word_list	*t;
+	(void)s;
+	g_signal_state = SIGSTATE_INT;
+}
 
-	while (list)
-	{
-		t = list;
-		list = list->next;
-		dispose_word(t->word);
-		free(t);
-	}
+void	sigint_heredoc_handler(int s)
+{
+	(void)s;
+	g_signal_state = SIGSTATE_INT;
 }

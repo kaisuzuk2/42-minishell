@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 11:28:03 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/14 14:34:34 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/16 14:10:03 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*join_and_free(char *s1, char *s2)
 	return (res);
 }
 
-char	*join_string_until_varvalue_and_quote(char *res, char **document,
+char	*join_string(char *res, char **document,
 		t_varlist *env)
 {
 	char	*doll_ptr;
