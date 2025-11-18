@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:12:50 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/18 10:13:28 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/18 11:15:04 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ extern char	**environ;
 
 # define PS1 "\x1b[34mminishell$ \x1b[0m"
 # define PS2 "\x1b[34m> \x1b[0m"
+
+# define DF_PATH "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 # define STDFD_SIZE 3
 

@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 08:02:57 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 15:20:05 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/18 12:12:39 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,28 @@ static t_bool	init_pwd(t_shell_env *shell_env)
 	if (!update_variable_item(shell_env->env, pwd, 1))
 		return (free(pwd), FALSE);
 	free(pwd);
+	if (!update_variable_item(shell_env->env, "OLDPWD=", 1))
+	return (TRUE);
+}
+
+static t_bool init_path(t_shell_env *shell_env)
+{
+	t_varlist *env;
+
+	env = create_varlist();
+	if (!env)
+		return (FALSE);
+	shell_env->env = env;
+	env->var = create_shell_var();
+	if (!env->var)
+		return (FALSE);
+	if (!set_variable_name(env->var, DF_PATH))
+		return (FALSE);
+	if (!set_variable_value(env->var, DF_PATH))
+		return (FALSE);
+	if (!set_variable_exportstr(env->var, DF_PATH))
+		return (FALSE);
+	set_variable_attributes(env->var, 0);
 	return (TRUE);
 }
 
@@ -76,10 +98,19 @@ t_shell_env	*initialize_shell_variables(char **envp)
 {
 	t_shell_env	*shell_env;
 
-	shell_env = (t_shell_env *)xmalloc(sizeof(t_shell_env));
+	shell_env = (t_shell_env *)xcalloc(sizeof(t_shell_env), 1);
 	if (!shell_env)
 		return (NULL);
-	shell_env->env = set_variable_item(envp);
+	if (!*envp)
+	{
+		if (!init_path(shell_env))
+		{
+			dispose_env(shell_env);
+			exit(1);
+		}
+	}
+	else
+		shell_env->env = set_variable_item(envp);
 	if (!shell_env->env)
 	{
 		dispose_env(shell_env);

@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 11:43:18 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/18 10:21:32 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/18 11:32:40 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ char	**get_env_arr(t_varlist *env)
 
 char	*get_listenv(t_varlist *env, char *key)
 {
-	if (!key)
+	if (!key || !*key)
 		return (NULL);
-	if (*key == 0)
+	if (!env || !env->var)
 		return (NULL);
 	while (env)
 	{
@@ -66,6 +66,8 @@ char	*get_listenv(t_varlist *env, char *key)
 
 t_shell_var	*get_shell_var(t_varlist *env, char *key)
 {
+	if (!env || !env->var)
+		return (NULL);
 	while (env)
 	{
 		if (!ft_strcmp(env->var->name, key))

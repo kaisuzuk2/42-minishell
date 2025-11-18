@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 17:27:54 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/18 10:17:12 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/18 11:51:06 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ t_bool	is_exported(t_shell_var *env_var)
 
 static t_bool	add_variable_item(t_varlist *env, char *exportstr, int flag)
 {
+	t_varlist *cur;
+
 	while (env->next)
 		env = env->next;
 	env->next = create_varlist();
@@ -39,6 +41,38 @@ static t_bool	add_variable_item(t_varlist *env, char *exportstr, int flag)
 	set_variable_attributes(env->var, flag);
 	return (TRUE);
 }
+
+// static t_bool	add_variable_item(t_varlist *env, char *exportstr, int flag)
+// {
+// 	t_varlist	*cur;
+
+// 	if (!env)
+// 	{
+// 		cur = env;
+// 		cur = create_varlist();
+// 	}
+// 	else
+// 	{
+// 		cur = env;
+// 		while (cur->next)
+// 			cur = cur->next;
+// 		cur->next =	create_varlist();
+// 		cur = cur->next;
+// 	}
+// 	if (!cur)
+// 		return (FALSE);
+// 	cur->var = create_shell_var();
+// 	if (!cur->var)
+// 		return (free(cur), FALSE);
+// 	if (!set_variable_name(cur->var, exportstr))
+// 		return (FALSE);
+// 	if (!set_variable_value(cur->var, exportstr))
+// 		return (FALSE);
+// 	if (!set_variable_exportstr(cur->var, exportstr))
+// 		return (FALSE);
+// 	set_variable_attributes(cur->var, flag);
+// 	return (TRUE);
+// }
 
 t_bool	update_key_value(t_varlist *env, char *key, char *value, int flag)
 {
