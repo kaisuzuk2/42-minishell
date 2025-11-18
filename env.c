@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 17:27:54 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/18 17:46:03 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 08:55:26 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_bool	is_exported(t_shell_var *env_var)
 {
 	if (!env_var)
 		return (FALSE);
-	return (env_var->attributes == TRUE);
+	return (env_var->attributes);
 }
 
 t_bool	is_underbar(t_shell_var *env_var)

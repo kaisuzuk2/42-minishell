@@ -6,15 +6,15 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 11:43:18 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/18 11:32:40 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 08:55:01 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	get_last_status(t_shell_env *env)
+int	get_last_status(t_shell_env *shell_env)
 {
-	return (env->last_status);
+	return (shell_env->last_status);
 }
 
 char	*get_current_working_directory(t_shell_env *shell_env)

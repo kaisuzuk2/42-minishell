@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:13:31 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/18 10:13:02 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 08:57:25 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -306,7 +306,7 @@ int	main(int argc, char *argv[], char *envp[])
 	int			last_status;
 
 	(void)argc;
-	(void *)argv;
+	(void)argv;
 	shell_env = initialize_shell_variables(envp);
 	if (!shell_env)
 		exit(EX_FATAL_ERROR);
