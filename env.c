@@ -6,13 +6,13 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 17:27:54 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/18 14:30:53 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/18 17:46:03 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_bool	set_variable_items(t_shell_var *var, char *exportstr, int flg);
+t_bool			set_variable_items(t_shell_var *var, char *exportstr, int flg);
 
 t_bool	is_exported(t_shell_var *env_var)
 {
@@ -21,9 +21,16 @@ t_bool	is_exported(t_shell_var *env_var)
 	return (env_var->attributes == TRUE);
 }
 
+t_bool	is_underbar(t_shell_var *env_var)
+{
+	if (!env_var)
+		return (FALSE);
+	return (env_var->name[0] == '_' && env_var->name[1] == '\0');
+}
+
 static t_bool	add_variable_item(t_varlist *env, char *exportstr, int flag)
 {
-	t_varlist *cur;
+	t_varlist	*cur;
 
 	while (env->next)
 		env = env->next;

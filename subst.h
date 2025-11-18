@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 13:32:32 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 17:24:36 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/18 17:04:20 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define SUBST_H
 
 // subst.c
-char			*expand_string_to_string(char *document,
+char			*expand_string_to_string(char *document, char *document_ptr,
 					t_shell_env *shell_env);
 
 // subst_getter.c

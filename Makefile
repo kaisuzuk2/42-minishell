@@ -6,7 +6,7 @@
 #    By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/07 14:10:24 by kaisuzuk          #+#    #+#              #
-#    Updated: 2025/11/18 12:33:09 by kaisuzuk         ###   ########.fr        #
+#    Updated: 2025/11/18 16:56:31 by kaisuzuk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -77,6 +77,7 @@ SRCS	=	minishell.c \
 			builtin_cd_env.c \
 			builtin_cd_canonpath.c \
 			variables.c \
+			variables_specials.c \
 			variables_alloc.c \
 			variables_set.c \
 			variables_get.c \

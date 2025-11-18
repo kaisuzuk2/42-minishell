@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 11:44:13 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/18 12:32:03 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/18 16:59:13 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_bool	set_current_working_directory(t_shell_env *shell_env, char *value)
 
 t_bool	set_variable_items(t_shell_var *var, char *exportstr, int flg)
 {
-	if (!set_variable_name(var, exportstr)) 
+	if (!set_variable_name(var, exportstr))
 		return (FALSE);
 	if (!set_variable_value(var, exportstr))
 		return (FALSE);

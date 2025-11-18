@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 14:59:01 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/18 16:09:48 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/18 16:58:49 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	update_pwd(char *tdir, t_shell_env *shell_env)
 		return (free(tdir), EXECUTION_MEMERR);
 	if (!bindpwd(shell_env->env, OLDPWD, get_listenv(shell_env->env, PWD)))
 		return (free(tdir), EXECUTION_MEMERR);
-	if (!bindpwd(shell_env->env, PWD ,tdir))
+	if (!bindpwd(shell_env->env, PWD, tdir))
 		return (free(tdir), EXECUTION_MEMERR);
 	free(tdir);
 	return (EXECUTION_SUCCESS);

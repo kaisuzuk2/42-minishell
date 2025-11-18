@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:23:18 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/18 10:03:22 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/18 17:03:40 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*heredoc_expand(t_redirect *r, size_t *lenp, t_shell_env *shell_env)
 	if (!is_s_quote(heredoc_desc) && !is_d_quote(heredoc_desc)
 		&& ft_strchr(heredoc_desc->word, '$'))
 		heredoc_desc->word = expand_string_to_string(heredoc_desc->word,
-				shell_env);
+				heredoc_desc->word, shell_env);
 	if (r->redirectee.filename->word)
 		*lenp = ft_strlen(r->redirectee.filename->word);
 	return (r->redirectee.filename->word);

@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 17:40:03 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/18 16:49:35 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/18 17:46:10 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ t_shell_var_map	*make_shell_env_map(t_shell_var_map *var_arr, t_varlist *env)
 	i = 0;
 	while (env)
 	{
-		if (!is_exported(env->var) || (env->var->name[0] == '_' && env->var->name[1] == '\0'))
+		if (!is_exported(env->var) || is_underbar(env->var))
 		{
 			env = env->next;
 			continue ;

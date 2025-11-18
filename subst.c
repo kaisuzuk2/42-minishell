@@ -6,13 +6,13 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 13:09:16 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/18 15:08:39 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/18 17:05:48 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char			**ifs_split(char const *s);
+char		**ifs_split(char const *s);
 
 // envkey is alnum or underbar
 
@@ -44,11 +44,11 @@ static char	*append_remainder(char *document, char *remainder)
 	return (res);
 }
 
-char	*expand_string_to_string(char *document, t_shell_env *shell_env)
+char	*expand_string_to_string(char *document, char *document_ptr,
+		t_shell_env *shell_env)
 {
 	char	*res;
 	char	*res_tmp;
-	char	*document_ptr;
 	char	*varvalue;
 
 	res = ft_strdup("");

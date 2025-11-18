@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/18 10:20:38 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/18 17:42:07 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,6 @@ t_bool			expand(t_command *command, t_shell_env *shell_env);
 t_bool			is_hasdollar(t_word_desc *desc);
 t_bool			is_d_quote(t_word_desc *desc);
 t_bool			is_s_quote(t_word_desc *desc);
-
-// subst.c
-char			*expand_string_to_string(char *document,
-					t_shell_env *shell_env);
 
 // list.c
 size_t			list_length(t_generic_list *list);
@@ -144,4 +140,7 @@ void			dispose_shell_var(t_shell_var *var);
 void			dispose_char_arr(char **arr);
 
 t_bool			is_exported(t_shell_var *env_var);
+t_bool			is_underbar(t_shell_var *env_var);
+
+t_bool			set_variable_items(t_shell_var *var, char *exportstr, int flg);
 #endif

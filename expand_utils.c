@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 11:28:03 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/18 15:06:19 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/18 17:04:59 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char	*expand_quote_and_value(char **document_p, char *document,
 	if (quote == SINGLE_QUOTE_CHAR || !ft_strchr(rm_quote_doc, '$'))
 		return (rm_quote_doc);
 	i = 0;
-	res = expand_string_to_string(rm_quote_doc, shell_env);
+	res = expand_string_to_string(rm_quote_doc, rm_quote_doc, shell_env);
 	return (res);
 }
 
