@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 11:26:48 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/16 10:22:16 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/18 14:32:58 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static int	builtin_printenv(t_varlist *env)
 {
+	if (!get_shell_var(env, "SHLVL"))
+		ft_dprintf(STDOUT_FILENO, "SHLVL=0\n");
 	while (env)
 	{
 		if (!env->var->value || !is_exported(env->var))

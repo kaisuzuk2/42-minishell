@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 08:02:57 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/18 12:12:39 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/18 14:01:53 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 // dispose_env.c
 void			dispose_varlist(t_varlist *list);
+t_bool			set_variable_items(t_shell_var *var, char *exportstr, int flg);
 
 static t_bool	set_variable_item_internal(t_shell_var *var, char *envp_str)
 {
@@ -70,12 +71,12 @@ static t_bool	init_pwd(t_shell_env *shell_env)
 		return (free(pwd), FALSE);
 	free(pwd);
 	if (!update_variable_item(shell_env->env, "OLDPWD=", 1))
-	return (TRUE);
+		return (TRUE);
 }
 
-static t_bool init_path(t_shell_env *shell_env)
+static t_bool	init_path(t_shell_env *shell_env)
 {
-	t_varlist *env;
+	t_varlist	*env;
 
 	env = create_varlist();
 	if (!env)
@@ -84,14 +85,42 @@ static t_bool init_path(t_shell_env *shell_env)
 	env->var = create_shell_var();
 	if (!env->var)
 		return (FALSE);
-	if (!set_variable_name(env->var, DF_PATH))
-		return (FALSE);
-	if (!set_variable_value(env->var, DF_PATH))
-		return (FALSE);
-	if (!set_variable_exportstr(env->var, DF_PATH))
-		return (FALSE);
-	set_variable_attributes(env->var, 0);
+	set_variable_items(env->var, DF_PATH, 0);
 	return (TRUE);
+}
+
+static t_bool	init_shlvl(t_shell_env *shell_env)
+{
+	t_shell_var	*var;
+	int			shlvl_int;
+	char		*shlvl_txt;
+	char		*shlvl_val;
+
+	var = get_shell_var(shell_env->env, "SHLVL");
+	if (!var)
+	{
+		if (!update_variable_item(shell_env->env, "SHLVL=0", 1))
+			return (FALSE);
+		return (TRUE);
+	}
+	shlvl_int = ft_atoi(var->value);
+	shlvl_int++;
+	shlvl_val = ft_itoa(shlvl_int);
+	if (!shlvl_val)
+		return (FALSE);
+	shlvl_txt = create_exportstr("SHLVL", shlvl_val);
+	if (!shlvl_txt)
+		return (free(shlvl_val), FALSE);
+	free(shlvl_val);
+	if (!update_variable_item(shell_env->env, shlvl_txt, 1))
+		return (FALSE);
+	return (TRUE);
+}
+
+static void	handle_variables_error(t_shell_env *shell_env)
+{
+	dispose_env(shell_env);
+	exit(EXECUTION_FAILURE);
 }
 
 t_shell_env	*initialize_shell_variables(char **envp)
@@ -104,23 +133,16 @@ t_shell_env	*initialize_shell_variables(char **envp)
 	if (!*envp)
 	{
 		if (!init_path(shell_env))
-		{
-			dispose_env(shell_env);
-			exit(1);
-		}
+			handle_variables_error(shell_env);
 	}
 	else
 		shell_env->env = set_variable_item(envp);
 	if (!shell_env->env)
-	{
-		dispose_env(shell_env);
-		exit(1);
-	}
+		handle_variables_error(shell_env);
 	if (!init_pwd(shell_env))
-	{
-		dispose_env(shell_env);
-		exit(1);
-	}
+		handle_variables_error(shell_env);
+	if (!init_shlvl(shell_env))
+		handle_variables_error(shell_env);
 	set_last_status(EXECUTION_SUCCESS, shell_env);
 	return (shell_env);
 }
