@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 11:03:04 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/18 10:20:29 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/18 16:09:21 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ static int	try_cdpath(char *dirname, t_shell_env *shell_env)
 	int		status;
 
 	i = 0;
-	cdpath = ft_split(get_listenv(shell_env->env, "CDPATH"), ':');
+	cdpath = ft_split(get_listenv(shell_env->env, CDPATH), ':');
 	if (!cdpath)
 		return (EXECUTION_MEMERR);
 	while (cdpath[i])
@@ -136,7 +136,7 @@ int	builtin_cd(t_word_list *list, t_shell_env *shell_env)
 	}
 	else
 		dirname = list->word->word;
-	if (!is_absolute_pathname(dirname) && get_listenv(shell_env->env, "CDPATH"))
+	if (!is_absolute_pathname(dirname) && get_listenv(shell_env->env, CDPATH))
 	{
 		status = try_cdpath(dirname, shell_env);
 		if (!status)

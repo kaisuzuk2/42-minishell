@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 13:09:16 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/18 10:20:56 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/18 15:08:39 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ char	*expand_string_to_string(char *document, t_shell_env *shell_env)
 			return (NULL);
 		res_tmp = ft_strjoin(res, varvalue);
 		free(res);
+		free(varvalue);
 		if (!res_tmp)
 			return (NULL);
 		res = res_tmp;

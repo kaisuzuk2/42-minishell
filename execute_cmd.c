@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 11:12:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/18 12:26:07 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/18 16:11:42 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	shell_execve(char *command, char **arg, char **env)
 	{
 		if (file_isdir(command) && ft_strcmp(command, ".."))
 			fatal_error(command, "Is a directory");
-		else if (i != ENOENT || !ft_strcmp(command, ".."))
+		else if (i == ENOENT || !ft_strcmp(command, ".."))
 		{
 			dispose_char_arr(arg);
 			dispose_char_arr(env);

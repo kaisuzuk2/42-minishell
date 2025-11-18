@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 14:55:51 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/18 10:20:18 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/18 16:09:40 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*get_interpret_cd(t_word_list *list, t_varlist *env)
 	}
 	else
 	{
-		dirname = get_listenv(env, "OLDPWD");
+		dirname = get_listenv(env, OLDPWD);
 		if (!dirname)
 		{
 			builtin_error("cd", NULL, "OLDPWD not set");

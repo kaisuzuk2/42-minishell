@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 09:15:07 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/16 11:15:01 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/18 15:16:30 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static t_bool	is_abst_path(char **p, char **q, char *base)
 		return (TRUE);
 	}
 	if ((*p)[0] == '.' && (*p)[1] == '.' && is_pathsep((*p)[2]))
-		return ((*p) += 3, remove_parent(q, base), TRUE);
+		return ((*p) += 2, remove_parent(q, base), TRUE);
 	return (FALSE);
 }
 
@@ -75,7 +75,7 @@ char	*sh_canonpath(char *tmp_path)
 			*q++ = *p++;
 			skip_slashes(&p);
 		}
-		if (!is_abst_path(&p, &q, base) && *p)
+		if (*p && !is_abst_path(&p, &q, base))
 			*q++ = *p++;
 	}
 	trim_last_slash(&q, base);

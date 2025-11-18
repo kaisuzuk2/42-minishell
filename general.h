@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 12:36:23 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/16 13:32:31 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/18 16:10:38 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,10 @@ typedef int	t_bool;
 #  endif
 # endif
 
+# define PATH_KEY "PATH="
+# define PWD_KEY "PWD="
+# define PWD "PWD"
+# define OLDPWD_KEY "OLDPWD"
+# define OLDPWD "OLDPWD"
+# define CDPATH "CDPATH"
 #endif
