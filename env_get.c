@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 11:43:18 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/16 11:48:21 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/18 10:21:32 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	**get_env_arr(t_varlist *env)
 	return (res);
 }
 
-char	*list_getenv(t_varlist *env, char *key)
+char	*get_listenv(t_varlist *env, char *key)
 {
 	if (!key)
 		return (NULL);
@@ -64,7 +64,7 @@ char	*list_getenv(t_varlist *env, char *key)
 	return (NULL);
 }
 
-t_shell_var	*list_getshell_var(t_varlist *env, char *key)
+t_shell_var	*get_shell_var(t_varlist *env, char *key)
 {
 	while (env)
 	{

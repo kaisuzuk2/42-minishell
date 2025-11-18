@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 13:09:16 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/16 14:10:26 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/18 10:20:56 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ char	*expand_tilda(char *res, char **document, t_varlist *env)
 	if ((*document)[0] == '~' && (((*document)[1] == '\0')
 			|| ((*document)[1] == '/')))
 	{
-		home_value = list_getenv(env, "HOME");
+		home_value = get_listenv(env, "HOME");
 		if (!home_value)
 			return (ft_strdup(res));
 		tmp = ft_strjoin(res, home_value);

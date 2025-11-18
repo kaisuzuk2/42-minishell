@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 14:59:01 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/16 11:11:16 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/18 10:20:02 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static t_bool	bindpwd(t_varlist *env, char *key, char *value)
 	exportstr = create_exportstr(key, value);
 	if (!exportstr)
 		return (FALSE);
-	env_var = list_getshell_var(env, key);
+	env_var = get_shell_var(env, key);
 	if (!update_variable_item(env, exportstr, is_exported(env_var)))
 		return (free(exportstr), FALSE);
 	free(exportstr);
@@ -31,7 +31,7 @@ int	update_pwd(char *tdir, t_shell_env *shell_env)
 {
 	if (!set_current_working_directory(shell_env, tdir))
 		return (free(tdir), EXECUTION_MEMERR);
-	if (!bindpwd(shell_env->env, "OLDPWD", list_getenv(shell_env->env, "PWD")))
+	if (!bindpwd(shell_env->env, "OLDPWD", get_listenv(shell_env->env, "PWD")))
 		return (free(tdir), EXECUTION_MEMERR);
 	if (!bindpwd(shell_env->env, "PWD", tdir))
 		return (free(tdir), EXECUTION_MEMERR);

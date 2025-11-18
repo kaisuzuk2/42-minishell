@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:23:18 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/16 15:15:18 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/18 10:03:22 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static t_bool	read_here_document(char **document, char *here_doc_eof,
 
 	while (1)
 	{
-		buf = readline("> ");
+		buf = readline(PS2);
 		if (!buf)
 			break ;
 		if (*buf == '\0' && g_signal_state == SIGSTATE_INT)

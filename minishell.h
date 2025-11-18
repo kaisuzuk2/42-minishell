@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:12:50 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/16 15:21:31 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/18 10:13:28 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,9 @@
 # include "xmalloc.h"
 
 extern char	**environ;
+
+# define PS1 "\x1b[34mminishell$ \x1b[0m"
+# define PS2 "\x1b[34m> \x1b[0m"
 
 # define STDFD_SIZE 3
 

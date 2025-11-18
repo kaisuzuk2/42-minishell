@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:13:31 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/16 13:25:56 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/18 10:13:02 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,7 +244,7 @@ static char	*read_command(t_shell_env *shell_env)
 	int		last_status;
 	char	*line;
 
-	line = readline("minishell$ ");
+	line = readline(PS1);
 	if (!line)
 	{
 		if (isatty(STDIN_FILENO))
@@ -305,6 +305,8 @@ int	main(int argc, char *argv[], char *envp[])
 	t_shell_env	*shell_env;
 	int			last_status;
 
+	(void)argc;
+	(void *)argv;
 	shell_env = initialize_shell_variables(envp);
 	if (!shell_env)
 		exit(EX_FATAL_ERROR);

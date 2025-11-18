@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/16 14:17:15 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/18 10:20:38 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,8 +126,8 @@ int				builtin_cd(t_word_list *list, t_shell_env *shell_env);
 
 // env_utils.c
 char			**get_env_arr(t_varlist *env);
-t_shell_var		*list_getshell_var(t_varlist *env, char *key);
-char			*list_getenv(t_varlist *env, char *key);
+t_shell_var		*get_shell_var(t_varlist *env, char *key);
+char			*get_listenv(t_varlist *env, char *key);
 t_bool			update_variable_item(t_varlist *env, char *exportstr,
 					t_bool flag);
 t_bool			update_key_value(t_varlist *env, char *key, char *value,
@@ -144,7 +144,4 @@ void			dispose_shell_var(t_shell_var *var);
 void			dispose_char_arr(char **arr);
 
 t_bool			is_exported(t_shell_var *env_var);
-
-t_shell_var		*list_getshell_var(t_varlist *env, char *key);
-
 #endif

@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 09:32:20 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 12:32:11 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/18 10:17:03 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static t_varlist	*unset_env(char *key, t_varlist *env)
 	t_varlist	*t;
 	t_varlist	*head;
 
-	if (!list_getshell_var(env, key))
+	if (!get_shell_var(env, key))
 		return (env);
 	if (!ft_strcmp(env->var->name, key))
 	{

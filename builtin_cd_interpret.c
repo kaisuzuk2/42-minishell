@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 14:55:51 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 15:16:58 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/18 10:20:18 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*get_interpret_cd(t_word_list *list, t_varlist *env)
 
 	if (is_interpret_home(list))
 	{
-		dirname = list_getenv(env, "HOME");
+		dirname = get_listenv(env, "HOME");
 		if (!dirname)
 		{
 			builtin_error("cd", NULL, "HOME not set");
@@ -46,7 +46,7 @@ char	*get_interpret_cd(t_word_list *list, t_varlist *env)
 	}
 	else
 	{
-		dirname = list_getenv(env, "OLDPWD");
+		dirname = get_listenv(env, "OLDPWD");
 		if (!dirname)
 		{
 			builtin_error("cd", NULL, "OLDPWD not set");

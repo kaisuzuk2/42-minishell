@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 12:29:59 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 16:27:31 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/18 10:20:44 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ t_bool	search_for_command(char *cmd, t_varlist *env, char **command)
 
 	if (is_absolute_program(cmd) || !*cmd)
 		return (*command = savestring(cmd), TRUE);
-	path = list_getenv(env, "PATH");
+	path = get_listenv(env, "PATH");
 	if (!path)
 		return (*command = savestring(cmd), TRUE);
 	path_list = ft_split(path, ':');

@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 17:27:54 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/16 11:46:40 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/18 10:17:12 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ t_bool	update_variable_item(t_varlist *env, char *exportstr, t_bool flag)
 	key = get_env_key(exportstr);
 	if (!key)
 		return (FALSE);
-	target = list_getshell_var(env, key);
+	target = get_shell_var(env, key);
 	if (!target)
 		return (free(key), add_variable_item(env, exportstr, flag));
 	free(key);
