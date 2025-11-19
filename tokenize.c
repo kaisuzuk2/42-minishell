@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 14:12:47 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 15:06:16 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static t_token_list	*append_token(char *line, t_shell_env *shell_env)
 	cur = &head;
 	while (*line)
 	{
-		memset(&e, 0, sizeof(e));
+		ft_memset(&e, 0, sizeof(e));
 		if (is_shellblank(*line))
 			skip_shellblank(&line);
 		if (!*line || *line == '#')
@@ -75,14 +75,14 @@ t_token_list	*tokenize(char *line, t_shell_env *shell_env)
 	list = append_token(line, shell_env);
 	if (!list)
 		return (NULL);
-	memset(&e, 0, sizeof(e));
+	ft_memset(&e, 0, sizeof(e));
 	eof = make_token(NULL, 0, TK_EOF, &e);
 	if (handle_parse_error(&e, list, NULL, shell_env))
 		return (NULL);
 	t = list;
 	while (t->next)
 		t = t->next;
-	memset(&e, 0, sizeof(e));
+	ft_memset(&e, 0, sizeof(e));
 	make_word_list(t, eof, &e);
 	if (handle_parse_error(&e, list, NULL, shell_env))
 	{

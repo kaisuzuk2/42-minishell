@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 08:02:57 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 14:11:38 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 15:06:20 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static t_varlist	*set_variable_item(t_shell_env *shell_env, char **envp)
 	t_varlist	*cur;
 	int			i;
 
-	memset(&head, 0, sizeof(t_varlist));
+	ft_memset(&head, 0, sizeof(t_varlist));
 	cur = &head;
 	if (shell_env->env)
 	{
