@@ -6,20 +6,11 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 08:02:57 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 11:10:46 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 12:18:38 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// dispose_env.c
-// void				dispose_varlist(t_varlist *list);
-// t_bool				set_variable_items(t_shell_var *var, char *exportstr,
-// 						int flg);
-
-// t_bool				init_path(t_shell_env *shell_env, char **envp);
-// t_bool				init_shlvl(t_shell_env *shell_env);
-// t_bool				init_pwd(t_shell_env *shell_env);
 
 // variables_specials.c
 t_bool				init_path(t_shell_env *shell_env, char **envp);

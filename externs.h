@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 10:38:59 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 12:17:59 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,24 +21,6 @@
 /*				env					*/
 /*										*/
 /* **************************************************************** */
-
-// variables.c
-t_shell_env		*initialize_shell_variables(char **envp);
-
-// variables_set.c
-void			set_variable_attributes(t_shell_var *map, t_bool flag);
-t_bool			set_variable_exportstr(t_shell_var *map, char *env);
-t_bool			set_variable_value(t_shell_var *map, char *env);
-t_bool			set_variable_name(t_shell_var *map, char *env);
-
-// variables_get.c
-char			*get_env_value(char *env);
-char			*get_env_key(char *env);
-
-// variables_alloc.c
-char			*create_exportstr(char *key, char *value);
-t_varlist		*create_varlist(void);
-t_shell_var		*create_shell_var(void);
 
 // env.c
 t_bool			update_variable_item(t_varlist *env, char *exportstr,

@@ -6,26 +6,11 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 09:05:26 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 10:09:29 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 12:19:07 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// // tokenize_utils.c
-// void			set_token_flg(char *line, t_word_desc *desc);
-// t_bool			is_match_op(char *str, size_t len, const char *op);
-
-// // tokenize_utils_tokenkinds.c
-// char			*is_metacharacter(char c);
-
-// tokenize_utils.c 
-// void	set_token_flg(char *line, t_word_desc *desc);
-// t_bool	is_match_op(char *str, size_t len, const char *op);
-
-// // tokenize_utils_tokenkinds.c
-// char	*is_metacharacter(char c);
-
 
 // tokenize_utils.c
 void	set_token_flg(char *line, t_word_desc *desc);
