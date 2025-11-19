@@ -6,14 +6,19 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 11:28:03 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/18 17:04:59 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 09:20:53 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char				*expand_tilda(char *res, char **document, t_varlist *env);
-char				*expand_quote(char **document_p, char *document);
+// char				*expand_tilda(char *res, char **document, t_varlist *env);
+// char				*expand_quote(char **document_p, char *document);
+
+// expand_quote_removal.c
+
+char	*expand_quote(char **document_p, char *document);
+
 
 char	*join_and_free(char *s1, char *s2)
 {

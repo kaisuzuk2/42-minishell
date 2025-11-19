@@ -6,13 +6,13 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 13:09:16 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/18 17:05:48 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 09:21:54 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char		**ifs_split(char const *s);
+// char		**ifs_split(char const *s);
 
 // envkey is alnum or underbar
 

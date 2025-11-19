@@ -6,28 +6,37 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 14:05:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/16 14:10:09 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 09:18:53 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // exoand_utils.c
-char			*join_and_free(char *s1, char *s2);
-char			*join_string(char *res,
-					char **document, t_varlist *env);
-char			*expand_quote_and_value(char **document_p, char *document,
-					t_shell_env *shell_env);
-t_bool			word_splitting_internal(t_word_list **list_p, t_word_list *list,
-					char **ifs_split);
+// char			*join_and_free(char *s1, char *s2);
+// char			*join_string(char *res,
+// 					char **document, t_varlist *env);
+// char			*expand_quote_and_value(char **document_p, char *document,
+// 					t_shell_env *shell_env);
+// t_bool			word_splitting_internal(t_word_list **list_p, t_word_list *list,
+// 					char **ifs_split);
 
-// expand_quote_removal.c
-char			*string_quote_removal(char *string, char quote);
+// // expand_quote_removal.c
+// char			*string_quote_removal(char *string, char quote);
 
-// expand_word_splitting.c
-char			**ifs_split(char const *s);
+// // expand_word_splitting.c
+// char			**ifs_split(char const *s);
 
-t_bool	word_splitting(t_word_list **list_p, t_word_list *list,
+// expand_utils.c
+t_bool	word_splitting_internal(t_word_list **list_p, t_word_list *list,
+		char **ifs_split);
+char	*expand_quote_and_value(char **document_p, char *document,
+		t_shell_env *shell_env);
+char	*join_and_free(char *s1, char *s2);
+
+
+
+static t_bool	word_splitting(t_word_list **list_p, t_word_list *list,
 		char **document_p, t_shell_env *shell_env)
 {
 	char		**words;
@@ -51,7 +60,7 @@ t_bool	word_splitting(t_word_list **list_p, t_word_list *list,
 	return (TRUE);
 }
 
-t_bool	expand_and_word_splitting_internal(char *document, t_word_list **list_p,
+static t_bool	expand_and_word_splitting_internal(char *document, t_word_list **list_p,
 		t_word_list *list, t_shell_env *shell_env)
 {
 	char	*document_p;
@@ -79,7 +88,7 @@ t_bool	expand_and_word_splitting_internal(char *document, t_word_list **list_p,
 	return (TRUE);
 }
 
-t_bool	expand_and_word_splitting(t_word_list **list_p, t_word_list *list,
+static t_bool	expand_and_word_splitting(t_word_list **list_p, t_word_list *list,
 		t_shell_env *shell_env)
 {
 	int		i;

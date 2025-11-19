@@ -6,34 +6,18 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 10:13:08 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/16 11:06:20 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 09:32:28 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// builtin_fd.c
+// execute_builtin_utils.c
 t_bool					save_stdfd(int *fd_arr);
 t_bool					reset_stdfd(int *fd_arr);
 void					close_stdfd(int *fd_arr);
 
-static t_builtin_func	*get_builtin_func(const char *name)
-{
-	int				i;
-	t_builtin_table	info;
-
-	info = get_builtin_table();
-	i = 0;
-	while (i < info.size)
-	{
-		if (!ft_strcmp(name, info.table[i].name))
-			return (info.table[i].f);
-		i++;
-	}
-	return (NULL);
-}
-
-t_builtin_table	get_builtin_table(void)
+static t_builtin_table	get_builtin_table(void)
 {
 	t_builtin_table			info;
 	static const t_builtin	builtin_table[] = {
@@ -49,6 +33,22 @@ t_builtin_table	get_builtin_table(void)
 	info.table = builtin_table;
 	info.size = sizeof(builtin_table) / sizeof(builtin_table[0]);
 	return (info);
+}
+
+static t_builtin_func	*get_builtin_func(const char *name)
+{
+	int				i;
+	t_builtin_table	info;
+
+	info = get_builtin_table();
+	i = 0;
+	while (i < info.size)
+	{
+		if (!ft_strcmp(name, info.table[i].name))
+			return (info.table[i].f);
+		i++;
+	}
+	return (NULL);
 }
 
 t_bool	is_builtin(char *command)

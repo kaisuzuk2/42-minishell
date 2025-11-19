@@ -6,14 +6,14 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 11:48:27 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 09:13:11 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 09:19:44 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// expand_utils.c
-// char			*quote_removal_delimiter(char *delimiter);
+// expand_quote_removal.c
+char			*quote_removal_delimiter(char *delimiter);
 
 static t_bool	set_heredoc(t_redirect *redir, t_word_desc *desc,
 		t_token_error *e)

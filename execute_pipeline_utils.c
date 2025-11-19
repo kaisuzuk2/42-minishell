@@ -6,14 +6,11 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 10:39:59 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 11:17:19 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 09:29:43 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// execute_pipeline.c
-pid_t	wait_for(pid_t lastpid);
 
 t_bool	open_pipe(t_pipefd *pipefd, int *fildes)
 {
@@ -58,7 +55,7 @@ t_bool	execute_pipe_internal(t_pipefd *pipefd, int *fildes)
 	{
 		if (pipefd->pipe_in != -1)
 			close(pipefd->pipe_in);
-		wait_for(-1);
+		wait_for(EXECUTION_ERR);
 		return (FALSE);
 	}
 	pipefd->pipe_out = fildes[1];

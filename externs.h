@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 09:14:55 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 09:46:52 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@
 // int				execute_pipeline(t_command *cmd, t_shell_env *env);
 
 // // findcmd.c
-// t_bool			search_for_command(char *cmd, t_varlist *env, char **command);
+// t_bool			search_for_command(char *cmd, t_varlist *env,
+				char **command);
 // char			*savestring(char *str);
 
 // // strvec.c
@@ -142,8 +143,8 @@
 // t_bool			is_exported(t_shell_var *env_var);
 // t_bool			is_underbar(t_shell_var *env_var);
 
-// t_bool			set_variable_items(t_shell_var *var, char *exportstr, int flg);
-
+// t_bool			set_variable_items(t_shell_var *var, char *exportstr,
+				// int flg);
 
 # include "command.h"
 # include "variables.h"
@@ -154,13 +155,13 @@
 /*										*/
 /* **************************************************************** */
 
-// tokenize.c 
+// tokenize.c
 t_token_list	*tokenize(char *line, t_shell_env *shell_env);
 
 // tokenize_utils_tokenkinds.c
-t_bool	is_shellblank(char c);
-t_bool	is_word(char *line);
-t_bool	is_quote(char c);
+t_bool			is_shellblank(char c);
+t_bool			is_word(char *line);
+t_bool			is_quote(char c);
 
 /* **************************************************************** */
 /*										*/
@@ -169,16 +170,52 @@ t_bool	is_quote(char c);
 /* **************************************************************** */
 
 // parser.c
-t_command	*parser(t_token_list *token, t_shell_env *shell_env);
+t_command		*parser(t_token_list *token, t_shell_env *shell_env);
 
 // parser_utils.c
-t_word_desc	*tokendup(t_word_desc *desc);
+t_word_desc		*tokendup(t_word_desc *desc);
 
 // parser_utils_tokenkinds.c
-t_bool	is_redirect(t_token_kind kind);
-t_bool	is_wordtoken(t_token_kind kind);
-t_bool	is_eoftoken(t_token_kind kind);
-t_bool	is_pipetoken(t_token_kind kind);
+t_bool			is_redirect(t_token_kind kind);
+t_bool			is_wordtoken(t_token_kind kind);
+t_bool			is_eoftoken(t_token_kind kind);
+t_bool			is_pipetoken(t_token_kind kind);
+
+/* **************************************************************** */
+/*										*/
+/*				expand					*/
+/*										*/
+/* **************************************************************** */
+
+// expand.c
+t_bool			expand(t_command *command, t_shell_env *shell_env);
+
+// expand_utils.c
+char			*join_string(char *res, char **document, t_varlist *env);
+
+// expand_ifs_split.c
+char			**ifs_split(char const *s);
+
+/* **************************************************************** */
+/*										*/
+/*				exec					*/
+/*										*/
+/* **************************************************************** */
+
+// execute_pipeline.c
+int	execute_pipeline(t_command *cmd, t_shell_env *shell_env);
+
+// execute_pipeline_utils.c
+int	file_isdir(char *command);
+
+// execute_wait.c
+pid_t	wait_for(pid_t lastpid);
+
+// execute_builtin.c
+int	execute_builtin_command(t_command *cmd, t_bool is_direct,
+		t_shell_env *shell_env);
+t_bool	is_builtin(char *command);
+
 
 /* **************************************************************** */
 /*										*/
@@ -187,10 +224,11 @@ t_bool	is_pipetoken(t_token_kind kind);
 /* **************************************************************** */
 
 // parser_error.c
-int	handle_parse_error(t_token_error *e, t_token_list *token,
-		t_command *command, t_shell_env *shell_env);
-void	set_parse_error(t_token_status status, const char *msg,
-		const char *detail, t_token_error *e);
-		
+int				handle_parse_error(t_token_error *e, t_token_list *token,
+					t_command *command, t_shell_env *shell_env);
+void			set_parse_error(t_token_status status, const char *msg,
+					const char *detail, t_token_error *e);
+
+
 
 #endif
