@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 11:03:04 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 09:52:46 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 11:43:24 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ static int	change_to_directory(char *newdir, t_shell_env *shell_env)
 	free(t);
 	if (!chdir(tdir))
 		return (update_pwd(tdir, shell_env));
-	sys_error("cd");
+	builtin_error("cd", newdir, strerror(errno));
 	free(tdir);
 	return (EXECUTION_FAILURE);
 }
