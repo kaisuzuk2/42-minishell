@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 08:37:57 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 14:01:48 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 14:06:20 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static t_bool	update_export(t_varlist *env, char *exportstr)
 		return (set_variable_attributes(key_env, 1), TRUE);
 	}
 	key_p = ft_strchr(exportstr, '+');
-	if (key_p && key_p[1] == '=')
+	if ((key_p && key_p[1] == '=') && key_env)
 		return (add_export(env, key_env, exportstr));
 	return (update_variable_item(env, exportstr, 1));
 }
