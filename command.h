@@ -6,15 +6,17 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 10:53:00 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 17:47:22 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 10:38:26 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef COMMAND_H
 # define COMMAND_H
 
-/* Possible values for the `flags' field of a WORD_DESC. */
-// ### TODO: フラグの内容を精査する　使いすべきものを確認する
+typedef int	t_bool;
+# define TRUE 1
+# define FALSE 0
+
 # define W_SQUOTE 0x01
 # define W_DQUOTE 0x02
 # define W_HASDOLLAR 0x04
@@ -97,10 +99,9 @@ typedef enum e_instruction
 	r_reading_until,// <<
 }						t_instruction;
 
-// ### TODO: destはfdの複製用のため不要 削除してfilenameだけにする
 typedef union u_redirectee
 {
-	// int					dest;
+	int					dest;
 	t_word_desc			*filename;
 }						t_redirectee;
 
@@ -126,7 +127,6 @@ typedef struct s_command
 {
 	struct s_command	*head;
 	t_command_type		type;
-	// command args : <ls -l> <cat -e>
 	struct s_command	*command;
 	t_word_list			*words;
 	t_redirect			*redirects;

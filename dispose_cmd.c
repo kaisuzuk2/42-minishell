@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 14:59:46 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 15:33:26 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 09:54:25 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	dispose_desc_words(t_word_list *list);
 
-void	dispose_redirects(t_redirect *list)
+static void	dispose_redirects(t_redirect *list)
 {
 	t_redirect	*t;
 

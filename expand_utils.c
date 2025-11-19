@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 11:28:03 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 09:20:53 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 10:52:28 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*join_and_free(char *s1, char *s2)
 	return (res);
 }
 
-char	*join_string(char *res, char **document,
+char	*join_until(char *res, char **document,
 		t_varlist *env)
 {
 	char	*doll_ptr;
@@ -62,7 +62,6 @@ char	*expand_quote_and_value(char **document_p, char *document,
 		t_shell_env *shell_env)
 {
 	char	*res;
-	int		i;
 	char	*rm_quote_doc;
 	char	quote;
 
@@ -72,7 +71,6 @@ char	*expand_quote_and_value(char **document_p, char *document,
 		return (NULL);
 	if (quote == SINGLE_QUOTE_CHAR || !ft_strchr(rm_quote_doc, '$'))
 		return (rm_quote_doc);
-	i = 0;
 	res = expand_string_to_string(rm_quote_doc, rm_quote_doc, shell_env);
 	return (res);
 }

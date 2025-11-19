@@ -6,16 +6,14 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 12:36:23 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 09:00:35 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 10:23:11 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GENERAL_H
 # define GENERAL_H
 
-typedef int	t_bool;
-# define TRUE 1
-# define FALSE 0
+#include "command.h"
 
 # ifndef HEREDOC_PIPESIZE
 #  ifdef PIPE_BUF
@@ -37,4 +35,11 @@ typedef struct s_pipefd
 # define OLDPWD_KEY "OLDPWD"
 # define OLDPWD "OLDPWD"
 # define CDPATH "CDPATH"
+
+// strvec.c
+char	**strvec_from_word_list(t_word_list *list);
+
+// list.c
+size_t	list_length(t_generic_list *list);
+
 #endif

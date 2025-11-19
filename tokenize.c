@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 09:08:26 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 10:50:04 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ t_token_list	*tokenize(char *line, t_shell_env *shell_env)
 	while (t->next)
 		t = t->next;
 	memset(&e, 0, sizeof(e));
-	t = make_word_list(t, eof, &e);
+	make_word_list(t, eof, &e);
 	if (handle_parse_error(&e, list, NULL, shell_env))
 	{
 		dispose_word(eof);

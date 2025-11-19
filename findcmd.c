@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 12:29:59 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/18 10:20:44 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 11:05:20 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 // findcmd_utils_bonus.c
 t_bool			is_absolute_program(char *arg);
-void			free_path(char **path);
-int				file_isdir(char *command);
 
 static char	*join_path_element(char *dir, char *arg)
 {
@@ -32,18 +30,18 @@ static char	*join_path_element(char *dir, char *arg)
 	return (full_path);
 }
 
-static t_bool	file_status(char *full_path, char **file_to_lose_on)
+static t_bool	file_status(char **full_path, char **file_to_lose_on)
 {
-	if (!access(full_path, F_OK))
+	if (!access(*full_path, F_OK))
 	{
-		if (file_isdir(full_path))
+		if (file_isdir(*full_path))
 			return (FALSE);
-		if (!access(full_path, X_OK))
+		if (!access(*full_path, X_OK))
 			return (TRUE);
 		else
 		{
 			if (!*file_to_lose_on)
-				*file_to_lose_on = savestring(full_path);
+				*file_to_lose_on = savestring(*full_path);
 			if (!*file_to_lose_on)
 				return (FALSE);
 			return (FALSE);
@@ -52,28 +50,27 @@ static t_bool	file_status(char *full_path, char **file_to_lose_on)
 	return (FALSE);
 }
 
-static char	*find_user_command_in_path(char *cmd, char **path_list,
-		char **file_to_lose_on)
+static t_bool	find_user_command_in_path(char **full_path, char *cmd,
+		char **path_list, char **file_to_lose_on)
 {
-	char	*full_path;
-	int		i;
+	int	i;
 
 	i = 0;
 	while (path_list[i])
 	{
-		full_path = join_path_element(path_list[i], cmd);
-		if (!full_path)
-			return (NULL);
+		*full_path = join_path_element(path_list[i], cmd);
+		if (!*full_path)
+			return (fatal_error("malloc", MALLOC_ERR_STR), FALSE);
 		if (file_status(full_path, file_to_lose_on))
 			break ;
 		else
 		{
-			free(full_path);
-			full_path = NULL;
+			free(*full_path);
+			*full_path = NULL;
 		}
 		i++;
 	}
-	return (full_path);
+	return (TRUE);
 }
 
 t_bool	search_for_command(char *cmd, t_varlist *env, char **command)
@@ -92,8 +89,11 @@ t_bool	search_for_command(char *cmd, t_varlist *env, char **command)
 	if (!path_list)
 		return (*command = NULL, FALSE);
 	file_to_lose_on = NULL;
-	full_path = find_user_command_in_path(cmd, path_list, &file_to_lose_on);
-	free_path(path_list);
+	full_path = NULL;
+	if (!find_user_command_in_path(&full_path, cmd, path_list,
+			&file_to_lose_on))
+		return (dispose_char_arr(path_list), *command = NULL, FALSE);
+	dispose_char_arr(path_list);
 	if (full_path)
 		return (free(file_to_lose_on), *command = full_path, TRUE);
 	if (file_to_lose_on)

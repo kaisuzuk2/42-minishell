@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:23:18 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/18 17:03:40 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 11:08:06 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,6 @@ char	*make_here_document(char *here_doc_eof, t_token_error *e)
 		return (NULL);
 	enter_prompt_mode();
 	if (e->status != ST_OK)
-		return (NULL);
+		return (free(document), NULL);
 	return (document);
 }

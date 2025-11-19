@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 12:15:04 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/14 14:34:57 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 10:54:12 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,8 @@ static char	*ft_fill_word(char const **p)
 {
 	size_t	str_len;
 	char	*res;
-	char	quate;
 
 	str_len = 0;
-	quate = 0;
 	while (is_ifs(**p))
 		(*p)++;
 	while ((*p)[str_len])

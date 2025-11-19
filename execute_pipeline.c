@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 10:31:38 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 09:30:19 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 10:17:19 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,14 @@
 // 					t_shell_env *shell_env);
 
 // execute_pipeline_utils.c
-t_bool	do_piping(int pipe_in, int pipe_out);
-void	close_pipe(t_pipefd *pipefd);
-t_bool	open_pipe(t_pipefd *pipefd, int *fildes);
+t_bool			do_piping(int pipe_in, int pipe_out);
+void			close_pipe(t_pipefd *pipefd);
+t_bool			open_pipe(t_pipefd *pipefd, int *fildes);
+t_bool			execute_pipe_internal(t_pipefd *pipefd, int *fildes);
 
 // execute_cmd.c
-int	execute_disk_command(t_command *cmd, t_pipefd pipefd,
-		t_shell_env *shell_env);
-	
+int				execute_disk_command(t_command *cmd, t_pipefd pipefd,
+					t_shell_env *shell_env);
 
 static int	execute_simple_command_internal(t_command *cmd, t_pipefd pipefd,
 		int close_fd, t_shell_env *shell_env)

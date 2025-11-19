@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 09:10:07 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/16 15:16:10 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 09:58:04 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void				sigint_prompt_handler(int s);
 int					signal_prompt_hook(void);
 int					signal_heredoc_hook(void);
 
-void	set_handler(int sig, void (*handler)(int), int flags)
+static void	set_handler(int sig, void (*handler)(int), int flags)
 {
 	struct sigaction	sa;
 

@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:12:50 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/18 17:09:19 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 10:21:29 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@
 # include <sys/wait.h>
 # include <unistd.h>
 # include "general.h"
-# include "builtin.h"
 # include "command.h"
-# include "dispose_cmd.h"
+# include "builtin.h"
+# include "dispose.h"
 # include "error.h"
 # include "externs.h"
 # include "ft_printf.h"

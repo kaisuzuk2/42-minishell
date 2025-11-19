@@ -6,148 +6,60 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 09:46:52 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 10:38:59 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXTERNS_H
 # define EXTERNS_H
 
-// # include "command.h"
-// # include "variables.h"
-
-// typedef struct s_pipefd
-// {
-// 	int			pipe_in;
-// 	int			pipe_out;
-// }				t_pipefd;
-
-// /* **************************************************************** */
-// /*										*/
-// /*				tokenize					*/
-// /*										*/
-// /* **************************************************************** */
-
-// // tokenize.c
-// t_token_list	*tokenize(char *line, t_shell_env *shell_env);
-
-// // tokenize_utils.c
-// t_bool			startswith(const char *s, const char *op);
-// void			skip_shellblank(char **line);
-
-// // token_utils_tokenkinds.c
-// t_bool			is_shellblank(char c);
-// t_bool			is_quote(char c);
-
-// /* **************************************************************** */
-// /*										*/
-// /*				parse					*/
-// /*										*/
-// /* **************************************************************** */
-
-// // parser.c
-// t_command		*parser(t_token_list *token, t_shell_env *shell_env);
-
-// // parser_utils.c
-// t_word_desc		*tokendup(t_word_desc *desc);
-
-// // parser_error.c
-// int				handle_parse_error(t_token_error *e, t_token_list *token,
-// 					t_command *command, t_shell_env *shell_env);
-// void			set_parse_error(t_token_status status, const char *msg,
-// 					const char *detail, t_token_error *e);
-
-// /* **************************************************************** */
-// /*										*/
-// /*				expand					*/
-// /*										*/
-// /* **************************************************************** */
-
-// // expand.c
-// t_bool			expand(t_command *command, t_shell_env *shell_env);
-
-// // expand_utils.c
-// t_bool			is_hasdollar(t_word_desc *desc);
-// t_bool			is_d_quote(t_word_desc *desc);
-// t_bool			is_s_quote(t_word_desc *desc);
-
-// // list.c
-// size_t			list_length(t_generic_list *list);
-
-// // execute_pipeline.c
-// int				execute_pipeline(t_command *cmd, t_shell_env *env);
-
-// // findcmd.c
-// t_bool			search_for_command(char *cmd, t_varlist *env,
-				char **command);
-// char			*savestring(char *str);
-
-// // strvec.c
-// char			**strvec_from_word_list(t_word_list *list);
-
-// // ft_mkstmp
-// int				ft_mkstemp(char **template);
-
-// // redir.c
-// int				do_redirections(t_command *cmd, t_shell_env *shell_env);
-
-// // make_cmd.c
-// char			*make_here_document(char *here_doc_eof, t_token_error *e);
-
-// // builtin.c
-// t_builtin_table	get_builtin_table(void);
-// int				execute_builtin_command(t_command *cmd, t_bool is_direct,
-// 					t_shell_env *env);
-// t_bool			is_builtin(char *command);
-
-// // builtin_echo.c
-// int				builtin_echo(t_word_list *list, t_shell_env *shell_env);
-
-// // builtin_env.c
-// int				builtin_env(t_word_list *list, t_shell_env *shell_env);
-
-// // builtin_exit.c
-// int				builtin_exit(t_word_list *list, t_shell_env *shell_env);
-
-// // builtin_export.c
-// int				builtin_export(t_word_list *list, t_shell_env *shell_env);
-
-// // builtin_unset.c
-// int				builtin_unset(t_word_list *list, t_shell_env *shell_env);
-
-// // builtin_pwd.c
-// int				builtin_pwd(t_word_list *list, t_shell_env *shell_env);
-
-// // builtin_cd.c
-// int				builtin_cd(t_word_list *list, t_shell_env *shell_env);
-
-// // env_utils.c
-// char			**get_env_arr(t_varlist *env);
-// t_shell_var		*get_shell_var(t_varlist *env, char *key);
-// char			*get_listenv(t_varlist *env, char *key);
-// t_bool			update_variable_item(t_varlist *env, char *exportstr,
-// 					t_bool flag);
-// t_bool			update_key_value(t_varlist *env, char *key, char *value,
-// 					int flag);
-// char			*get_current_working_directory(t_shell_env *shell_env);
-// t_bool			set_current_working_directory(t_shell_env *shell_env,
-// 					char *value);
-// void			set_last_status(int s, t_shell_env *env);
-// int				get_last_status(t_shell_env *env);
-
-// // dispose_env.c
-// void			dispose_env(t_shell_env *shell_env);
-// void			dispose_shell_var(t_shell_var *var);
-// void			dispose_char_arr(char **arr);
-
-// t_bool			is_exported(t_shell_var *env_var);
-// t_bool			is_underbar(t_shell_var *env_var);
-
-// t_bool			set_variable_items(t_shell_var *var, char *exportstr,
-				// int flg);
-
 # include "command.h"
 # include "variables.h"
+
+/* **************************************************************** */
+/*										*/
+/*				env					*/
+/*										*/
+/* **************************************************************** */
+
+// variables.c
+t_shell_env		*initialize_shell_variables(char **envp);
+
+// variables_set.c
+void			set_variable_attributes(t_shell_var *map, t_bool flag);
+t_bool			set_variable_exportstr(t_shell_var *map, char *env);
+t_bool			set_variable_value(t_shell_var *map, char *env);
+t_bool			set_variable_name(t_shell_var *map, char *env);
+
+// variables_get.c
+char			*get_env_value(char *env);
+char			*get_env_key(char *env);
+
+// variables_alloc.c
+char			*create_exportstr(char *key, char *value);
+t_varlist		*create_varlist(void);
+t_shell_var		*create_shell_var(void);
+
+// env.c
+t_bool			update_variable_item(t_varlist *env, char *exportstr,
+					t_bool flag);
+t_bool			update_key_value(t_varlist *env, char *key, char *value,
+					int flag);
+t_bool			is_underbar(t_shell_var *env_var);
+t_bool			is_exported(t_shell_var *env_var);
+
+// env_set.c
+t_bool			set_variable_items(t_shell_var *var, char *exportstr, int flg);
+t_bool			set_current_working_directory(t_shell_env *shell_env,
+					char *value);
+void			set_last_status(int s, t_shell_env *env);
+
+// env_get.c
+t_shell_var		*get_shell_var(t_varlist *env, char *key);
+char			*get_listenv(t_varlist *env, char *key);
+char			**get_env_arr(t_varlist *env);
+char			*get_current_working_directory(t_shell_env *shell_env);
+int				get_last_status(t_shell_env *shell_env);
 
 /* **************************************************************** */
 /*										*/
@@ -160,6 +72,7 @@ t_token_list	*tokenize(char *line, t_shell_env *shell_env);
 
 // tokenize_utils_tokenkinds.c
 t_bool			is_shellblank(char c);
+char			*is_metacharacter(char c);
 t_bool			is_word(char *line);
 t_bool			is_quote(char c);
 
@@ -191,7 +104,7 @@ t_bool			is_pipetoken(t_token_kind kind);
 t_bool			expand(t_command *command, t_shell_env *shell_env);
 
 // expand_utils.c
-char			*join_string(char *res, char **document, t_varlist *env);
+char			*join_until(char *res, char **document, t_varlist *env);
 
 // expand_ifs_split.c
 char			**ifs_split(char const *s);
@@ -202,20 +115,28 @@ char			**ifs_split(char const *s);
 /*										*/
 /* **************************************************************** */
 
+// findcmd.c
+t_bool			search_for_command(char *cmd, t_varlist *env, char **command);
+
+// findcmd_utils.c
+char			*savestring(char *str);
+
+// redir.c
+int				do_redirections(t_command *cmd, t_shell_env *shell_env);
+
 // execute_pipeline.c
-int	execute_pipeline(t_command *cmd, t_shell_env *shell_env);
+int				execute_pipeline(t_command *cmd, t_shell_env *shell_env);
 
 // execute_pipeline_utils.c
-int	file_isdir(char *command);
+int				file_isdir(char *command);
 
 // execute_wait.c
-pid_t	wait_for(pid_t lastpid);
+pid_t			wait_for(pid_t lastpid);
 
 // execute_builtin.c
-int	execute_builtin_command(t_command *cmd, t_bool is_direct,
-		t_shell_env *shell_env);
-t_bool	is_builtin(char *command);
-
+int				execute_builtin_command(t_command *cmd, t_bool is_direct,
+					t_shell_env *shell_env);
+t_bool			is_builtin(char *command);
 
 /* **************************************************************** */
 /*										*/
@@ -228,7 +149,5 @@ int				handle_parse_error(t_token_error *e, t_token_list *token,
 					t_command *command, t_shell_env *shell_env);
 void			set_parse_error(t_token_status status, const char *msg,
 					const char *detail, t_token_error *e);
-
-
 
 #endif

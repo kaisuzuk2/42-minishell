@@ -6,14 +6,19 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 14:14:25 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/16 14:15:53 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 10:21:04 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// make_cmd.cmake make
 char		*heredoc_expand(t_redirect *r, size_t *lenp,
 				t_shell_env *shell_env);
+
+// ft_mkstemp.c
+int	ft_mkstemp(char **template);
+
 
 static int	sh_mktmpfd(const char *nameroot, char **filename)
 {

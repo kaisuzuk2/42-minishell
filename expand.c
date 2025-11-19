@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 14:05:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 09:18:53 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 10:51:28 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ static t_bool	word_splitting(t_word_list **list_p, t_word_list *list,
 	char		**words;
 	int			varlen;
 	char		*value;
-	t_word_list	*next;
 
 	varlen = get_varlen(&(*document_p)[1]);
 	value = get_varvalue(shell_env, *document_p);
@@ -52,7 +51,6 @@ static t_bool	word_splitting(t_word_list **list_p, t_word_list *list,
 	free(value);
 	if (!words)
 		return (FALSE);
-	next = list->next;
 	if (!word_splitting_internal(list_p, list, words))
 		return (dispose_char_arr(words), FALSE);
 	dispose_char_arr(words);
@@ -75,7 +73,7 @@ static t_bool	expand_and_word_splitting_internal(char *document, t_word_list **l
 				tmp = join_and_free((*list_p)->word->word,
 						expand_quote_and_value(&document, document, shell_env));
 			else
-				tmp = join_string((*list_p)->word->word,
+				tmp = join_until((*list_p)->word->word,
 						&document, shell_env->env);
 			if (!tmp)
 				return (FALSE);
