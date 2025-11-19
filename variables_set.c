@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 17:31:27 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/16 09:52:49 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 13:43:39 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_bool	set_variable_name(t_shell_var *map, char *env)
 	{
 		while (env[i])
 		{
-			if (env[i] == '=')
+			if (env[i] == '=' || env[i] == '+')
 				break ;
 			i++;
 		}
@@ -47,7 +47,14 @@ t_bool	set_variable_value(t_shell_var *map, char *env)
 	value_ptr++;
 	if (!*value_ptr)
 	{
-		map->value = NULL;
+		if (ft_strchr(env, '+'))
+		{
+			map->value = ft_strdup("");
+			if (!map->value)
+				return (FALSE);
+		}
+		else
+			map->value = NULL;
 		return (TRUE);
 	}
 	map->value = savestring(value_ptr);

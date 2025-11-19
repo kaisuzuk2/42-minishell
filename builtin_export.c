@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 08:37:57 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/18 10:16:54 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 14:01:48 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,7 @@ static t_bool	update_export(t_varlist *env, char *exportstr)
 {
 	char		*key;
 	t_shell_var	*key_env;
-	char		*new_exportstr;
-	char		*value;
-	t_bool		res;
+	char		*key_p;
 
 	key = get_env_key(exportstr);
 	if (!key)
@@ -90,9 +88,10 @@ static t_bool	update_export(t_varlist *env, char *exportstr)
 			return (update_variable_item(env, exportstr, 1));
 		return (set_variable_attributes(key_env, 1), TRUE);
 	}
-	if (!ft_strchr(exportstr, '+'))
-		return (update_variable_item(env, exportstr, 1));
-	return (add_export(env, key_env, exportstr));
+	key_p = ft_strchr(exportstr, '+');
+	if (key_p && key_p[1] == '=')
+		return (add_export(env, key_env, exportstr));
+	return (update_variable_item(env, exportstr, 1));
 }
 
 int	builtin_export(t_word_list *list, t_shell_env *shell_env)
