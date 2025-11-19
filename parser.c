@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 13:13:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 09:09:16 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 09:13:38 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,14 @@
 // 						t_token_list **token_p, t_token_error *e);
 
 
+//parser_utils.c
+t_bool	is_unexpected_token(t_command *cmd, t_token_list *token);
+t_command	*new_command(t_command_type type);
+
+// parser_redirect.c
+t_redirect	*connect_redirection(t_command *command, t_token_list **token_p,
+		t_token_error *e);
+		
 
 static t_word_list	*append_command_words(t_command *command,
 		t_token_list **token_p, t_token_list *token)

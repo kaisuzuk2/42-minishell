@@ -6,17 +6,17 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 13:32:37 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/14 11:19:56 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 09:10:30 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // parser_utils_tokenkind.c
-t_bool		is_wordtoken(t_token_kind kind);
-t_bool		is_eoftoken(t_token_kind kind);
-t_bool		is_redirect(t_token_kind kind);
-t_bool		is_pipetoken(t_token_kind kind);
+// t_bool		is_wordtoken(t_token_kind kind);
+// t_bool		is_eoftoken(t_token_kind kind);
+// t_bool		is_redirect(t_token_kind kind);
+// t_bool		is_pipetoken(t_token_kind kind);
 
 t_word_desc	*tokendup(t_word_desc *desc)
 {

@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:30 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 09:06:10 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 09:14:55 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,5 +162,35 @@ t_bool	is_shellblank(char c);
 t_bool	is_word(char *line);
 t_bool	is_quote(char c);
 
+/* **************************************************************** */
+/*										*/
+/*				parse					*/
+/*										*/
+/* **************************************************************** */
+
+// parser.c
+t_command	*parser(t_token_list *token, t_shell_env *shell_env);
+
+// parser_utils.c
+t_word_desc	*tokendup(t_word_desc *desc);
+
+// parser_utils_tokenkinds.c
+t_bool	is_redirect(t_token_kind kind);
+t_bool	is_wordtoken(t_token_kind kind);
+t_bool	is_eoftoken(t_token_kind kind);
+t_bool	is_pipetoken(t_token_kind kind);
+
+/* **************************************************************** */
+/*										*/
+/*				error					*/
+/*										*/
+/* **************************************************************** */
+
+// parser_error.c
+int	handle_parse_error(t_token_error *e, t_token_list *token,
+		t_command *command, t_shell_env *shell_env);
+void	set_parse_error(t_token_status status, const char *msg,
+		const char *detail, t_token_error *e);
+		
 
 #endif
