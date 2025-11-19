@@ -6,7 +6,7 @@
 #    By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/07 14:10:24 by kaisuzuk          #+#    #+#              #
-#    Updated: 2025/11/18 16:56:31 by kaisuzuk         ###   ########.fr        #
+#    Updated: 2025/11/19 14:56:41 by kaisuzuk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -100,14 +100,12 @@ $(NAME): $(FT_NAME) $(OBJS)
 %.o: %.c
 	$(CC) -c  $(INC) -g $< -o $@
 
-$(FT_NAME): 
-	git clone $(FT_URL) $(FT_NAME)
-
 clean:
-	$(RM) $(FT_NAME)
+	$(MAKE) $(FT_NAME) clean
 	$(RM) $(OBJS)
 
 fclean: clean
+	$(MAKE) $(FT_NAME) fclean
 	$(RM) $(NAME)
 
 re: fclean all
