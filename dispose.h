@@ -6,12 +6,12 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 15:04:33 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 12:21:26 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 14:14:12 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DISPOSE_CMD_H
-# define DISPOSE_CMD_H
+#ifndef DISPOSE_H
+# define DISPOSE_H
 
 # include "command.h"
 # include "variables.h"

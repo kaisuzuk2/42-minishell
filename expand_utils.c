@@ -6,15 +6,14 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 11:28:03 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 12:20:52 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 14:14:35 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // expand_quote_removal.c
-char	*expand_quote(char **document_p, char *document);
-
+char				*expand_quote(char **document_p, char *document);
 
 char	*join_and_free(char *s1, char *s2)
 {
@@ -28,8 +27,7 @@ char	*join_and_free(char *s1, char *s2)
 	return (res);
 }
 
-char	*join_until(char *res, char **document,
-		t_varlist *env)
+char	*join_until(char *res, char **document, t_varlist *env)
 {
 	char	*doll_ptr;
 	char	*tmp;

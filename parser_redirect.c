@@ -6,17 +6,17 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 11:48:27 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 10:10:09 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 14:15:48 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // expand_quote_removal.c
-char			*quote_removal_delimiter(char *delimiter);
+char				*quote_removal_delimiter(char *delimiter);
 
 // make_cmd.c
-char	*make_here_document(char *here_doc_eof, t_token_error *e);
+char				*make_here_document(char *here_doc_eof, t_token_error *e);
 
 static t_bool	set_heredoc(t_redirect *redir, t_word_desc *desc,
 		t_token_error *e)
@@ -50,14 +50,14 @@ static t_bool	set_redirect(t_redirect *redir, t_redirect_info info,
 
 static t_redirect	*make_redirection(t_token_list **token, t_token_error *e)
 {
+	t_redirect				*redirect;
+	int						i;
 	const t_redirect_info	redir_table[] = {
 	{TK_LESS, r_input_direction, O_RDONLY},
 	{TK_LESS_LESS, r_reading_until, 0},
 	{TK_GREAT, r_output_direction, O_WRONLY | O_CREAT | O_TRUNC},
 	{TK_GREAT_GREAT, r_appending_to, O_WRONLY | O_CREAT | O_APPEND},
 	};
-	t_redirect				*redirect;
-	int						i;
 
 	redirect = (t_redirect *)xcalloc(sizeof(t_redirect), 1);
 	if (!redirect)

@@ -6,24 +6,24 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 12:18:51 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 14:12:47 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// tokenize_utils.c 
-void	skip_shellblank(char **line);
+// tokenize_utils.c
+void				skip_shellblank(char **line);
 
-// tokenize_make.c 
-t_word_desc	*make_token(char **line, size_t len, t_token_kind kind,
-		t_token_error *e);
-t_word_desc	*make_word_token(char **line_p, char *line, t_token_error *e);
-t_word_desc	*make_operator_token(char **line_p, char *line, t_token_error *e);
-t_token_list	*make_word_list(t_token_list *cur, t_word_desc *desc,
-		t_token_error *e);
-	
-
+// tokenize_make.c
+t_word_desc			*make_token(char **line, size_t len, t_token_kind kind,
+						t_token_error *e);
+t_word_desc			*make_word_token(char **line_p, char *line,
+						t_token_error *e);
+t_word_desc			*make_operator_token(char **line_p, char *line,
+						t_token_error *e);
+t_token_list		*make_word_list(t_token_list *cur, t_word_desc *desc,
+						t_token_error *e);
 
 static t_token_list	*make_word_list_wrapper(t_token_list *cur, char **line_p,
 		char *line, t_token_error *e)

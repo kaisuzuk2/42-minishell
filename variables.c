@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 08:02:57 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 12:18:38 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 14:11:38 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,8 @@ static t_varlist	*set_variable_item(t_shell_env *shell_env, char **envp)
 		cur->var = create_shell_var();
 		if (!cur->var)
 			return (dispose_varlist(head.next), NULL);
-		if (!set_variable_item_internal(cur->var, envp[i]))
+		if (!set_variable_item_internal(cur->var, envp[i++]))
 			return (dispose_varlist(head.next), NULL);
-		i++;
 	}
 	return (head.next);
 }

@@ -6,27 +6,25 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 14:05:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 12:20:43 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 14:13:45 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // expand_utils.c
-t_bool	word_splitting_internal(t_word_list **list_p, t_word_list *list,
-		char **ifs_split);
-char	*expand_quote_and_value(char **document_p, char *document,
-		t_shell_env *shell_env);
-char	*join_and_free(char *s1, char *s2);
-
-
+t_bool			word_splitting_internal(t_word_list **list_p, t_word_list *list,
+					char **ifs_split);
+char			*expand_quote_and_value(char **document_p, char *document,
+					t_shell_env *shell_env);
+char			*join_and_free(char *s1, char *s2);
 
 static t_bool	word_splitting(t_word_list **list_p, t_word_list *list,
 		char **document_p, t_shell_env *shell_env)
 {
-	char		**words;
-	int			varlen;
-	char		*value;
+	char	**words;
+	int		varlen;
+	char	*value;
 
 	varlen = get_varlen(&(*document_p)[1]);
 	value = get_varvalue(shell_env, *document_p);
@@ -43,8 +41,8 @@ static t_bool	word_splitting(t_word_list **list_p, t_word_list *list,
 	return (TRUE);
 }
 
-static t_bool	expand_and_word_splitting_internal(char *document, t_word_list **list_p,
-		t_word_list *list, t_shell_env *shell_env)
+static t_bool	expand_and_word_splitting_internal(char *document,
+		t_word_list **list_p, t_word_list *list, t_shell_env *shell_env)
 {
 	char	*document_p;
 	char	*tmp;
@@ -58,8 +56,8 @@ static t_bool	expand_and_word_splitting_internal(char *document, t_word_list **l
 				tmp = join_and_free((*list_p)->word->word,
 						expand_quote_and_value(&document, document, shell_env));
 			else
-				tmp = join_until((*list_p)->word->word,
-						&document, shell_env->env);
+				tmp = join_until((*list_p)->word->word, &document,
+						shell_env->env);
 			if (!tmp)
 				return (FALSE);
 			(*list_p)->word->word = tmp;
@@ -71,8 +69,8 @@ static t_bool	expand_and_word_splitting_internal(char *document, t_word_list **l
 	return (TRUE);
 }
 
-static t_bool	expand_and_word_splitting(t_word_list **list_p, t_word_list *list,
-		t_shell_env *shell_env)
+static t_bool	expand_and_word_splitting(t_word_list **list_p,
+		t_word_list *list, t_shell_env *shell_env)
 {
 	int		i;
 	int		varlen;

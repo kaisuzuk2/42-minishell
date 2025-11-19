@@ -6,14 +6,14 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 12:36:23 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 10:23:11 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 14:13:31 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GENERAL_H
 # define GENERAL_H
 
-#include "command.h"
+# include "command.h"
 
 # ifndef HEREDOC_PIPESIZE
 #  ifdef PIPE_BUF
@@ -25,9 +25,9 @@
 
 typedef struct s_pipefd
 {
-	int			pipe_in;
-	int			pipe_out;
-}				t_pipefd;
+	int	pipe_in;
+	int	pipe_out;
+}		t_pipefd;
 
 # define PATH_KEY "PATH="
 # define PWD_KEY "PWD="
