@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 10:39:48 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/14 10:17:41 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 09:03:20 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ void	set_token_flg(char *line, t_word_desc *desc)
 		desc->flag |= W_HASDOLLAR;
 }
 
-t_bool	startswith(const char *s, const char *op)
-{
-	return (ft_strncmp(s, op, ft_strlen(op)));
-}
+// t_bool	startswith(const char *s, const char *op)
+// {
+// 	return (ft_strncmp(s, op, ft_strlen(op)));
+// }
 
 t_bool	is_match_op(char *str, size_t len, const char *op)
 {

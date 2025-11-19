@@ -6,24 +6,38 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:48:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/14 10:17:19 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 09:08:26 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// tokenize_make.c
-t_word_desc			*make_word_token(char **line_p, char *line,
-						t_token_error *e);
-t_word_desc			*make_operator_token(char **line_p, char *line,
-						t_token_error *e);
-t_word_desc			*make_token(char **line, size_t len, t_token_kind kind,
-						t_token_error *e);
-t_token_list		*make_word_list(t_token_list *cur, t_word_desc *desc,
-						t_token_error *e);
+// // tokenize_make.c
+// t_word_desc			*make_word_token(char **line_p, char *line,
+// 						t_token_error *e);
+// t_word_desc			*make_operator_token(char **line_p, char *line,
+// 						t_token_error *e);
+// t_word_desc			*make_token(char **line, size_t len, t_token_kind kind,
+// 						t_token_error *e);
+// t_token_list		*make_word_list(t_token_list *cur, t_word_desc *desc,
+// 						t_token_error *e);
 
-// tokenize_utils_tokenkinds.c
-t_bool				is_word(char *line);
+// // tokenize_utils_tokenkinds.c
+// t_bool				is_word(char *line);
+
+
+// tokenize_utils.c 
+void	skip_shellblank(char **line);
+
+// tokenize_make.c 
+t_word_desc	*make_token(char **line, size_t len, t_token_kind kind,
+		t_token_error *e);
+t_word_desc	*make_word_token(char **line_p, char *line, t_token_error *e);
+t_word_desc	*make_operator_token(char **line_p, char *line, t_token_error *e);
+t_token_list	*make_word_list(t_token_list *cur, t_word_desc *desc,
+		t_token_error *e);
+	
+
 
 static t_token_list	*make_word_list_wrapper(t_token_list *cur, char **line_p,
 		char *line, t_token_error *e)
@@ -43,7 +57,7 @@ static t_token_list	*make_word_list_wrapper(t_token_list *cur, char **line_p,
 	return (list);
 }
 
-t_token_list	*append_token(char *line, t_shell_env *shell_env)
+static t_token_list	*append_token(char *line, t_shell_env *shell_env)
 {
 	t_token_list	head;
 	t_token_list	*cur;
