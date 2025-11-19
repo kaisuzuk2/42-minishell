@@ -6,17 +6,13 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 11:28:03 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 10:52:28 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 12:20:52 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// char				*expand_tilda(char *res, char **document, t_varlist *env);
-// char				*expand_quote(char **document_p, char *document);
-
 // expand_quote_removal.c
-
 char	*expand_quote(char **document_p, char *document);
 
 

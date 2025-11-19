@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 10:17:13 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 09:50:29 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 12:21:54 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ typedef struct s_builtin_table
 
 # define EX_CONNECT 0
 # define EX_SIMPLE 1
+
+#define VALID_ECHO_OPTIONS "n"
 
 int	builtin_unset(t_word_list *list, t_shell_env *shell_env);
 int	builtin_pwd(t_word_list *list, t_shell_env *shell_env);

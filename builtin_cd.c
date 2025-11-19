@@ -6,28 +6,11 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 11:03:04 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 12:15:57 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 12:22:06 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// // builtin_cd_utils.c
-// t_bool		is_interpret_home(t_word_list *list);
-// t_bool		is_interpret_oldpwd(t_word_list *list);
-// t_bool		is_interpret_cd(t_word_list *list);
-// t_bool		valid_cd_path(t_word_list *list);
-// t_bool		is_same_file(const char *path1, const char *path2,
-// 				struct stat *stp1, struct stat *stp2);
-// t_bool		is_absolute_pathname(const char *string);
-
-// // buintin_cd_canonpath.c
-// char		*sh_canonpath(char *tmp_path);
-// t_bool		is_pathsep(char c);
-
-// char		*get_interpret_cd(t_word_list *list, t_varlist *env);
-
-// int			update_pwd(char *tdir, t_shell_env *shell_env);
 
 // builtin_cd_utils.c
 t_bool		valid_cd_path(t_word_list *list);

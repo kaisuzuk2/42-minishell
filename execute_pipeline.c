@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 10:31:38 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 10:17:19 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 12:21:09 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,6 @@
    If so, and it isn't a directory, then execute its contents as
    a shell script.
 */
-// int				file_isdir(char *command);
-// t_bool			do_piping(int pipe_in, int pipe_out);
-// void			close_pipe(t_pipefd *pipefd);
-// int				open_pipe(t_pipefd *pipefd, int *fildes);
-// int				execute_pipe_internal(t_pipefd *pipefd, int *fildes);
-
-// pid_t			wait_for(pid_t lastpid);
-
-// int				execute_disk_command(t_command *cmd, t_pipefd pipefd,
-// 					t_shell_env *shell_env);
 
 // execute_pipeline_utils.c
 t_bool			do_piping(int pipe_in, int pipe_out);

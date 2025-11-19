@@ -6,13 +6,11 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 07:58:42 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 13:32:55 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 12:21:50 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-#define VALID_ECHO_OPTIONS "n"
 
 static t_bool	is_option(t_word_list **list_p, t_word_list *list)
 {

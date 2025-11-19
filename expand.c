@@ -6,26 +6,11 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 14:05:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 10:51:28 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/19 12:20:43 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// exoand_utils.c
-// char			*join_and_free(char *s1, char *s2);
-// char			*join_string(char *res,
-// 					char **document, t_varlist *env);
-// char			*expand_quote_and_value(char **document_p, char *document,
-// 					t_shell_env *shell_env);
-// t_bool			word_splitting_internal(t_word_list **list_p, t_word_list *list,
-// 					char **ifs_split);
-
-// // expand_quote_removal.c
-// char			*string_quote_removal(char *string, char quote);
-
-// // expand_word_splitting.c
-// char			**ifs_split(char const *s);
 
 // expand_utils.c
 t_bool	word_splitting_internal(t_word_list **list_p, t_word_list *list,
