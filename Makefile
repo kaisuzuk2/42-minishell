@@ -6,7 +6,7 @@
 #    By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/07 14:10:24 by kaisuzuk          #+#    #+#              #
-#    Updated: 2025/11/19 14:56:41 by kaisuzuk         ###   ########.fr        #
+#    Updated: 2025/11/19 14:59:19 by kaisuzuk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,14 +16,10 @@ CC		=	cc
 FLAG	=	-Wall -Werror -Wextra
 INC		=	-Iincludes
 
-SANITIZE	=	-fsanitize=address
-DEBUG	=	-g
-
 MAKE	=	make -C
 RM		=	rm -rf
 
 FT_NAME	=	libftprintf
-FT_URL	=	https://github.com/kaisuzuk2/ft_dprintf.git
 INC		+=	-I$(FT_NAME)/includes
 INC		+=	-I$(FT_NAME)/libft
 
@@ -95,10 +91,10 @@ all: $(NAME)
 
 $(NAME): $(FT_NAME) $(OBJS)
 	$(MAKE) $(FT_NAME)
-	$(CC) -o $(NAME) $(DEBUG) $(FLAG) $(INC) $(OBJS) -lreadline -L$(FT_NAME) -lftprintf
+	$(CC) -o $(NAME) $(FLAG) $(INC) $(OBJS) -lreadline -L$(FT_NAME) -lftprintf
 
 %.o: %.c
-	$(CC) -c  $(INC) -g $< -o $@
+	$(CC) -c  $(INC) $< -o $@
 
 clean:
 	$(MAKE) $(FT_NAME) clean
