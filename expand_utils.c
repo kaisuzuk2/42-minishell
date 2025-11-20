@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 11:28:03 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/20 11:39:18 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/20 14:53:05 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*join_and_free(char *s1, char *s2)
 	char	*res;
 
 	if (!s1 || !s2)
-		return (fatal_error("malloc", MALLOC_ERR_STR), NULL);
+		return (NULL);
 	res = ft_strjoin(s1, s2);
 	free(s1);
 	free(s2);
@@ -46,7 +46,7 @@ char	*join_until(char *res, char **document, t_varlist *env)
 		i++;
 	tmp = ft_substr(*document, 0, i);
 	if (!tmp)
-		return (free(res),fatal_error("malloc", MALLOC_ERR_STR) ,NULL);
+		return (free(res) ,NULL);
 	res_tmp = join_and_free(res, tmp);
 	*document = &(*document)[i];
 	return (res_tmp);
@@ -99,12 +99,12 @@ t_bool	word_splitting_internal(t_word_list **list_p, t_word_list *list,
 	list->word->word = join_and_free(list->word->word,
 			savestring(ifs_split[i++]));
 	if (!list->word->word)
-		return (fatal_error("malloc", MALLOC_ERR_STR), FALSE);
+		return (FALSE);
 	while (ifs_split[i])
 	{
 		new = new_node(ifs_split[i]);
 		if (!new)
-			return (fatal_error("malloc", MALLOC_ERR_STR), FALSE);
+			return (FALSE);
 		list->next = new;
 		list = list->next;
 		i++;

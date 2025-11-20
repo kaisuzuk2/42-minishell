@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 14:05:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/20 11:33:55 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/20 14:52:27 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static t_bool	word_splitting(t_word_list **list_p, t_word_list *list,
 	varlen = get_varlen(&(*document_p)[1]);
 	value = get_varvalue(shell_env, *document_p);
 	if (!value)
-		return (fatal_error("malloc", MALLOC_ERR_STR), FALSE);
+		return (FALSE);
 	words = ifs_split(value);
 	free(value);
 	if (!words)
@@ -78,11 +78,11 @@ static t_bool	expand_and_word_splitting(t_word_list **list_p,
 
 	document = ft_strdup((*list_p)->word->word);
 	if (!document)
-		return (fatal_error("malloc", MALLOC_ERR_STR), FALSE);
+		return (FALSE);
 	free((*list_p)->word->word);
 	(*list_p)->word->word = ft_strdup("");
 	if (!(*list_p)->word->word)
-		return (free(document), fatal_error("malloc", MALLOC_ERR_STR), FALSE);
+		return (free(document), FALSE);
 	return (expand_and_word_splitting_internal(document, list_p, list,
 			shell_env));
 }
