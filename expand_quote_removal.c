@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 13:49:10 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/14 14:34:49 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/20 11:32:29 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ char	*expand_quote(char **document_p, char *document)
 		i++;
 	tmp = ft_substr(document, 0, i);
 	if (!tmp)
-		return (NULL);
+		return (fatal_error("malloc", MALLOC_ERR_STR), NULL);
 	res = string_quote_removal(tmp, quote);
 	if (!res)
-		return (free(tmp), NULL);
+		return (free(tmp), fatal_error("malloc", MALLOC_ERR_STR), NULL);
 	free(tmp);
 	*document_p = &document[i + 1];
 	return (res);

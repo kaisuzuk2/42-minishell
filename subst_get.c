@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 13:57:58 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/18 10:20:51 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/20 11:37:34 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,7 @@ char	*get_varvalue(t_shell_env *shell_env, char *doll_ptr)
 			varvalue = savestring(tmp_varvalue);
 	}
 	free(varname);
+	if (!varvalue)
+		return (fatal_error("malloc", MALLOC_ERR_STR), NULL);
 	return (varvalue);
 }

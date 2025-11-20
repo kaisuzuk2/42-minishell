@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 13:32:37 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 12:20:13 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/20 11:35:53 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_word_desc	*tokendup(t_word_desc *desc)
 		return (NULL);
 	new->word = ft_strdup(desc->word);
 	if (!new->word)
-		return (free(new), NULL);
+		return (free(new), fatal_error("malloc", MALLOC_ERR_STR), NULL);
 	new->kind = desc->kind;
 	new->flag = desc->flag;
 	return (new);
