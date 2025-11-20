@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 10:53:00 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 10:38:26 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/20 13:54:16 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ typedef struct s_glist
 /*										*/
 /* **************************************************************** */
 
-// local errno
 typedef enum e_token_status
 {
 	ST_OK,
@@ -105,7 +104,6 @@ typedef union u_redirectee
 	t_word_desc			*filename;
 }						t_redirectee;
 
-// parser.c set for redirect by table
 typedef struct s_redirect_info
 {
 	t_token_kind		kind;
