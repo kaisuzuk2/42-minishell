@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 11:28:03 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/20 14:53:05 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/21 09:13:11 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*join_until(char *res, char **document, t_varlist *env)
 		i++;
 	tmp = ft_substr(*document, 0, i);
 	if (!tmp)
-		return (free(res) ,NULL);
+		return (free(res), NULL);
 	res_tmp = join_and_free(res, tmp);
 	*document = &(*document)[i];
 	return (res_tmp);
