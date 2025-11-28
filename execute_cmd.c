@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 11:12:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/28 10:46:46 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/28 10:48:58 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,3 @@ int	execute_disk_command(t_command *cmd, t_pipefd pipefd,
 			fatal_error("malloc", MALLOC_ERR_STR), EX_FATAL_ERROR);
 	return (shell_execve(command, arg, envarr));
 }
-

@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 16:55:03 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/28 10:45:49 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/28 10:48:41 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ t_bool	update_shlvl(t_shell_env *shell_env)
 	free(shlvl_txt);
 	return (TRUE);
 }
-
 
 t_bool	init_path(t_shell_env *shell_env, char **envp)
 {
