@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 16:55:03 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/18 16:55:54 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/28 10:45:49 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,6 @@ t_bool	init_pwd(t_shell_env *shell_env)
 t_bool	init_shlvl(t_shell_env *shell_env)
 {
 	t_shell_var	*var;
-	int			shlvl_int;
-	char		*shlvl_txt;
-	char		*shlvl_val;
 
 	var = get_shell_var(shell_env->env, "SHLVL");
 	if (!var)
@@ -51,6 +48,19 @@ t_bool	init_shlvl(t_shell_env *shell_env)
 			return (FALSE);
 		return (TRUE);
 	}
+	return (TRUE);
+}
+
+t_bool	update_shlvl(t_shell_env *shell_env)
+{
+	int			shlvl_int;
+	char		*shlvl_txt;
+	char		*shlvl_val;
+	t_shell_var	*var;
+
+	var = get_shell_var(shell_env->env, "SHLVL");
+	if (!var)
+		return (init_shlvl(shell_env));
 	shlvl_int = ft_atoi(var->value);
 	shlvl_int++;
 	shlvl_val = ft_itoa(shlvl_int);
@@ -65,6 +75,7 @@ t_bool	init_shlvl(t_shell_env *shell_env)
 	free(shlvl_txt);
 	return (TRUE);
 }
+
 
 t_bool	init_path(t_shell_env *shell_env, char **envp)
 {
