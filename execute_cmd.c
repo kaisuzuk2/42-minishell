@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 11:12:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 10:12:07 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/11/28 10:46:46 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,14 @@ int	execute_disk_command(t_command *cmd, t_pipefd pipefd,
 			&command))
 		return (fatal_error(cmd->command->words->word->word, NOTFOUND_STR),
 			EX_NOTFOUND);
+	if (!update_key_value(shell_env->env, "_", command, 1)
+		|| !update_shlvl(shell_env))
+		return (free(command), EX_FATAL_ERROR);
 	arg = strvec_from_word_list(cmd->command->words);
 	envarr = get_env_arr(shell_env->env);
 	if (!command || !envarr || !arg)
 		return (free(command), dispose_char_arr(envarr), dispose_char_arr(arg),
 			fatal_error("malloc", MALLOC_ERR_STR), EX_FATAL_ERROR);
-	if (!update_key_value(shell_env->env, "_", command, 1))
-		return (free(command), EX_FATAL_ERROR);
 	return (shell_execve(command, arg, envarr));
 }
+
