@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 10:31:38 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 12:21:09 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/12/05 02:17:34 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ t_bool			open_pipe(t_pipefd *pipefd, int *fildes);
 t_bool			execute_pipe_internal(t_pipefd *pipefd, int *fildes);
 
 // execute_cmd.c
-int				execute_disk_command(t_command *cmd, t_pipefd pipefd,
-					t_shell_env *shell_env);
+int				execute_disk_command(t_command *cmd, t_shell_env *shell_env);
 
 static int	execute_simple_command_internal(t_command *cmd, t_pipefd pipefd,
 		int close_fd, t_shell_env *shell_env)
@@ -47,7 +46,7 @@ static int	execute_simple_command_internal(t_command *cmd, t_pipefd pipefd,
 		dispose_env(shell_env);
 		exit(EXECUTION_FAILURE);
 	}
-	status = execute_disk_command(cmd, pipefd, shell_env);
+	status = execute_disk_command(cmd, shell_env);
 	dispose_command(cmd->head);
 	dispose_env(shell_env);
 	exit(status);
@@ -56,8 +55,7 @@ static int	execute_simple_command_internal(t_command *cmd, t_pipefd pipefd,
 static pid_t	execute_simple_command(t_pipefd pipefd, t_command *cmd,
 		int close_fd, t_shell_env *shell_env)
 {
-	pid_t			pid;
-	t_builtin_table	builtin_info;
+	pid_t	pid;
 
 	pid = fork();
 	if (pid < 0)
@@ -101,7 +99,6 @@ static pid_t	execute_pipeline_internal(t_command *cmd, t_pipefd pipefd,
 
 int	execute_pipeline(t_command *cmd, t_shell_env *shell_env)
 {
-	int			fildes[2];
 	t_pipefd	pipefd;
 	pid_t		lastpid;
 	t_command	*cur_cmd;

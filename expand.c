@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 14:05:49 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/20 14:52:27 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/12/05 02:13:51 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,6 @@ static t_bool	expand_and_word_splitting_internal(char *document,
 static t_bool	expand_and_word_splitting(t_word_list **list_p,
 		t_word_list *list, t_shell_env *shell_env)
 {
-	int		i;
-	int		varlen;
 	char	*document;
 
 	document = ft_strdup((*list_p)->word->word);

@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 11:28:03 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/21 09:13:11 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/12/05 02:14:16 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,9 @@ char	*join_and_free(char *s1, char *s2)
 
 char	*join_until(char *res, char **document, t_varlist *env)
 {
-	char	*doll_ptr;
 	char	*tmp;
 	char	*res_tmp;
 	int		i;
-	char	*home_value;
 
 	tmp = expand_tilda(res, document, env);
 	free(res);

@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 17:27:54 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 08:55:26 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/12/05 02:21:47 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ t_bool	is_underbar(t_shell_var *env_var)
 
 static t_bool	add_variable_item(t_varlist *env, char *exportstr, int flag)
 {
-	t_varlist	*cur;
-
 	while (env->next)
 		env = env->next;
 	env->next = create_varlist();

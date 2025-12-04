@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 10:56:10 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 12:34:51 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/12/05 02:20:54 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	builtin_pwd(t_word_list *list, t_shell_env *shell_env)
 {
 	char	*directory;
 
+	(void)list;
 	if (shell_env->tcwd)
 	{
 		ft_dprintf(STDOUT_FILENO, "%s\n", shell_env->tcwd);

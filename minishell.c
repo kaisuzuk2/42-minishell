@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:13:31 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/21 09:12:55 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/12/05 02:11:26 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ static void	initialize_readline(void)
 
 static char	*read_command(t_shell_env *shell_env)
 {
-	int		last_status;
 	char	*line;
 
 	line = readline(PS1);
@@ -80,7 +79,6 @@ static int	reader_loop(t_shell_env *shell_env)
 
 int	main(int argc, char *argv[], char *envp[])
 {
-	char		*line;
 	t_shell_env	*shell_env;
 	int			last_status;
 

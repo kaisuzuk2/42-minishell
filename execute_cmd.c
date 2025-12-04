@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 11:12:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/28 10:48:58 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/12/05 02:16:13 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 static int	shell_execve(char *command, char **arg, char **env)
 {
 	int	i;
-	int	status;
 
 	execve(command, arg, env);
 	i = errno;
@@ -41,8 +40,7 @@ static int	shell_execve(char *command, char **arg, char **env)
 	return (EX_NOEXEC);
 }
 
-int	execute_disk_command(t_command *cmd, t_pipefd pipefd,
-		t_shell_env *shell_env)
+int	execute_disk_command(t_command *cmd, t_shell_env *shell_env)
 {
 	char	*command;
 	char	**arg;

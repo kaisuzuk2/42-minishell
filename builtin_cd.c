@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 11:03:04 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/12/05 01:59:15 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/12/05 02:21:11 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ static int	sh_makepath(char *path, char *dir, char **res)
 
 static int	make_absolute(char *dirname, char *cwd, char **t)
 {
-	int	status;
-
 	if (cwd == 0 || dirname[0] == '/')
 	{
 		*t = savestring(dirname);

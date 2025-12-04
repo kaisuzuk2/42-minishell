@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 15:22:14 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 11:12:04 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/12/05 02:20:01 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ static intmax_t	get_exitstat(t_word_list *list)
 
 static int	exit_or_logout(t_word_list *list, t_shell_env *shell_env)
 {
-	char	*arg;
 	int		status;
 
 	if (!list)

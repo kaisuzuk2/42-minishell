@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 15:21:57 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/15 15:24:36 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/12/05 02:21:31 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ char	*get_env_key(char *env)
 char	*get_env_value(char *env)
 {
 	char	*res;
-	int		i;
 	char	*value_ptr;
 
 	value_ptr = ft_strchr(env, '=');

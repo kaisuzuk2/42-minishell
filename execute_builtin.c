@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 10:13:08 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 09:32:28 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/12/05 02:18:32 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static t_builtin_table	get_builtin_table(void)
 
 static t_builtin_func	*get_builtin_func(const char *name)
 {
-	int				i;
+	size_t			i;
 	t_builtin_table	info;
 
 	info = get_builtin_table();
@@ -53,7 +53,7 @@ static t_builtin_func	*get_builtin_func(const char *name)
 
 t_bool	is_builtin(char *command)
 {
-	int				i;
+	size_t			i;
 	t_builtin_table	builtin_info;
 
 	builtin_info = get_builtin_table();

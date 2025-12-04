@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 17:40:03 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/18 17:46:10 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/12/05 02:20:31 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ static void	map_swap(t_shell_var_map *m1, t_shell_var_map *m2)
 
 void	sort_var_arr(t_shell_var_map *env, size_t size)
 {
-	int	i;
-	int	j;
+	size_t	i;
+	size_t	j;
 
 	i = 0;
 	if (size <= 0)

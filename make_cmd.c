@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:23:18 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 11:08:06 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/12/05 02:17:49 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ static t_bool	read_here_document(char **document, char *here_doc_eof,
 
 char	*make_here_document(char *here_doc_eof, t_token_error *e)
 {
-	char	*buf;
 	char	*document;
 
 	g_signal_state = SIGSTATE_NONE;

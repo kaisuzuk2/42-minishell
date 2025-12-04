@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 07:58:42 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/19 12:21:50 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/12/05 02:19:32 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int	builtin_echo(t_word_list *list, t_shell_env *env)
 {
 	const t_bool	display_return = is_option(&list, list);
 
+	(void)env;
 	while (list)
 	{
 		ft_dprintf(STDOUT_FILENO, list->word->word);

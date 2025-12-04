@@ -6,7 +6,7 @@
 #    By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/07 14:10:24 by kaisuzuk          #+#    #+#              #
-#    Updated: 2025/11/19 14:59:19 by kaisuzuk         ###   ########.fr        #
+#    Updated: 2025/12/05 02:10:51 by kaisuzuk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -94,7 +94,7 @@ $(NAME): $(FT_NAME) $(OBJS)
 	$(CC) -o $(NAME) $(FLAG) $(INC) $(OBJS) -lreadline -L$(FT_NAME) -lftprintf
 
 %.o: %.c
-	$(CC) -c  $(INC) $< -o $@
+	$(CC) -c  $(INC) $(FLAG) $< -o $@
 
 clean:
 	$(MAKE) $(FT_NAME) clean
