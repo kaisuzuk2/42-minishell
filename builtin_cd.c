@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 11:03:04 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/12/05 01:42:49 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/12/05 01:59:15 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,12 +89,9 @@ static int	change_to_directory(char *newdir, t_shell_env *shell_env)
 	if (!chdir(tdir))
 	{
 		free(t);
-		update_pwd(tdir, shell_env);
-		free(tdir);
+		return (update_pwd(tdir, shell_env));
 	}
-	free(t);
-	free(tdir);
-	return (builtin_error("cd", newdir, strerror(errno)), EXECUTION_FAILURE);
+	return (free(t), free(tdir), builtin_error("cd", newdir, strerror(errno)), EXECUTION_FAILURE);
 }
 
 static int	try_cdpath(char *dirname, t_shell_env *shell_env)
