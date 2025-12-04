@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 13:32:37 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/11/20 11:35:53 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/12/05 01:21:22 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_bool	is_unexpected_token(t_command *cmd, t_token_list *token)
 	if (!cmd->command && !is_wordtoken(token->word->kind)
 		&& !is_redirect(token->word->kind))
 		return (TRUE);
-	if (is_pipetoken(token->word->kind && is_eoftoken(token->next->word->kind)))
+	if (is_pipetoken(token->word->kind) && is_eoftoken(token->next->word->kind))
 		return (TRUE);
 	return (FALSE);
 }
