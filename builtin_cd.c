@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 11:03:04 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/12/05 02:21:11 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/12/07 13:51:28 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,6 @@ static int	sh_makepath(char *path, char *dir, char **res)
 {
 	char	*tmp;
 
-	if (!path || *path == 0)
-	{
-		*res = getcwd(NULL, 0);
-		if (!res)
-		{
-			sys_error("getcwd failed");
-			return (EXECUTION_ERR);
-		}
-	}
 	tmp = ft_strjoin(path, "/");
 	if (!tmp)
 		return (EXECUTION_MEMERR);
@@ -70,26 +61,28 @@ static int	change_to_directory(char *newdir, t_shell_env *shell_env)
 	char	*tcwd;
 	char	*tdir;
 	char	*t;
-	int		status;
 
-	tcwd = NULL;
 	tcwd = get_current_working_directory(shell_env);
 	if (!tcwd || !is_same_file(tcwd, ".", (struct stat *)0, (struct stat *)0))
+	{
 		tcwd = getcwd(NULL, 0);
-	if (!tcwd)
-		return (sys_error("getcwd failed"), EXECUTION_ERR);
-	status = make_absolute(newdir, tcwd, &t);
-	if (status < 0)
-		return (status);
+		if (!tcwd)
+			return (sys_error("getcwd failed"), EXECUTION_ERR);
+		if (!set_current_working_directory(shell_env, tcwd))
+			return (free(tcwd), EXECUTION_MEMERR);
+		free(tcwd);
+		tcwd = get_current_working_directory(shell_env);
+	}
+	if (make_absolute(newdir, tcwd, &t) < 0)
+		return (EXECUTION_MEMERR);
 	tdir = sh_canonpath(t);
+	free(t);
 	if (!tdir)
 		return (EXECUTION_MEMERR);
 	if (!chdir(tdir))
-	{
-		free(t);
 		return (update_pwd(tdir, shell_env));
-	}
-	return (free(t), free(tdir), builtin_error("cd", newdir, strerror(errno)), EXECUTION_FAILURE);
+	return (free(tdir), builtin_error("cd", newdir, strerror(errno)),
+		EXECUTION_FAILURE);
 }
 
 static int	try_cdpath(char *dirname, t_shell_env *shell_env)
