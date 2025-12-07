@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 09:05:26 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/12/05 02:12:47 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/12/07 13:59:02 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ t_word_desc	*make_word_token(char **line_p, char *line, t_token_error *e)
 static t_bool	is_unsup_op(char *line, size_t len, t_token_error *e)
 {
 	const char	*unsup_op[] = {"&&", "&", "||", ";;", ";", "<>", "<<-", "<&",
-			">|", ">&", "(", ")"};
+		">|", ">&", "(", ")"};
 	const int	table_size = sizeof(unsup_op) / sizeof(unsup_op[0]);
 	int			i;
 
@@ -92,7 +92,7 @@ t_word_desc	*make_operator_token(char **line_p, char *line, t_token_error *e)
 	unsigned long long int	i;
 	size_t					len;
 	const t_token_kind		op_table[] = {TK_LESS_LESS, TK_LESS, TK_GREAT_GREAT,
-				TK_GREAT, TK_PIPE};
+		TK_GREAT, TK_PIPE};
 	const char				*op[] = {"<<", "<", ">>", ">", "|"};
 
 	len = 0;
