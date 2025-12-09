@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 13:13:56 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/12/09 10:18:05 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/12/09 11:38:44 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static t_command	*make_simple_command(t_token_list **token_p,
 			if (!append_command_words(command, &token, token))
 				set_parse_error(ST_ERR_NOMEM, NULL, NULL, e);
 		}
-		else if (is_redirect(token->word->kind))
+		else if (is_redirect(token->word->kind) && !is_eoftoken(token->next->word->kind))
 			connect_redirection(command, &token, e);
 		else
 			set_parse_error(ST_ERR_SYNTAX, PARSE_ERR_STR, token->word->word, e);
