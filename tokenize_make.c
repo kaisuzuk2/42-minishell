@@ -6,7 +6,7 @@
 /*   By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 09:05:26 by kaisuzuk          #+#    #+#             */
-/*   Updated: 2025/12/07 13:59:02 by kaisuzuk         ###   ########.fr       */
+/*   Updated: 2025/12/09 11:00:21 by kaisuzuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ t_word_desc	*make_operator_token(char **line_p, char *line, t_token_error *e)
 	const char				*op[] = {"<<", "<", ">>", ">", "|"};
 
 	len = 0;
-	while (is_metacharacter(line[len]))
+	while (line[len] && is_metacharacter(line[len]))
 		len++;
 	if (is_unsup_op(line, len, e))
 		return (NULL);

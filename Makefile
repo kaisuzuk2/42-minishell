@@ -6,14 +6,14 @@
 #    By: kaisuzuk <kaisuzuk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/07 14:10:24 by kaisuzuk          #+#    #+#              #
-#    Updated: 2025/12/05 02:10:51 by kaisuzuk         ###   ########.fr        #
+#    Updated: 2025/12/09 10:19:37 by kaisuzuk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 NAME	=	minishell
 CC		=	cc
-FLAG	=	-Wall -Werror -Wextra
+FLAG	=	-Wall -Werror -Wextra -g
 INC		=	-Iincludes
 
 MAKE	=	make -C
